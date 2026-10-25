@@ -1,0 +1,2483 @@
+<title>Sloop of War</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: one narrow log-book column; prose at the centre, the instruments in a ruled strip above it, choices ruled like log entries below. */
+:root{
+  --paper:#ECEFE8; --paper-2:#E0E5DA; --ink:#23241F; --ink-2:#585D53; --rule:#B7BFB0;
+  --accent:#1F4C69; --warn:#9A2E26; --ok:#2F6B3F; --tip-bg:#23241F; --tip-fg:#ECEFE8;
+  --display:"IM Fell English","Iowan Old Style",Georgia,"Times New Roman",serif;
+  --display-sc:"IM Fell English SC","IM Fell English",Georgia,serif;
+  --body:"Libre Caslon Text",Baskerville,"Iowan Old Style",Georgia,serif;
+  --scale:1;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#0F151A; --paper-2:#18222A; --ink:#E5DDC9; --ink-2:#9BA39F; --rule:#2F3B44;
+  --accent:#D2AE66; --warn:#E3836F; --ok:#8DBF8A; --tip-bg:#E5DDC9; --tip-fg:#0F151A; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --paper:#0F151A; --paper-2:#18222A; --ink:#E5DDC9; --ink-2:#9BA39F; --rule:#2F3B44;
+  --accent:#D2AE66; --warn:#E3836F; --ok:#8DBF8A; --tip-bg:#E5DDC9; --tip-fg:#0F151A; color-scheme:dark }
+
+html{background:var(--paper)}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:calc(17px * var(--scale));line-height:1.6;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.col{max-width:38rem;margin:0 auto;padding-block:1rem 3rem}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;line-height:1.15;margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+[tabindex="-1"]:focus{outline:none}
+.sc{font-family:var(--display-sc);letter-spacing:.03em}
+.muted{color:var(--ink-2)}
+.num{font-variant-numeric:tabular-nums lining-nums}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.4rem 1rem;padding-block:.25rem .4rem}
+.ship{font-family:var(--display);font-size:1.05rem}
+.ship em{font-style:italic}
+.nav{display:flex;gap:.1rem;flex-wrap:wrap;margin-left:-.45rem}
+.nav button,.link{background:none;border:0;padding:.25rem .45rem;cursor:pointer;font-family:var(--display-sc);font-size:.95rem;letter-spacing:.03em;color:var(--accent)}
+.nav button:hover,.link:hover{text-decoration:underline;text-underline-offset:.2em}
+.badge{color:var(--warn)}
+
+/* instrument strip */
+.strip{display:flex;flex-wrap:wrap;gap:.1rem 1.1rem;font-family:var(--display-sc);font-size:.92rem;letter-spacing:.03em;color:var(--ink-2);
+  border-top:1px solid var(--rule);border-bottom:3px double var(--rule);padding-block:.4rem}
+.strip .purse{margin-left:auto}
+
+/* scene */
+.scene h2{font-size:1.85rem;margin:1.3rem 0 .8rem}
+.prose p{margin:0 0 .85rem;max-width:65ch}
+.result{font-style:italic}
+.choices{list-style:none;margin:1.3rem 0 0;padding:0;border-top:1px solid var(--rule)}
+.choice{display:flex;gap:.85rem;align-items:baseline;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--rule);
+  padding:.7rem .3rem;cursor:pointer;line-height:1.45}
+.choice .n{font-family:var(--display-sc);color:var(--accent);min-width:1rem;flex:none}
+.choice:hover:not(:disabled){background:var(--paper-2)}
+.choice:disabled{color:var(--ink-2);cursor:not-allowed}
+.choice:disabled .n{color:var(--rule)}
+.choice .why{display:block;font-style:italic;font-size:.85em;color:var(--ink-2)}
+.cont{margin-top:1.2rem}
+
+/* glossary terms */
+.gl{cursor:help;
+  text-decoration:underline dotted var(--accent);text-decoration-thickness:1.5px;text-underline-offset:.24em}
+#tip{position:fixed;z-index:60;max-width:min(22rem, calc(100vw - 24px));background:var(--tip-bg);color:var(--tip-fg);
+  font-family:var(--body);font-size:.88rem;line-height:1.45;padding:.6rem .75rem;border-radius:3px;box-shadow:0 4px 18px rgba(0,0,0,.25)}
+#tip b{font-family:var(--display-sc);font-weight:400;letter-spacing:.03em;display:block;margin-bottom:.15rem}
+
+/* buttons */
+.btn{background:var(--accent);color:var(--paper);border:0;border-radius:2px;padding:.55rem 1rem;cursor:pointer;font-family:var(--display-sc);letter-spacing:.04em;font-size:1rem}
+.btn:hover{filter:brightness(1.08)}
+.btn.quiet{background:none;color:var(--accent);border:1px solid var(--rule)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+
+/* title screen */
+.title{text-align:left;padding-top:1.5rem}
+.rose{width:8.5rem;height:8.5rem;display:block;margin:0 0 .5rem -0.3rem}
+.title h1{font-size:clamp(2.6rem, 9vw, 3.6rem);letter-spacing:.01em}
+.title .sub{font-family:var(--display);font-style:italic;font-size:1.2rem;color:var(--ink-2);margin:.2rem 0 1.6rem}
+.field{display:grid;gap:.25rem;margin-bottom:.9rem;max-width:22rem}
+.field label{font-family:var(--display-sc);letter-spacing:.03em;font-size:.95rem;color:var(--ink-2)}
+.field input,textarea{font:inherit;background:var(--paper-2);color:var(--ink);border:1px solid var(--rule);border-radius:2px;padding:.45rem .6rem;width:100%;box-sizing:border-box}
+.field small{color:var(--ink-2);font-size:.82rem}
+.foot{margin-top:2.2rem;font-size:.85rem;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:.3rem 1rem;align-items:baseline}
+
+/* panels */
+#panel{position:fixed;inset:0;z-index:40;background:var(--paper);overflow:auto;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-top:env(safe-area-inset-top, 0px);padding-bottom:env(safe-area-inset-bottom, 0px)}
+.phead{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;border-bottom:3px double var(--rule);padding-block:.6rem .4rem;margin-bottom:1rem}
+.phead h2{font-size:1.6rem}
+.panel h3{font-family:var(--display-sc);font-size:1.05rem;letter-spacing:.04em;color:var(--ink-2);margin:1.4rem 0 .5rem}
+.scroll-x{overflow-x:auto}
+table.log{border-collapse:collapse;width:100%;font-size:.95rem}
+table.log th{font-family:var(--display-sc);font-weight:400;letter-spacing:.04em;text-align:left;color:var(--ink-2);border-bottom:1px solid var(--rule);padding:.3rem .5rem}
+table.log td{border-bottom:1px solid var(--rule);padding:.4rem .5rem;vertical-align:top}
+table.log td.h{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+table.log tr.day td{font-family:var(--display);font-style:italic;color:var(--accent);border-bottom:0;padding-top:.8rem}
+table.log th.amt,table.log td.amt{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums lining-nums}
+table.log tr.total td{border-top:2px solid var(--rule);border-bottom:0;font-family:var(--display-sc);letter-spacing:.03em}
+dl.gloss dt{font-family:var(--display-sc);letter-spacing:.03em;font-size:1.05rem;margin-top:.9rem}
+dl.gloss dd{margin:.1rem 0 0}
+dl.gloss .also{color:var(--ink-2);font-size:.85rem;font-style:italic}
+.problems{list-style:none;padding:0;margin:0}
+.problems li{border-bottom:1px solid var(--rule);padding:.55rem 0}
+.sev{font-family:var(--display-sc);letter-spacing:.04em;font-size:.85rem;margin-right:.4rem}
+.sev.error{color:var(--warn)} .sev.warn{color:var(--accent)}
+.where{display:block;color:var(--ink-2);font-size:.82rem}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:.2rem 1rem;font-size:.95rem}
+.kv dt{color:var(--ink-2)} .kv dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.note{font-size:.9rem;color:var(--ink-2);font-style:italic}
+.status{font-size:.9rem;margin-top:.5rem}
+.status.bad{color:var(--warn)} .status.good{color:var(--ok)}
+.confirm{border:1px solid var(--rule);padding:.6rem .8rem;margin-top:.5rem}
+textarea{min-height:7rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem}
+
+/* orders: a written document */
+.orders{background:var(--paper-2);border:1px solid var(--rule);padding:1.1rem 1.2rem;font-size:.95rem;line-height:1.65}
+.orders p{margin:0 0 .75rem;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+.orders p:first-child{font-family:var(--display);font-size:1.05rem;text-align:left}
+.orders p.sig{text-align:right;font-style:italic;margin-bottom:.2rem}
+.orders .heading{font-family:var(--display-sc);letter-spacing:.04em;color:var(--ink-2);margin-bottom:.5rem}
+@media (prefers-reduced-motion: no-preference){ .scene{animation:ink .35s ease-out} @keyframes ink{from{opacity:.4}to{opacity:1}} }
+</style>
+
+<div id="app" class="col" aria-live="polite"></div>
+<div id="tip" role="tooltip" hidden></div>
+<div id="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title" hidden></div>
+
+<!-- ============================================================
+     CONTENT. Everything below, down to the engine, is the game's
+     writing. It is read as plain text; see "Event writing format".
+     ============================================================ -->
+
+<script type="text/plain" class="content" data-name="Settings">
+SETTINGS
+ship: Wryneck
+start date: 1800-03-03
+start time: 06:00
+start money: £27 10s
+money values: debt
+default name: John Hartley
+place.mahon: Port Mahon
+place.harbour: Mahon harbour
+place.ship: Aboard the Wryneck
+place.office: The Admiral's office
+place.dockyard: The dockyard
+place.agent: Mr Crouch's
+place.governor: The Governor's house
+</script>
+
+<script type="text/plain" class="content" data-name="Events: The opening">
+# ------------------------------------------------------------
+# The first day of the commission.
+# ------------------------------------------------------------
+
+EVENT: arrival
+Title: Mahon, the Morning of Arrival
+Place: mahon
+Start
+
+The storeship came in at first light, past the ruined fort at the harbour mouth and up the long reach to the white town on its cliff. You went ashore at the steps with your sea-chest, your sword, and a commission naming you Master and Commander of His Majesty's sloop *{ship}*.
+
+You have not yet seen her. By your own reckoning you have {money} in the world.
+
+The town is waking. A bumboat woman offers you oranges. Somewhere above the quay a bell is ringing for Mass.
+
+CHOICE: Wait upon the Commander-in-Chief's secretary at once
+Log: Came ashore from the storeship at Mahon. Waited upon the Commander-in-Chief's office.
+Next: secretary_wait
+
+CHOICE: Buy a coat fit for a commander before presenting yourself
+Needs: money £8 or more
+Effects: money -£8 "A commander's coat, of a tailor in the upper town"; set new_coat; pass 1 watch
+Text: A tailor in the upper town, who learnt his trade under the old English garrison, puts you into a blue coat with a single epaulette on the left shoulder by the forenoon, and takes a painful part of what you have for it.
+Log: Came ashore at Mahon. Fitted out at the tailor's, then waited upon the Commander-in-Chief's office.
+Next: secretary_wait
+
+CHOICE: Go straight out to the ship
+Effects: set skipped_secretary
+Text: Orders can wait an hour, you tell yourself. A ship cannot be taken by letter.
+Log: Came ashore at Mahon and went directly out to the sloop.
+Next: boat_out
+
+
+EVENT: secretary_wait
+Title: The Admiral's Office
+Place: mahon
+
+The office is a cool, high room in a merchant's house the Navy has taken over, with a sentry at the door and a clerk at a table who does not look up. Mr Pardoe, secretary to the Commander-in-Chief, is engaged.
+
+He remains engaged through two bells, and then through four. Other men come and go: a purser with a sheaf of vouchers, a lieutenant of marines, a Minorcan contractor in black who is shown in at once.
+
+CHOICE: Wait, with every appearance of patience
+Effects: pass 1 watch; set waited_patiently
+Next: secretary_meeting
+
+CHOICE: Send in your name a second time
+Chance 50:
+Text: The clerk sighs, rises, goes in, and returns with word that Mr Pardoe will see you directly.
+Next: secretary_meeting
+Otherwise:
+Effects: set pardoe_grudge; pass 1 watch
+Text: The clerk takes your name in and brings it back. Mr Pardoe, it appears, will see you when Mr Pardoe is at leisure, and has noted that you were pressing.
+Next: secretary_meeting
+
+CHOICE: Slip the clerk a guinea
+Needs: money 1gn or more
+Effects: money -1gn "A guinea to the Admiral's clerk"
+Chance 70:
+Effects: set clerk_obliged
+Text: The guinea goes where guineas go, and within the quarter-hour you are shown in ahead of the purser and his vouchers.
+Next: secretary_meeting
+Otherwise:
+Effects: set pardoe_grudge; pass 1 watch
+Text: The clerk looks at the coin, and then at you, and says that he is not that kind of clerk. He keeps it, all the same.
+Next: secretary_meeting
+
+
+EVENT: secretary_meeting
+Title: Mr Pardoe
+Place: mahon
+Effects: set presented
+
+Mr Pardoe is a narrow, careful man with ink on his second finger and the manner of one who has seen a great many young commanders and expects to see a great many more. He reads your commission through, though he must know every word of it.
+
+[if pardoe_grudge] He does not offer you a chair.
+
+[if new_coat] His eye rests for a moment on the new epaulette, and moves on.
+
+'The *{ship}* lies off the hospital, Captain {surname}. Her late commander was carried ashore with a fever a fortnight since, and she is short of men. Mr Treharne, her lieutenant, is a sound officer of the old sort.' He lays the paper down. 'The Admiral will have orders for you when he has orders for you.'
+
+CHOICE: Thank him, and go out to your ship
+Next: boat_out
+
+CHOICE: Ask when the Admiral will see you
+Chance 40:
+Effects: set admiral_appointment
+Text: 'Tomorrow, perhaps,' says Mr Pardoe, and writes something down. 'Or the day after.'
+Next: boat_out
+Otherwise:
+Effects: set pardoe_grudge
+Text: 'When he sends for you, sir,' says Mr Pardoe, 'which he will do. I assure you of it.'
+Next: boat_out
+
+CHOICE: Ask whether men can be found to complete her complement
+Effects: set hint_hospital_men
+Text: Mr Pardoe smiles for the first time. 'Every commander on the station is short of men, Captain {surname}. The Admiral cannot conjure seamen. You might apply at the hospital, when the convalescents are discharged.'
+Next: boat_out
+
+
+EVENT: boat_out
+Title: The Harbour
+Place: harbour
+Effects: pass 1 hour
+
+A shore-boat takes you and your chest down the harbour, the boatman pulling a short, choppy stroke and talking to himself in the island tongue. The harbour is long and narrow and crowded: transports, a Neapolitan polacre, a dismasted prize with her guns out of her.
+
+Then he rests on his oars and points with his chin. 'Allà. *{ship}*.'
+
+She is low and black and smaller than the commission makes her sound. Her yards are not quite square, and a bumboat is hooked on alongside.
+
+CHOICE: Have the boatman hail her, so that she may receive you properly
+Next: reception_formal
+
+CHOICE: Go up the side unannounced
+Effects: set came_unannounced
+Next: reception_unannounced
+
+
+EVENT: reception_formal
+Title: Coming Aboard
+Place: ship
+
+'Boat ahoy!' comes the hail from her deck. The boatman, coached, answers with the ship's own name, which is the answer that tells her that her captain is in the boat.
+
+There is a great deal of running on deck. By the time you reach the side the side-boys are in their places, the boatswain's call is shrilling, and a weather-beaten officer in an old-fashioned coat takes off his hat to you at the gangway. 'Treharne, sir. Lieutenant. You are very welcome aboard.'
+
+CHOICE: Read yourself in at once
+Next: reading_in
+
+CHOICE: Walk round the ship with Mr Treharne first
+Next: walk_round
+
+
+EVENT: reception_unannounced
+Title: Coming Aboard Unlooked-For
+Place: ship
+
+Nobody hails the boat. You go up the battens and step aboard to find the waist full of bumboat women and their wares, two seamen asleep in the shade of the launch, and a midshipman in his shirt-sleeves fishing over the side.
+
+For a moment nobody knows who you are. Then the midshipman does, and drops his line.
+
+CHOICE: Say nothing, and see how long it takes them
+Effects: set saw_her_slack
+Text: It takes a full minute for the word to reach the gunroom, and a full minute is long enough. Mr Treharne comes up the ladder buttoning his coat, red to the ears. 'Treharne, sir. Lieutenant. You are very welcome aboard, sir.'
+Log: Came aboard and found the ship in an indifferent state.
+Next: walk_round
+
+CHOICE: Call for the officer of the watch, in a voice to carry to the cable-tier
+Effects: set saw_her_slack; set stern_start
+Text: Your voice was made on the quarterdeck of a seventy-four, and it carries. The bumboat women are over the side before Mr Treharne is up the ladder, and the midshipman has found his coat.
+Log: Came aboard and found the ship in an indifferent state. Cleared her of bumboats.
+Next: reading_in
+
+
+EVENT: walk_round
+Title: Round the Ship
+Place: ship
+
+Mr Treharne takes you round her: the quarterdeck, eight paces long; the sixteen guns, their breechings sound; the boats; the galley; the berth-deck, low and dark and smelling of bilge and bread and men. He speaks plainly and well of the ship, and sparingly of her people.
+
+[if saw_her_slack] He does not speak of what you found on deck, and neither do you; but it goes round the ship with you.
+
+'She is short twenty men of her complement, sir,' he says at last, 'and of those she has, I would not give a farthing for thirty.'
+
+CHOICE: Ask him which of the people are worth having
+Effects: set knows_good_hands
+Text: He names them without hesitation: the captains of the tops, the gunner's mates, a dozen prime seamen. 'The rest came to us from the receiving ship at Gibraltar, sir, and from the Plymouth press before that. They know it, and so do we.'
+Next: reading_in
+
+CHOICE: Ask him what her late commander was like
+Effects: set late_captain_ashore
+Text: 'A gentleman, sir,' says Mr Treharne, after a pause that is itself an answer. 'He was a good deal ashore.'
+Next: reading_in
+
+CHOICE: Tell him plainly that what you saw on deck will not happen again
+Requires: saw_her_slack
+Effects: set stern_start; set treharne_stung
+Text: 'No, sir,' says Mr Treharne, and looks straight ahead of him. 'It will not.'
+Next: reading_in
+
+
+EVENT: reading_in
+Title: Reading In
+Place: ship
+Effects: pass 1 hour
+
+All hands are turned up. They come aft in a slow, uneven tide and stand in the waist, ninety-odd of them in every condition of dress: men who have seen a fleet action, and men taken up in a Plymouth gin-shop six months since. The marines are drawn up in their red coats at the break of the quarterdeck. Mr Treharne calls for silence, and gets it.
+
+You unfold your commission and read it to them, from 'By the Commissioners for executing the Office of Lord High Admiral' to the end.
+
+CHOICE: Fold it up and dismiss them without another word
+Effects: set plain_reading_in
+Text: It is the old way, and some of the older hands approve of it. The rest go forward knowing nothing more of you than your name.
+Log: Read my commission to the ship's company and took command.
+Next: first_night
+
+CHOICE: Add a word about prize money
+Effects: set promised_prizes; morale +1
+Text: You tell them that the *{ship}* is going to sea to take French and Spanish merchantmen, and that you mean to take a great many. There is a stir at that: not a cheer, quite, but a stir. They will remember it, whichever way it falls out.
+Log: Read my commission to the ship's company and took command. Spoke to the people of prizes.
+Next: first_night
+
+CHOICE: Add a word about the discipline you expect
+Effects: set stern_start; morale -1
+Text: You tell them how you mean the ship to be run. They hear you in silence, which may mean anything.
+Log: Read my commission to the ship's company and took command. Spoke to the people of discipline.
+Next: first_night
+
+
+EVENT: first_night
+Title: The Great Cabin
+Place: ship
+Effects: until 19:00; cabin_stores = 2
+
+By evening your chest is in the great cabin, which is not great. It runs to a table, two chairs, a swinging cot, a quarter-gallery, and a gun on either side that you will share it with at quarters. Your steward, a silent Manxman named Kinvig, inherited with the ship, brings you a candle and a bottle of the late captain's wine, which the late captain has not yet sent for.
+
+The ship moves a little at her moorings. Forward, somebody is playing a fiddle, badly.
+
+CHOICE: Ask Mr Treharne to dine with you
+Needs: money 15s or more
+Effects: money -15s "Supper sent off from the shore for Mr Treharne"; set dined_treharne
+Text: He comes, in his old-fashioned coat, and eats steadily, and over the second bottle tells you more about the ship than he did in the whole of the afternoon.
+Log: Mr Treharne dined with me.
+Next: morning_after
+
+CHOICE: Write up your log and turn in
+Log: Turned in at four bells in the first watch.
+Next: morning_after
+
+CHOICE: Write a letter home
+Text: You write four pages, and cross them, and seal them, and do not read them over.
+Log: Wrote home.
+Next: morning_after
+</script>
+
+<script type="text/plain" class="content" data-name="Events: Aboard in harbour">
+# ------------------------------------------------------------
+# The ship in Mahon harbour. ship_hub is where the player
+# returns whenever a choice aboard has no "Next:".
+# ------------------------------------------------------------
+
+EVENT: morning_after
+Title: The Second Day
+Place: ship
+Effects: until 07:00
+
+Mr Treharne makes his report at breakfast, standing, with his hat under his arm, until you ask him to sit.
+
+The *{ship}* has water for three weeks, provisions for rather more, and no spare topmast. She wants twenty men. The late captain's accounts with the purser are, in Mr Treharne's phrase, a matter for the purser.
+
+[if dined_treharne] He is easier with you than he was yesterday, and once, over the coffee, very nearly smiles.
+
+CHOICE: Thank him, and turn to the business of the day
+Next: any ship
+
+CHOICE: Ask him what he would do first, in your place
+Effects: set treharne_consulted
+Text: Mr Treharne considers. 'I should get our orders, sir, before the Admiral gives the Catalan cruise to the *Petrel*. Everything else will keep a day.'
+Next: any ship
+
+
+EVENT: ship_hub
+Title: Aboard the *{ship}*
+Place: ship
+Hub
+
+[if before 20:00] The *{ship}* lies at her moorings off the hospital island. Forward, the people are at their work, and not much hurried about it.
+
+[if after 20:00] The ship is quiet but for the sentry's tread and the slap of water under the counter. The lights of the town are going out one by one.
+
+[if has_orders] Your orders lie in your desk: {orders}.
+
+[if not has_orders] You have no orders yet.
+
+CHOICE: Go ashore
+Requires: before 22:00
+Effects: pass 30 minutes
+Next: any mahon
+
+CHOICE: Send Kinvig ashore for cabin stores
+Requires: before 18:00, not stores_bought
+Next: steward_stores
+
+CHOICE: Have a guest to dinner
+Requires: after 12:00, before 17:00
+Next: dine_invite
+
+CHOICE: Keep to your cabin and your papers
+Requires: before 20:00
+Effects: pass 3 hours
+Next: any ship
+
+CHOICE: Turn in for the night
+Requires: after 20:00
+Effects: until 07:00
+Next: any ship
+
+CHOICE: Weigh and proceed to sea
+Needs: has_orders
+Why not: You have no orders yet.
+Next: weigh
+
+
+EVENT: summons_early
+Title: A Note from the Office
+Place: ship
+Tags: ship
+Urgent
+Once
+Requires: admiral_appointment, not summoned
+Effects: set summoned
+
+A boat comes off from the shore with a note in Mr Pardoe's narrow hand. The Commander-in-Chief will see Captain {surname} at his office this forenoon, and Mr Pardoe has the honour to be his most obedient humble servant.
+
+CHOICE: Call away your boat
+Effects: pass 30 minutes
+Next: mahon_hub
+
+CHOICE: Acknowledge it, and finish your coffee first
+Next: ship_hub
+
+
+EVENT: summons
+Title: A Note from the Office
+Place: ship
+Tags: ship
+Urgent
+Once
+Requires: presented, not summoned, day 3 or more
+Effects: set summoned
+
+A note comes off from the shore. The Commander-in-Chief desires to see Captain {surname} at his office, at Captain {surname}'s earliest convenience, which is to say at once. It is signed by Mr Pardoe, who has the honour to be his most obedient humble servant.
+
+[if pardoe_grudge] It has come, you notice, by the slowest boat in the harbour.
+
+CHOICE: Call away your boat
+Effects: pass 30 minutes
+Next: mahon_hub
+
+CHOICE: Acknowledge it, and go when you are ready
+Next: ship_hub
+
+
+EVENT: pardoe_note
+Title: Mr Pardoe's Compliments
+Place: ship
+Tags: ship
+Urgent
+Once
+Requires: not presented, day 3 or more
+Effects: set pardoe_grudge; standing -1
+
+A note arrives from the Admiral's office. Mr Pardoe presents his compliments to Captain {surname}, and would be glad to learn whether Captain {surname} proposes, at any time convenient to himself, to wait upon the Commander-in-Chief.
+
+Mr Treharne reads it over your shoulder, and then pretends that he has not.
+
+CHOICE: Go ashore at once
+Effects: pass 30 minutes
+Next: mahon_hub
+
+CHOICE: Put it in your pocket
+Next: ship_hub
+
+
+EVENT: governor_invitation
+Title: A Card from the Governor's House
+Place: ship
+Tags: ship
+Urgent
+Once
+Requires: called_governor, card_left 6 hours or more
+Effects: set invited_governor
+
+Among the letters brought off from the shore is a stiff card, engraved. His Excellency the Governor is at home this evening, and every evening this week, to the officers of the garrison and the fleet, from eight o'clock. There will be cards.
+
+CHOICE: Tell Kinvig to brush your best coat
+Next: ship_hub
+
+
+EVENT: steward_stores
+Title: Cabin Stores
+Place: ship
+
+Kinvig waits to be told. He is a man of very few words, all of them to the purpose.
+
+[if cabin_stores 1 or less] The late captain's lockers, by his account, are as near bare as makes no difference.
+
+[if cabin_stores 2 or more] The late captain's lockers, by his account, will run to a dinner or two and no more.
+
+The market at Mahon will furnish the rest, at Mahon prices.
+
+CHOICE: A modest provision: wine, a coop of fowls, coffee and cheese
+Needs: money £6 or more
+Effects: money -£6 "Cabin stores, a modest provision"; cabin_stores +4; set stores_bought; pass 2 hours
+Text: Kinvig goes ashore with a list and comes back with all of it, and a little change.
+Log: Laid in cabin stores.
+Next: ship_hub
+
+CHOICE: A handsome provision, fit to set before an admiral
+Needs: money £14 or more
+Effects: money -£14 "Cabin stores, a handsome provision"; cabin_stores +8; set stores_bought; set good_table; pass 3 hours
+Text: Kinvig is gone the whole afternoon, and comes off at last in a hired boat deep with hampers, a pig, and two dozen of claret from a merchant who swore to its being French.
+Log: Laid in cabin stores.
+Next: ship_hub
+
+CHOICE: Make do with what there is
+Next: ship_hub
+
+
+EVENT: dine_invite
+Title: Dinner in the Great Cabin
+Place: ship
+
+Dinner aboard is at three o'clock. Kinvig wants to know, with his eyebrows, whether he is to lay for two.
+
+[if cabin_stores 0 or less] He also wants you to know, with the same eyebrows, that there is nothing in the lockers to lay with.
+
+CHOICE: Send an invitation to Mr Pardoe
+Requires: presented, not dined_pardoe
+Needs: cabin_stores 1 or more
+Why not: The cabin stores will not run to a guest.
+Effects: cabin_stores -1; set dined_pardoe; until 18:00
+Chance 60, +20 if good_table, -20 if pardoe_grudge:
+Effects: clear pardoe_grudge; standing +1
+Text: Mr Pardoe comes, and eats very little, and drinks rather more, and on the second bottle tells you a long story about a former Admiral's cook. He takes his leave with something that is nearly warmth.
+Log: Mr Pardoe, the Admiral's secretary, dined with me.
+Next: ship_hub
+Otherwise:
+Text: Mr Pardoe comes, and is polite, and notices everything: the chipped decanter, the fowl that was not quite dead long enough. He goes ashore at five, exactly as he came.
+Log: Mr Pardoe, the Admiral's secretary, dined with me.
+Next: ship_hub
+
+CHOICE: Send an invitation to Mr Gedge, the Master Attendant
+Requires: met_gedge, not dined_gedge
+Needs: cabin_stores 1 or more
+Why not: The cabin stores will not run to a guest.
+Effects: cabin_stores -1; set dined_gedge; yard_favour +1; until 18:00
+Text: Mr Gedge comes off in the yard's own boat, eats everything, and finds fault with your rigging from the cabin windows. He leaves in high good humour, promising nothing.
+Log: Mr Gedge, Master Attendant of the yard, dined with me.
+Next: ship_hub
+
+CHOICE: Send an invitation to Commander Dawe of the *Petrel*
+Requires: met_dawe, not dined_dawe
+Needs: cabin_stores 1 or more
+Why not: The cabin stores will not run to a guest.
+Effects: cabin_stores -1; set dined_dawe; set friend_dawe; clear dawe_rival; until 18:00
+Text: Dawe comes, and talks, and drinks your health in your own wine a great many times. By the end of it he has decided that you are a capital fellow, and says so, loudly, to his boat's crew.
+Log: Commander Dawe of the Petrel dined with me.
+Next: ship_hub
+
+CHOICE: Dine alone
+Effects: until 18:00
+Text: You dine alone, with a book propped against the decanter, as captains have dined since there were captains.
+Next: ship_hub
+
+
+EVENT: weigh
+Title: Proceeding to Sea
+Place: ship
+Effects: until 06:00
+
+At first light you unmoor. The capstan goes round to the fiddler's tune, the cable comes in dripping and stinking of harbour mud, and the *{ship}* falls off and gathers way down the long harbour, past the hospital and the ruined fort, towards the open sea.
+
+[if carronades] The new carronades squat in her ports like toads. Mr Treharne has not yet said what he thinks of them, which is itself an opinion.
+
+[if sail_by 3 days or more] Mr Pardoe's last note, received at the gangway, observed that the Commander-in-Chief had expected the *{ship}* at sea some days since.
+
+CHOICE: Take her out under topsails, with every attention to the forms
+Log: Unmoored and weighed. Proceeded to sea under topsails, in obedience to orders.
+Next: ending_build2
+
+CHOICE: Make all sail as soon as the harbour mouth is cleared
+Log: Unmoored and weighed. Made all sail on clearing the harbour.
+Next: ending_build2
+
+
+EVENT: ending_build2
+Title: Here the Log Breaks Off
+Ending
+
+The *{ship}* stands out to sea with her orders in your desk: {orders}.
+
+The sea itself (the ship's stores, the wind and the weather, the chart) is still to be built. Your log stands below, and your accounts are under Accounts.
+</script>
+
+<script type="text/plain" class="content" data-name="Events: Mahon">
+# ------------------------------------------------------------
+# The town and its four places: the Admiral's office, the
+# dockyard, Mr Crouch's counting-house, the Governor's house.
+# ------------------------------------------------------------
+
+EVENT: mahon_hub
+Title: Port Mahon
+Place: mahon
+Hub
+
+[if before 19:00] The town stands on its cliff above the harbour, white and shuttered against the sun, its streets steep and full of goats, soldiers, priests and women in black. Redcoats stand sentry where Spanish sentries stood two years since.
+
+[if after 19:00] Lamps are lit along the quay, and there is music somewhere in the upper town. The offices are shut. The taverns are not.
+
+CHOICE: The Admiral's office
+Needs: before 16:00
+Why not: The office is shut for the day.
+Effects: pass 15 minutes
+Next: any office
+
+CHOICE: The dockyard, across the harbour
+Needs: before 17:00
+Why not: The yard has knocked off for the day.
+Effects: pass 30 minutes
+Next: any dockyard
+
+CHOICE: Mr Crouch's counting-house
+Needs: before 18:00
+Why not: Mr Crouch has gone home to his dinner.
+Effects: pass 15 minutes
+Next: any agent
+
+CHOICE: Leave your card at the Governor's house
+Requires: not called_governor
+Needs: before 18:00
+Why not: It is too late in the day for calling.
+Effects: set called_governor; start card_left; pass 30 minutes
+Text: A footman in the Governor's livery takes your card at the door, lays it on a silver salver among a great many others, and shuts the door again. That is how it is done.
+Log: Left my card at the Governor's.
+Next: mahon_hub
+
+CHOICE: The Governor's card party
+Requires: invited_governor, not card_party_done
+Needs: after 20:00
+Why not: The rooms do not open until eight.
+Next: card_party
+
+CHOICE: Return aboard
+Effects: pass 30 minutes
+Next: any ship
+
+
+EVENT: dawe_meeting
+Title: Commander Dawe
+Place: mahon
+Tags: mahon
+Once
+Weight: 2
+Requires: day 2 or more, before 19:00
+
+On the quay you are hailed by a red-faced officer with one epaulette like your own and a great deal more lace. He is Commander Dawe of the *Petrel*, brig-sloop, and he is senior to you by two years and four months, which he mentions.
+
+'You are come for the Catalan cruise, I suppose,' he says. 'Everybody is. The old gentleman as good as promised it me at Christmas.'
+
+CHOICE: Stand him a bottle at the nearest tavern
+Needs: money 10s or more
+Effects: money -8s "A bottle with Commander Dawe"; set met_dawe; set friend_dawe; pass 1 hour
+Text: He drinks most of it, and tells you which of the Admiral's followers are to be feared, which of the island's agents are to be trusted, and that none of them is.
+Next: mahon_hub
+
+CHOICE: Wish him joy of it, and walk on
+Effects: set met_dawe
+Next: mahon_hub
+
+CHOICE: Tell him you mean to ask for it yourself
+Effects: set met_dawe; set dawe_rival
+Text: Commander Dawe stops smiling. 'Do you, by God,' he says, and walks off without another word.
+Next: mahon_hub
+
+
+EVENT: segui_offer
+Title: Mr Seguí
+Place: mahon
+Tags: mahon
+Once
+Weight: 2
+Requires: day 2 or more, before 19:00
+
+At the head of the steps a gentleman in a good black coat falls in beside you and raises his hat. He is Jaume Seguí, of this island, and he has the honour to act for several officers of the fleet in the matter of prizes.
+
+He has heard of your appointment. He knows Mr Crouch: a most respectable man, very slow. He himself will advance eighty pounds today against nothing but your name on a letter of attorney, and he names no interest at all.
+
+[if agent_crouch] He has heard, too, that you have named Mr Crouch. These things, he says, may be undone.
+
+CHOICE: Accept, and name him your agent
+Needs: not agent_crouch
+Why not: You have already named Mr Crouch your agent.
+Effects: set agent_segui; money +£80 "Advanced by Mr Seguí on account of prizes"; debt +£80 "Mr Seguí, eighty pounds advanced on account of prizes"
+Text: Mr Seguí has the letter of attorney in his pocket, ready drawn, and the money in a bag in a shop across the street. It takes ten minutes. He bows very low.
+Log: Appointed Mr Seguí of Mahon my agent, and drew £80 on him.
+Next: mahon_hub
+
+CHOICE: Decline, civilly
+Text: Mr Seguí is not in the least offended. He is always to be found, he says, at the sign of the Three Kings, and he hopes to have the honour.
+Next: mahon_hub
+
+
+EVENT: card_party
+Title: The Governor's House
+Place: governor
+Effects: set card_party_done; pass 30 minutes
+
+The rooms are hot and bright and crowded with scarlet: the garrison is here in force, and the fleet in rather less. His Excellency is at whist in an inner room and does not come out. A band of the regiment plays in the courtyard, and the island's gentry stand along the walls and watch the English as they might watch weather.
+
+Mr Pardoe is here, in a plum-coloured coat. So is the Admiral's flag captain, and a Major Ancell of the regiment, who wants a fourth at whist and has heard that sea officers are rich.
+
+CHOICE: Sit down to whist with Major Ancell, at half-crown points
+Needs: money £6 or more
+Why not: You have not the money to sit down with the Major.
+Effects: until 23:00
+Chance 50:
+Effects: money +£4 4s "Won at whist of Major Ancell"
+Text: The cards run your way from the first rubber, and the Major pays up with a soldier's good grace and a soldier's bad language.
+Log: Passed the evening at the Governor's. Won at whist.
+Next: any ship
+Otherwise:
+Effects: money -£5 5s "Lost at whist to Major Ancell"
+Text: The Major plays a long, cautious, murderous game, and by eleven you owe him five guineas, which you pay on the spot as a gentleman must.
+Log: Passed the evening at the Governor's. Lost at whist.
+Next: any ship
+
+CHOICE: Make yourself agreeable to the flag captain
+Effects: until 23:00
+Chance 50, +20 if new_coat:
+Effects: interest +1; standing +1
+Text: Captain Blane is a dry, quiet man who has heard every young commander's story twice. Yours, it appears, he has not heard, and he asks for more of it.
+Log: Passed the evening at the Governor's.
+Next: any ship
+Otherwise:
+Text: Captain Blane is a dry, quiet man who has heard every young commander's story twice, and he hears yours a third time with perfect civility.
+Log: Passed the evening at the Governor's.
+Next: any ship
+
+CHOICE: Make your peace with Mr Pardoe
+Requires: pardoe_grudge
+Effects: until 23:00
+Chance 60:
+Effects: clear pardoe_grudge
+Text: Away from his office Mr Pardoe is a different man, fond of music and very ready to be thought fond of it. You stand beside him through three quadrilles and say that the band is very fine. By the end he is calling you 'my dear Captain'.
+Log: Passed the evening at the Governor's.
+Next: any ship
+Otherwise:
+Text: Mr Pardoe receives your civilities as he receives everything, on file.
+Log: Passed the evening at the Governor's.
+Next: any ship
+
+CHOICE: Stay an hour for form's sake, and go back aboard
+Effects: pass 1 hour
+Log: Passed an hour at the Governor's.
+Next: any ship
+</script>
+
+<script type="text/plain" class="content" data-name="Events: The Admiral's office">
+EVENT: secretary_late
+Title: The Admiral's Office
+Place: office
+Tags: office
+Urgent
+Once
+Requires: not presented
+Effects: set presented; set pardoe_grudge; pass 2 hours
+
+Mr Pardoe receives you at last, after a delay he does not explain, and reads your commission through without asking you to sit.
+
+'You came out by the storeship, I think, Captain {surname}. On Monday.' He lays the paper down. 'The *{ship}* lies off the hospital, as no doubt you have discovered for yourself. The Admiral will send for you when he has occasion.'
+
+CHOICE: Apologise for not waiting upon him sooner
+Chance 40:
+Effects: clear pardoe_grudge
+Text: Mr Pardoe inclines his head a quarter of an inch. It is enough.
+Next: office_hub
+Otherwise:
+Text: 'Not at all,' says Mr Pardoe, and writes something down.
+Next: office_hub
+
+CHOICE: Bow, and say nothing
+Next: office_hub
+
+
+EVENT: office_hub
+Title: The Admiral's Office
+Place: office
+Hub
+
+The anteroom is full, as it is always full: masters of transports, a Minorcan contractor in black, two lieutenants hoping for a vacancy and pretending not to know each other. The clerk writes, and does not look up.
+
+[if summoned, not admiral_seen] Then he does look up. The Admiral will see you directly.
+
+CHOICE: Go in to the Admiral
+Requires: summoned, not admiral_seen
+Next: admiral_audience
+
+CHOICE: Send in your name to Mr Pardoe
+Requires: not summoned
+Effects: pass 1 hour
+Chance 30, +25 if clerk_obliged, -20 if pardoe_grudge:
+Effects: set summoned
+Text: Mr Pardoe comes out himself, which is a mark of something. The Admiral, he says, will see you now, if you are at leisure.
+Next: office_hub
+Otherwise:
+Text: The answer comes back that the Admiral is engaged, and will send.
+Next: mahon_hub
+
+CHOICE: Ask Mr Pardoe for an order to exchange your guns for carronades
+Requires: admiral_seen, not gun_order, not gun_refused, not carronades
+Effects: pass 1 hour
+Chance 50, +20 if clerk_obliged, +20 if dined_pardoe, -30 if pardoe_grudge, +10 per standing:
+Effects: set gun_order
+Text: Mr Pardoe writes it out himself: an order to the Storekeeper of the Ordnance to receive the *{ship}*'s sixteen six-pounders and issue sixteen eighteen-pounder carronades in their room. 'He will not thank you for it,' he says, sanding it.
+Log: Received an order for exchanging the guns.
+Next: office_hub
+Otherwise:
+Effects: set gun_refused
+Text: Mr Pardoe takes the request in to the Admiral, and brings back word that the Commander-in-Chief sees no occasion to alter the established armament of the sloop.
+Next: office_hub
+
+CHOICE: Leave
+Next: mahon_hub
+
+
+EVENT: admiral_audience
+Title: The Commander-in-Chief
+Place: office
+Once
+Effects: set admiral_seen; set issuing_orders; pass 1 hour
+
+Vice-Admiral Sir Robert Lessingham receives you in a long room with the shutters half closed, his gouty foot on a stool and a chart of the coast of Spain spread across the table under a decanter. He is a large, slow-spoken man with the kindliest manner on the station, which deceives nobody who has served under him.
+
+[if new_coat] 'Very fine,' he says of your coat. 'Very fine indeed.'
+
+He asks about your passage, your last ship and your health, and listens to the answers. Then he looks at the chart.
+
+CHOICE: Wait to be told your orders
+Effects: standing +1
+Next: any orders
+
+CHOICE: Ask, with proper deference, for a cruise against the enemy's trade
+Effects: set asked_cruise
+Next: any orders
+
+CHOICE: Speak of the ship's want of men
+Effects: set spoke_of_men
+Chance 50, +20 if hint_hospital_men:
+Effects: set hospital_men_promised
+Text: 'Men,' says the Admiral, as another man might say 'weather'. But he makes a note, and says that something may be done when the hospital discharges.
+Next: any orders
+Otherwise:
+Effects: standing -1
+Text: 'Every captain on the station is short of men, sir,' says the Admiral, without heat, 'and every one of them tells me so.'
+Next: any orders
+
+
+EVENT: orders_cruise
+Title: Your Orders
+Place: office
+Tags: orders
+Once
+Requires: issuing_orders
+Weight: 1, +3 if asked_cruise, +1 per standing, -1 if pardoe_grudge, -1 if dawe_rival
+Effects: clear issuing_orders; orders cruise_catalan; start sail_by; pass 30 minutes
+
+'The coast of Catalonia,' says the Admiral, laying a thick finger on it. 'Between Cape San Sebastián and Cape Salou. The Spaniards run their coasting trade along there in everything that will float, and they do not like it interrupted. Six weeks, and then come back to me.'
+
+Mr Pardoe, who has been in the room all along, gives you your orders, sealed, and a look that you cannot read.
+
+CHOICE: Thank the Admiral, and take your leave
+Log: Received orders from the Commander-in-Chief to cruise on the coast of Catalonia.
+Next: mahon_hub
+
+CHOICE: Ask whether he has any particular wishes as to the cruise
+Effects: standing +1
+Text: 'Wishes?' The Admiral smiles. 'I wish you to take a great many prizes, Captain {surname}, of which I shall have my eighth. And I wish you not to fall in with the Toulon frigates. Good day to you.'
+Log: Received orders from the Commander-in-Chief to cruise on the coast of Catalonia.
+Next: mahon_hub
+
+
+EVENT: orders_convoy
+Title: Your Orders
+Place: office
+Tags: orders
+Once
+Requires: issuing_orders
+Weight: 2, +2 if pardoe_grudge, +1 if spoke_of_men
+Effects: clear issuing_orders; orders convoy_toulon; start sail_by; pass 30 minutes
+
+'There are three victuallers lying in the harbour,' says the Admiral, 'full of beef and biscuit for the squadron off Toulon, and they have lain there a week for want of anybody to take them. You will take them.'
+
+It is the dullest service on the station, and both of you know it. Mr Pardoe hands you your orders, sealed.
+
+CHOICE: Take them, with thanks
+Effects: standing +1
+Log: Received orders from the Commander-in-Chief to see three victuallers safe to the squadron off Toulon.
+Next: mahon_hub
+
+CHOICE: Ask, if it may be, for a cruise instead
+Chance 25, +15 per standing, +20 if dined_pardoe, -20 if pardoe_grudge:
+Effects: orders cruise_catalan
+Text: The Admiral looks at you for a long moment. 'Well, well. Dawe shall have the victuallers, and serve him right. Pardoe, write it out again.' Mr Pardoe writes it out again.
+Log: Received orders from the Commander-in-Chief to cruise on the coast of Catalonia.
+Next: mahon_hub
+Otherwise:
+Effects: standing -1
+Text: 'Instead?' says the Admiral, pleasantly. 'No, Captain {surname}. Not instead. Good day to you.'
+Log: Received orders from the Commander-in-Chief to see three victuallers safe to the squadron off Toulon.
+Next: mahon_hub
+
+
+EVENT: orders_despatches
+Title: Your Orders
+Place: office
+Tags: orders
+Once
+Requires: issuing_orders
+Weight: 2, +1 if asked_cruise
+Effects: clear issuing_orders; orders despatches_hebe; start sail_by; pass 30 minutes
+
+'I have a packet for Captain Wyatt of the *Hebe*, who is off Barcelona,' says the Admiral. 'Carry it to him with all dispatch. When you have put it into his hand you may cruise a fortnight on that coast before you come back, and take what you can.'
+
+Mr Pardoe gives you your orders and the packet, both sealed, and makes you sign for the packet.
+
+CHOICE: Take them, with thanks
+Log: Received orders from the Commander-in-Chief to carry despatches to the Hebe off Barcelona.
+Next: mahon_hub
+
+CHOICE: Ask what the packet contains
+Effects: standing -1
+Text: 'Paper, Captain {surname},' says the Admiral, 'covered with writing.' Mr Pardoe permits himself to look at the ceiling.
+Log: Received orders from the Commander-in-Chief to carry despatches to the Hebe off Barcelona.
+Next: mahon_hub
+</script>
+
+<script type="text/plain" class="content" data-name="Events: The dockyard">
+EVENT: yard_prize
+Title: The Dockyard
+Place: dockyard
+Tags: dockyard
+Once
+
+The yard lies across the harbour from the town: storehouses, a mast pond, a sheer hulk, and the dismasted prize you passed on your first morning, hauled in to the wharf with her guns out of her.
+
+She is a French privateer brig, the foreman of the shipwrights tells you, taken off Cape Bon in January. The surveyors are aboard her now. Half the commanders on the station have already asked who is to have her.
+
+CHOICE: Look her over yourself
+Effects: set saw_prize; pass 1 hour
+Text: She is sharp and wet and over-sparred, built to run rather than to fight, and she would sail round the *{ship}* in a light air. You come away with tar on your breeches and a fair idea of her lines.
+Next: dockyard_hub
+
+CHOICE: Go on to the Master Attendant's office
+Next: dockyard_hub
+
+
+EVENT: dockyard_hub
+Title: The Dockyard
+Place: dockyard
+Hub
+
+Caulkers are at work on a transport's seams, and the smell of hot pitch hangs over everything. A gang of island labourers is rolling casks along the wharf, slowly, under the eye of a clerk who is slower still.
+
+CHOICE: Call upon the Master Attendant
+Requires: not met_gedge
+Next: yard_gedge
+
+CHOICE: Present your order at the Ordnance gun wharf
+Requires: gun_order, not carronades, not kept_long_guns
+Next: gun_exchange
+
+CHOICE: Return to the town
+Effects: pass 30 minutes
+Next: mahon_hub
+
+
+EVENT: yard_gedge
+Title: The Master Attendant
+Place: dockyard
+Effects: set met_gedge; pass 1 hour
+
+Mr Gedge, Master Attendant of the yard, is an old sea officer who has not been to sea in eleven years and has not forgiven it. His office looks out over the mast pond, and his desk is buried under requisitions from every ship on the station.
+
+'Cordage,' he says, before you have sat down. 'Everybody wants cordage. There is no cordage. The Navy Board sends me pitch and Bibles.'
+
+CHOICE: Lodge your requisitions in the proper form
+Effects: set requisitions_lodged
+Text: He takes them, and puts them on top of the pile, which is something. 'In their turn, Captain. Everything in its turn.'
+Next: dockyard_hub
+
+CHOICE: Have Kinvig send him over a dozen of wine
+Needs: cabin_stores 1 or more
+Why not: There is no wine to spare in the cabin.
+Effects: cabin_stores -1; yard_favour +2; set requisitions_lodged
+Text: Mr Gedge does not thank you, which would be improper. But your requisitions find their way, by some process of their own, rather nearer the top of the pile.
+Next: dockyard_hub
+
+CHOICE: Ask him which ships he served in
+Chance 50:
+Effects: yard_favour +1; set requisitions_lodged
+Text: A good many, it appears, and he tells you about all of them. It takes most of an hour. By the end he is calling you 'my dear sir'.
+Next: dockyard_hub
+Otherwise:
+Effects: pass 1 hour
+Text: He served, it appears, in a great many ships under a great many fools, and he names most of them. Two were friends of your father's. You do not mention it.
+Next: dockyard_hub
+
+
+EVENT: gun_exchange
+Title: The Gun Wharf
+Place: dockyard
+
+Mr Lusk, Storekeeper of the Ordnance, reads the Admiral's order twice and holds it up to the light, as though it might be forged.
+
+'Carronades,' he says. 'Eighteen-pounders. Sixteen of them, with slides and fittings.' He has them, it emerges; he has had them since the autumn. What he has not got is anybody to sway your six-pounders out and the carronades in, nor a lighter to carry them, nor any wish to hurry.
+
+CHOICE: Have the exchange made in the ordinary course
+Effects: pass 3 days; set carronades
+Text: It takes three days, the loan of half your people, and a great deal of language from Mr Treharne. At the end of it the *{ship}* mounts sixteen eighteen-pounder carronades, and rides an inch higher for the want of the long guns' weight.
+Log: Exchanged the six-pounders for eighteen-pounder carronades at the Ordnance wharf.
+Next: dockyard_hub
+
+CHOICE: Ease the business with a present to his clerk
+Needs: money £3 or more
+Effects: money -£3 "A present to the Ordnance storekeeper's clerk"; pass 1 day; set carronades
+Text: The lighter appears that afternoon with a working party, and the thing is done by the next day's dusk. Mr Lusk affects not to know how.
+Log: Exchanged the six-pounders for eighteen-pounder carronades at the Ordnance wharf.
+Next: dockyard_hub
+
+CHOICE: Think better of it, and keep your long guns
+Effects: set kept_long_guns
+Text: Mr Lusk hands back the order with the look of a man whose afternoon has been restored to him.
+Next: dockyard_hub
+</script>
+
+<script type="text/plain" class="content" data-name="Events: The agent">
+EVENT: crouch_intro
+Title: Mr Crouch
+Place: agent
+Tags: agent
+Once
+Effects: set met_crouch
+
+Mr Abel Crouch, merchant, navy agent and agent for prizes, late of Gibraltar, keeps a counting-house on the quay with a brass plate and three clerks. He is stout and grey and very civil, and he has done business with sea officers for thirty years without, so far as anyone knows, ever once being in a hurry.
+
+'Captain {surname}. I had heard. The *{ship}*. Sit down, sir, sit down.'
+
+CHOICE: Sit down
+Next: agent_hub
+
+
+EVENT: agent_hub
+Title: Mr Crouch's Counting-House
+Place: agent
+Hub
+
+The clerks scratch at their ledgers. Mr Crouch folds his hands upon his waistcoat and waits to learn what you want, though he very likely knows already.
+
+[if agent_crouch] He is, as he likes to say, your man of business now.
+
+CHOICE: Ask for an advance against your pay
+Requires: not advance_crouch
+Next: crouch_advance
+
+CHOICE: Appoint him your agent for prizes
+Requires: not agent_crouch, not agent_segui
+Effects: set agent_crouch
+Text: Mr Crouch draws up the letter of attorney himself, and you sign it. 'Two and a half per cent, sir, and every penny accounted for,' he says. 'You will find me slow. You will not find me short.'
+Log: Appointed Mr Crouch of Mahon my agent.
+Next: agent_hub
+
+CHOICE: Ask him for the news of the port
+Requires: not heard_crouch_news
+Effects: set heard_crouch_news; pass 30 minutes
+Chance 50, +30 if agent_crouch:
+Effects: set rumour_barcelona_convoy
+Text: Mr Crouch lowers his voice, though there is nobody to hear but his clerks. A coaster in from Barcelona last week reports a number of vessels collecting there, laden with wine and oil and waiting on an escort. 'It may be nothing,' he says. 'It very often is.'
+Next: agent_hub
+Otherwise:
+Text: Mr Crouch tells you the price of oil, the state of the exchange on London, and that the Governor's cook has left him for the Admiral's. None of it seems likely to be of use.
+Next: agent_hub
+
+CHOICE: Take your leave
+Next: mahon_hub
+
+
+EVENT: crouch_advance
+Title: An Advance
+Place: agent
+
+Mr Crouch is perfectly willing. Sea officers' pay is a slow thing, as he says, and a commander on a foreign station must live meanwhile. He will advance against your pay at five per cent, the most the law allows, and charge it to your account.
+
+[if agent_crouch] Since you have named him your agent, he will advance a little more freely.
+
+CHOICE: Take thirty pounds
+Effects: set advance_crouch; money +£30 "Advanced by Mr Crouch against pay"; debt +£31 10s "Mr Crouch, thirty pounds advanced, with a year's interest"
+Log: Drew £30 on Mr Crouch.
+Next: agent_hub
+
+CHOICE: Take sixty pounds
+Needs: agent_crouch
+Why not: He will advance so much only to an officer who has named him his agent.
+Effects: set advance_crouch; money +£60 "Advanced by Mr Crouch against pay"; debt +£63 "Mr Crouch, sixty pounds advanced, with a year's interest"
+Log: Drew £60 on Mr Crouch.
+Next: agent_hub
+
+CHOICE: Thank him, and take nothing
+Next: agent_hub
+</script>
+
+<script type="text/plain" class="content" data-name="Orders">
+# ------------------------------------------------------------
+# Written orders, as the player reads them under Orders.
+# A line starting with ">" is set to the right, like a signature.
+# ------------------------------------------------------------
+
+ORDERS: cruise_catalan
+Heading: A cruise on the coast of Catalonia
+
+By Sir Robert Lessingham, Knight of the Most Honourable Order of the Bath, Vice-Admiral of the White, and Commander-in-Chief of His Majesty's Ships and Vessels employed and to be employed in the Mediterranean.
+
+You are hereby required and directed, so soon as His Majesty's Sloop under your command shall be in all respects ready, to put to sea and proceed off the coast of Catalonia, where you are to cruise between Cape San Sebastián and Cape Salou for the annoyance of the enemy and the protection of the trade of His Majesty's subjects, taking or destroying all such ships and vessels belonging to the enemy as you may fall in with.
+
+You are to continue upon this service for the space of six weeks, unless want of provisions or other unavoidable circumstance shall oblige you to return sooner, and then repair to Port Mahon for further orders.
+
+You are to be particularly careful not to molest the ships and vessels of powers in amity with His Majesty, unless they shall be found carrying the property of the enemy or contraband of war.
+
+> Given under my hand at Port Mahon, {issued}.
+> R. Lessingham
+
+To {name} Esquire, Commander of His Majesty's Sloop *{ship}*.
+
+> By command of the Vice-Admiral,
+> Thos. Pardoe
+
+
+ORDERS: convoy_toulon
+Heading: Victuallers to the squadron off Toulon
+
+By Sir Robert Lessingham, Knight of the Most Honourable Order of the Bath, Vice-Admiral of the White, and Commander-in-Chief of His Majesty's Ships and Vessels employed and to be employed in the Mediterranean.
+
+You are hereby required and directed to take under your protection the victuallers named in the margin, and so soon as they and His Majesty's Sloop under your command shall be in all respects ready, to proceed with them with all convenient dispatch to the squadron employed off Toulon, and there deliver them to the senior officer, together with the letter herewith enclosed.
+
+You are to use every means in your power to keep the said victuallers together and protect them from the enemy, and on no account to part company with them, nor to go in chase out of sight of them, upon any pretence whatever.
+
+Having delivered them, you are to return without loss of time to Port Mahon for further orders.
+
+In the margin: the *Ann and Mary*, the *Providence*, and the *Three Brothers*, victuallers.
+
+> Given under my hand at Port Mahon, {issued}.
+> R. Lessingham
+
+To {name} Esquire, Commander of His Majesty's Sloop *{ship}*.
+
+> By command of the Vice-Admiral,
+> Thos. Pardoe
+
+
+ORDERS: despatches_hebe
+Heading: Despatches for the Hebe off Barcelona
+
+By Sir Robert Lessingham, Knight of the Most Honourable Order of the Bath, Vice-Admiral of the White, and Commander-in-Chief of His Majesty's Ships and Vessels employed and to be employed in the Mediterranean.
+
+You are hereby required and directed to receive from my Secretary the packet herewith delivered, addressed to Captain Wyatt of His Majesty's Ship *Hebe*, and to proceed with all possible dispatch off Barcelona, where you will find the *Hebe* cruising, and deliver the said packet into Captain Wyatt's own hand, taking his receipt for the same.
+
+Having so done, you are at liberty to cruise for the space of fourteen days between Barcelona and Cape Salou for the annoyance of the enemy, and then to return to Port Mahon for further orders.
+
+Should you at any time be in danger of capture, you are to sink the packet, which is weighted for that purpose.
+
+> Given under my hand at Port Mahon, {issued}.
+> R. Lessingham
+
+To {name} Esquire, Commander of His Majesty's Sloop *{ship}*.
+
+> By command of the Vice-Admiral,
+> Thos. Pardoe
+</script>
+
+<script type="text/plain" class="content" data-name="Glossary">
+GLOSSARY
+Master and Commander | commander | commanders: The rank between lieutenant and post-captain, carrying command of a sloop. "Master and Commander" was the older title; the Admiralty shortened it to "Commander" in 1794, though the long form lingered in speech. Aboard his own ship a commander is called "Captain" by courtesy.
+post-captain | made post: A captain on the Navy List, commanding a rated ship of twenty guns or more. Once posted, an officer rose by seniority alone towards an admiral's flag.
+sloop: In Navy usage, any vessel commanded by a commander rather than a post-captain, usually of ten to eighteen guns, whether ship- or brig-rigged.
+brig-sloop | brig: A sloop rigged as a brig: two masts, both square-rigged. Handier and cheaper than a ship-rigged sloop, and the commonest small cruiser of the war.
+Commander-in-Chief | Admiral: The admiral commanding all the King's ships on a station, here the Mediterranean. He issues orders, fills vacancies, and takes a share of every prize taken under his command.
+Vice-Admiral | Vice-Admiral of the White: The flag rank between rear-admiral and admiral. Each flag rank was divided by the colour of its squadron (Red, White and Blue), and an officer rose through them by seniority alone.
+Order of the Bath | Most Honourable Order of the Bath: An order of knighthood given, among others, to admirals for distinguished service. It entitled the holder to "Sir".
+flag captain: The captain of an admiral's flagship, and very often his right hand.
+secretary: An admiral's secretary was a civilian who ran his correspondence and orders. A great deal of patronage passed through his hands.
+commission: The written appointment of an officer to a particular ship. Read aloud to the ship's company, it gives him his authority over them.
+reading in | read yourself in: Taking command by reading one's commission aloud to the assembled ship's company. Until he has done so, a new captain has no authority aboard.
+orders | sealed: Written instructions from a superior. Every orders began "You are hereby required and directed", and an officer who departed from them answered for it.
+all convenient dispatch | all possible dispatch: Formulas in orders. "Convenient" allowed a little latitude; "possible" allowed none.
+in all respects ready: The phrase in orders meaning stored, watered, manned and fit for sea.
+annoyance of the enemy: The phrase in cruising orders for attacking his trade and shipping.
+in amity: At peace with. Neutral ships could be stopped and searched, but taking one without cause cost the captor heavy damages.
+contraband of war: Goods a neutral may not carry to a belligerent, such as arms, powder, and naval stores. Their discovery made a neutral ship lawful prize.
+coasting trade: Small vessels carrying goods from port to port along a coast. Spain, with bad roads, depended on it.
+victualler | victuallers: A merchant ship hired to carry provisions out to the fleet.
+squadron off Toulon: The British ships keeping watch on the French fleet in Toulon. Victuallers and despatches were forever being sent to it.
+packet: A bundle of official letters. Despatches were weighted with lead, so that they could be sunk if capture threatened.
+eighth: Under the prize rules, one eighth of every prize went to the flag officer under whose orders the captor sailed, whether he had been within a hundred miles of it or not.
+storeship: A vessel carrying naval stores (cordage, canvas, spars, provisions) out to a foreign station.
+bumboat: A shore boat that sells fruit, drink, tobacco and small wares to ships in harbour.
+ruined fort: Fort St Philip at the mouth of Mahon harbour, demolished by the Spanish after they retook Minorca in 1782. The British found it in ruins when they captured the island again in 1798.
+Mahon | Port Mahon: The capital and harbour of Minorca, one of the finest anchorages in the Mediterranean, and in British hands from 1798.
+Minorcan: A native of Minorca. The islanders speak their own form of Catalan, and many remembered an earlier British occupation that ended in 1782.
+island tongue: Minorcan, a form of Catalan. "Allà" means "there".
+Governor | His Excellency: The general commanding the garrison of Minorca, who also governed the island. A distant and exalted figure to a sea officer.
+garrison | regiment | redcoats: The British soldiers holding Minorca. The army and the navy dined together, gambled together, and did not much like one another.
+card | leave your card: A newly arrived officer left his visiting card at the houses of people of consequence. An invitation, or nothing, followed.
+whist | rubber: The favourite card game of officers of both services, played by four in two partnerships. A rubber is the best of three games.
+half-crown points | half-crown: A half-crown was two shillings and sixpence. At half-crown points a bad evening could cost a commander a week's pay.
+quadrilles: A dance for four couples in a square, newly fashionable.
+lace: Gold lace on a uniform coat. The amount of it showed rank, and to some degree vanity.
+epaulette: The gold shoulder ornament ordered for sea officers in 1795. A commander wore one on the left shoulder; a post-captain one on the right until he had three years' seniority, then two.
+guinea | guineas: A gold coin worth twenty-one shillings.
+prize agent | agent for prizes | navy agent | agent: A man of business who drew a sea officer's pay and saw his prizes through the courts and the sale, for a commission. Many advanced money against pay or prizes to come. Some failed, and took their clients' money with them.
+letter of attorney: The paper by which an officer gave his agent power to act and receive money for him.
+counting-house: A merchant's office, where his clerks kept his books.
+five per cent | per cent: Five per cent a year was the most interest the usury laws allowed a lender to charge.
+exchange on London: The rate at which bills of exchange drawn on London could be bought or sold abroad; the merchant's barometer.
+Master Attendant: The officer of a dockyard in charge of the ships in harbour, their moorings, and the masting and rigging of them.
+Navy Board: The board that built, repaired and stored the King's ships and ran the dockyards. It sent out stores, generally the wrong ones.
+requisitions: Written demands for stores, made out in the proper form and countersigned. Without one, nothing could be issued.
+mast pond: A pond where mast timber was kept under water so that it would not dry and split.
+sheer hulk: An old hull fitted with sheers, a tall lifting frame, for stepping and taking out ships' masts.
+caulkers | seams: Caulkers drive oakum into the seams between a ship's planks and pay them over with hot pitch to keep the water out.
+Ordnance | Storekeeper of the Ordnance | Ordnance wharf | gun wharf: The Board of Ordnance, separate from the Navy, supplied the fleet's guns, powder and shot from its own gun wharfs, under its own storekeepers. A ship's guns could not be changed without an order.
+carronade | carronades: A short, light gun of large bore, first cast by the Carron Company in Scotland. Devastating at close range, poor at long, and worked by fewer men than a long gun. Mounted on a slide rather than a wheeled carriage.
+six-pounder | six-pounders | long guns: A long gun firing a six-pound ball: accurate, and good at long range, but light in weight of metal.
+weight of metal: The total weight of shot a ship can fire in one broadside.
+slides: The mounting of a carronade, which recoils along a slide pivoted at the ship's side rather than on wheels.
+sway: To hoist something heavy, such as a gun or a mast.
+lighter: A flat-bottomed barge for carrying goods and guns between ship and shore.
+privateer: A privately owned ship of war, licensed by her government to take enemy merchant ships for profit.
+surveyors: Dockyard officers who examined a captured ship to decide whether she was worth buying into the service.
+over-sparred: Carrying masts and yards too large for her hull: fast, but crank and wet.
+Navy List | followers: A senior officer's followers were the junior officers and men he took with him from ship to ship, and pushed for promotion.
+most obedient humble servant: The ordinary close of a formal letter.
+sanding: Sprinkling fine sand over wet ink to dry it.
+claret: Red wine of Bordeaux. In wartime it came by prize, or by smugglers, or with a story attached.
+Manxman: A native of the Isle of Man.
+capstan: The great upright drum, turned by men pushing on bars, that heaves in the anchor cable.
+cable: The great rope by which a ship rides to her anchor.
+unmoor | moorings: A ship moored in harbour lay to two anchors or to a fixed mooring; unmooring was the first business of getting under way.
+falls off | gathers way: A ship falls off when her head swings away from the wind, and gathers way as she begins to move through the water.
+topsails: The second sails up each mast and the workhorse of the square rig; a ship under topsails alone is under easy control.
+hospital: The naval hospital at Mahon, built by the British on its own island in the harbour in the early years of the century before.
+polacre: A Mediterranean merchant vessel whose masts are single poles without tops. Common out of Naples, Genoa and the Levant.
+prize: An enemy vessel captured at sea. Once condemned by a prize court, she and her cargo are sold and the proceeds shared among the captors.
+yards: The spars across the masts from which the square sails hang. In harbour a smart ship keeps them "square", at exact right angles to the keel.
+Boat ahoy: The hail to an approaching boat. The answer told the ship who was in it: an officer's boat answered "Aye aye", a captain's boat answered with the name of his ship.
+side-boys: Boys or seamen stationed at the gangway to attend an officer coming aboard.
+boatswain's call: The boatswain's silver pipe, used to pass orders and to pipe officers over the side.
+gangway: The opening in the ship's side where people come aboard.
+battens: Wooden steps fixed up the ship's side.
+waist: The middle part of the upper deck, between the quarterdeck and the forecastle.
+launch: The largest of a ship's boats, used for heavy work such as carrying out anchors and fetching water.
+midshipman: A young gentleman serving as an officer in training. After six years at sea and an examination he might be made lieutenant.
+gunroom: In a sloop, the mess of the lieutenant, master, surgeon and purser.
+cable-tier: The place deep in the ship where the great anchor cables are coiled down.
+seventy-four: A ship of the line of seventy-four guns, the backbone of the battle fleet.
+quarterdeck: The raised deck aft, from which the ship is commanded. The captain's ground.
+break of the quarterdeck: The forward edge of the quarterdeck, where it drops to the waist.
+breechings: The heavy ropes that check a gun's recoil.
+galley: The ship's kitchen.
+berth-deck: The deck below, where the men sling their hammocks.
+complement: The number of men a ship is established to carry.
+the people | her people: The ship's company below the officers.
+captains of the tops: Leading seamen, each in charge of the men working one mast's rigging aloft.
+gunner's mates: Petty officers under the gunner, in charge of the guns and their crews.
+prime seamen: Experienced sailors who can hand, reef and steer.
+receiving ship: A hulk where pressed men and volunteers were held until drafted to ships.
+press | pressed: The impressment service, which took seafaring men for the Navy by force.
+all hands: The whole ship's company.
+turned up: Called on deck by the boatswain and his mates.
+fleet action: A battle between fleets of ships of the line.
+marines: Soldiers carried aboard for sentry duty, musketry and boarding. A sloop had perhaps fifteen, under a sergeant.
+great cabin: The captain's quarters at the stern.
+swinging cot: A wooden-framed canvas bed slung from the deck beams.
+quarter-gallery: A small enclosed gallery projecting from the stern quarter, holding the captain's privy.
+at quarters: At action stations, when every man goes to his place for battle.
+steward: The captain's servant, who keeps his table, wine and private stores.
+cabin stores: A captain bought his own table: wine, poultry, livestock and delicacies, at his own expense. Entertaining was expected of him, and it ruined many.
+cross them | crossed: Writing a second set of lines across the first, at right angles, to save paper and postage.
+lieutenant of marines: A marine officer. A sloop rarely carried one.
+vouchers: The receipts and certificates by which a purser accounted for every issue of stores.
+officer of the watch: The officer in charge of the deck during a watch.
+counter: The overhanging part of the stern, above the waterline.
+topmast: The second section of a mast, above the lower mast. A spare was carried in case one was carried away.
+purser: The warrant officer responsible for the ship's provisions and slops, who kept the accounts of them and was widely believed to profit by them.
+forenoon: The forenoon watch, eight o'clock until noon.
+two bells | four bells | eight bells: Time aboard is struck on the ship's bell every half hour, one stroke more each time, until eight bells ends the four-hour watch and the count begins again.
+first watch: The watch from eight in the evening until midnight.
+watch: One of the divisions of the ship's day, mostly of four hours: the first watch (8 p.m. to midnight), middle, morning, forenoon, afternoon, and the two short dog watches between 4 and 8 p.m.
+fortnight: Two weeks.
+</script>
+
+<!-- ============================================================
+     ENGINE. Edmund never needs to edit below this line.
+     ============================================================ -->
+<script>
+(function(){
+'use strict';
+
+const BUILD = 'Build 2: Mahon and orders';
+const SAVE_KEY = 'sloop.autosave.v1';
+const PREF_KEY = 'sloop.prefs.v1';
+const GAME_ID = 'sloop-of-war';
+
+/* ---------- small helpers ---------- */
+const $ = (sel, root) => (root || document).querySelector(sel);
+function lsGet(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+function lsSet(k, v){ try { localStorage.setItem(k, v); return true; } catch(e){ return false; } }
+function lsDel(k){ try { localStorage.removeItem(k); } catch(e){} }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function short(s){ s = String(s); return s.length > 48 ? s.slice(0, 46) + '…' : s; }
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+
+/* ---------- seeded random numbers (sfc32, seeded by cyrb128) ---------- */
+function cyrb128(str){
+  let h1 = 1779033703, h2 = 3144134277, h3 = 1013904242, h4 = 2773480762;
+  for (let i = 0, k; i < str.length; i++){
+    k = str.charCodeAt(i);
+    h1 = h2 ^ Math.imul(h1 ^ k, 597399067);
+    h2 = h3 ^ Math.imul(h2 ^ k, 2869860233);
+    h3 = h4 ^ Math.imul(h3 ^ k, 951274213);
+    h4 = h1 ^ Math.imul(h4 ^ k, 2716044179);
+  }
+  h1 = Math.imul(h3 ^ (h1 >>> 18), 597399067);
+  h2 = Math.imul(h4 ^ (h2 >>> 22), 2869860233);
+  h3 = Math.imul(h1 ^ (h3 >>> 17), 951274213);
+  h4 = Math.imul(h2 ^ (h4 >>> 19), 2716044179);
+  h1 ^= (h2 ^ h3 ^ h4); h2 ^= h1; h3 ^= h1; h4 ^= h1;
+  return [h1 >>> 0, h2 >>> 0, h3 >>> 0, h4 >>> 0];
+}
+function rand(st){
+  let a = st[0] >>> 0, b = st[1] >>> 0, c = st[2] >>> 0, d = st[3] >>> 0;
+  let t = (a + b) | 0;
+  a = b ^ (b >>> 9);
+  b = (c + (c << 3)) | 0;
+  c = (c << 21) | (c >>> 11);
+  d = (d + 1) | 0;
+  t = (t + d) | 0;
+  c = (c + t) | 0;
+  st[0] = a >>> 0; st[1] = b >>> 0; st[2] = c >>> 0; st[3] = d >>> 0;
+  return (t >>> 0) / 4294967296;
+}
+function seedRng(seed){ const st = cyrb128(String(seed).trim().toUpperCase()); for (let i = 0; i < 15; i++) rand(st); return st; }
+function makeSeed(){
+  const L = 'BCDFGHJKLMNPRSTVWXZ', V = 'AEIOU';
+  const pick = s => s[Math.floor(Math.random() * s.length)];
+  return pick(L) + pick(V) + pick(L) + '-' + String(Math.floor(1000 + Math.random() * 9000));
+}
+
+/* ---------- money in pounds, shillings and pence (stored as pence) ---------- */
+let MONEY = new Set(['money']);
+function parseMoney(s){
+  const str = String(s).toLowerCase().replace(/£/g, ' ').trim();
+  if (!str) return null;
+  const re = /(\d+(?:\.\d+)?)\s*(guineas|guinea|gns|gn|s|d)?(?![a-z])/g;
+  let total = 0, last = 0, m, any = false;
+  while ((m = re.exec(str))){
+    if (str.slice(last, m.index).trim() !== '') return null;
+    last = re.lastIndex; any = true;
+    const n = parseFloat(m[1]), u = m[2] || '';
+    if (u.charAt(0) === 'g') total += n * 252;
+    else if (u === 's') total += n * 12;
+    else if (u === 'd') total += n;
+    else total += n * 240;
+  }
+  if (!any || str.slice(last).trim() !== '') return null;
+  return Math.round(total);
+}
+function fmtMoney(p){
+  const neg = p < 0; p = Math.abs(Math.round(p));
+  const L = Math.floor(p / 240), s = Math.floor((p % 240) / 12), d = p % 12;
+  const parts = [];
+  if (L || (!s && !d)) parts.push('£' + L);
+  if (s) parts.push(s + 's');
+  if (d) parts.push(d + 'd');
+  return (neg ? '−' : '') + parts.join(' ');
+}
+
+/* ---------- time: minutes since midnight of the first day ---------- */
+const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const BELLS = ['eight','one','two','three','four','five','six','seven'];
+function startEpoch(){
+  const d = (content.settings['start date'] || '1800-03-03').split('-').map(Number);
+  return Date.UTC(d[0], (d[1] || 1) - 1, d[2] || 1);
+}
+function startMinutes(){
+  const t = (content.settings['start time'] || '06:00').split(':').map(Number);
+  return (t[0] || 0) * 60 + (t[1] || 0);
+}
+function clockOf(min){
+  const dt = new Date(startEpoch() + min * 60000);
+  const h = dt.getUTCHours(), mi = dt.getUTCMinutes();
+  return { dt, h, mi, day: DAYS[dt.getUTCDay()], date: dt.getUTCDate(), month: MONTHS[dt.getUTCMonth()], year: dt.getUTCFullYear() };
+}
+function minuteOfDay(min){ const c = clockOf(min); return c.h * 60 + c.mi; }
+function fmtDate(min, shortForm){
+  const c = clockOf(min);
+  return shortForm ? `${c.day.slice(0,3)} ${c.date} ${c.month.slice(0,3)} ${c.year}` : `${c.day} ${c.date} ${c.month} ${c.year}`;
+}
+function watchOf(min){
+  const hm = minuteOfDay(min);
+  let name, startAt;
+  if (hm < 240){ name = 'Middle watch'; startAt = 0; }
+  else if (hm < 480){ name = 'Morning watch'; startAt = 240; }
+  else if (hm < 720){ name = 'Forenoon watch'; startAt = 480; }
+  else if (hm < 960){ name = 'Afternoon watch'; startAt = 720; }
+  else if (hm < 1080){ name = 'First dog watch'; startAt = 960; }
+  else if (hm < 1200){ name = 'Last dog watch'; startAt = 1080; }
+  else { name = 'First watch'; startAt = 1200; }
+  const n = Math.floor((hm - startAt) / 30);
+  let bell;
+  if (startAt === 1080) bell = n === 0 ? 'four bells' : (BELLS[n] + (n === 1 ? ' bell' : ' bells'));
+  else bell = n === 0 ? 'eight bells' : (BELLS[n] + (n === 1 ? ' bell' : ' bells'));
+  return { name, bell };
+}
+function fmtHour(min){
+  const c = clockOf(min); const h12 = ((c.h + 11) % 12) + 1;
+  const ap = c.h < 12 ? 'a.m.' : 'p.m.';
+  if (c.h === 12 && c.mi === 0) return 'noon';
+  if (c.h === 0 && c.mi === 0) return 'midnight';
+  return `${h12}${c.mi ? '.' + String(c.mi).padStart(2,'0') : ''} ${ap}`;
+}
+function fmtSpan(mins){
+  if (mins >= 1440){ const d = Math.floor(mins / 1440); return d + (d === 1 ? ' day' : ' days'); }
+  const h = Math.floor(mins / 60); return h + (h === 1 ? ' hour' : ' hours');
+}
+
+/* ============================================================
+   CONTENT PARSER
+   ============================================================ */
+const EVENT_KEYS = new Set(['title','place','requires','weight','effects','effect','log','tags']);
+const CHOICE_KEYS = new Set(['requires','needs','why not','effects','effect','log','text','next','greyed']);
+const blankBranch = () => ({ effects: [], text: '', next: null });
+
+function splitOutsideQuotes(str, sepRe){
+  const out = []; let cur = '', q = false;
+  for (const ch of str){
+    if (ch === '"') { q = !q; cur += ch; continue; }
+    if (!q && sepRe.test(ch)) { out.push(cur); cur = ''; continue; }
+    cur += ch;
+  }
+  out.push(cur);
+  return out.map(s => s.trim()).filter(Boolean);
+}
+
+function parseValue(name, raw){
+  if (MONEY.has(name)) return parseMoney(raw);
+  const n = parseFloat(String(raw).replace(/^\+/, ''));
+  return isNaN(n) ? null : n;
+}
+function unitMins(n, u){
+  u = u.toLowerCase();
+  return u.startsWith('minute') ? n : u.startsWith('hour') ? n * 60 : u.startsWith('watch') ? n * 240 : n * 1440;
+}
+
+function parseConds(str, where, prob){
+  const out = [];
+  for (const part0 of splitOutsideQuotes(str.replace(/\band\b/gi, ','), /,/)){
+    const part = part0.trim(); let m;
+    if ((m = part.match(/^(?:not|no)\s+([a-z0-9_]+)$/i))) out.push({ type: 'flag', name: m[1].toLowerCase(), neg: true });
+    else if ((m = part.match(/^place\s+([a-z0-9_]+)$/i))) out.push({ type: 'place', name: m[1].toLowerCase() });
+    else if ((m = part.match(/^(before|after)\s+(\d{1,2})[:.](\d{2})$/i))) out.push({ type: 'tod', op: m[1].toLowerCase(), at: (+m[2]) * 60 + (+m[3]) });
+    else if ((m = part.match(/^([a-z0-9_]+)\s+(\d+(?:\.\d+)?)\s*(minutes?|hours?|watch(?:es)?|days?)\s+or\s+(more|less)$/i)))
+      out.push({ type: 'timer', name: m[1].toLowerCase(), mins: unitMins(+m[2], m[3]), op: m[4].toLowerCase() === 'more' ? '>=' : '<=' });
+    else if ((m = part.match(/^([a-z0-9_]+)\s+(.+?)\s+or\s+(more|less)$/i))){
+      const name = m[1].toLowerCase(), v = parseValue(name, m[2]);
+      if (v == null) prob('error', where, `I could not read the amount "${m[2]}" in "${part}".`);
+      else out.push({ type: 'cmp', name, op: m[3].toLowerCase() === 'more' ? '>=' : '<=', value: v });
+    }
+    else if ((m = part.match(/^([a-z0-9_]+)\s*(>=|<=|==|=|>|<)\s*(.+)$/i))){
+      const name = m[1].toLowerCase(), v = parseValue(name, m[3]);
+      if (v == null) prob('error', where, `I could not read the amount "${m[3]}" in "${part}".`);
+      else out.push({ type: 'cmp', name, op: m[2] === '==' ? '=' : m[2], value: v });
+    }
+    else if ((m = part.match(/^([a-z0-9_]+)$/i))) out.push({ type: 'flag', name: m[1].toLowerCase(), neg: false });
+    else prob('error', where, `I could not understand the requirement "${part}".`);
+  }
+  return out;
+}
+
+/* "+20 if new_coat", "-10 if not friend_dawe", "+10 per standing" */
+function parseMods(str, where, prob){
+  const mods = [];
+  for (const part of String(str).split(',').map(s => s.trim()).filter(Boolean)){
+    let m;
+    if ((m = part.match(/^([+-])\s*(\d+(?:\.\d+)?)\s+if\s+(.+)$/i))) mods.push({ n: (m[1] === '-' ? -1 : 1) * +m[2], conds: parseConds(m[3], where, prob) });
+    else if ((m = part.match(/^([+-])\s*(\d+(?:\.\d+)?)\s+per\s+([a-z0-9_]+)$/i))) mods.push({ n: (m[1] === '-' ? -1 : 1) * +m[2], per: m[3].toLowerCase() });
+    else prob('error', where, `I could not understand "${part}". Write it like "+20 if new_coat" or "+10 per standing".`);
+  }
+  return mods;
+}
+
+function parseEffects(str, where, prob){
+  const out = [];
+  for (const part of splitOutsideQuotes(str, /;/)){
+    let m;
+    if ((m = part.match(/^log\s+"?(.*?)"?$/i))) out.push({ op: 'log', text: m[1] });
+    else if ((m = part.match(/^set\s+([a-z0-9_]+)$/i))) out.push({ op: 'flag', name: m[1].toLowerCase(), on: true });
+    else if ((m = part.match(/^clear\s+([a-z0-9_]+)$/i))) out.push({ op: 'flag', name: m[1].toLowerCase(), on: false });
+    else if ((m = part.match(/^start\s+([a-z0-9_]+)$/i))) out.push({ op: 'start', name: m[1].toLowerCase() });
+    else if ((m = part.match(/^stop\s+([a-z0-9_]+)$/i))) out.push({ op: 'stop', name: m[1].toLowerCase() });
+    else if ((m = part.match(/^orders\s+([a-z0-9_]+)$/i))) out.push({ op: 'orders', name: m[1].toLowerCase(), where });
+    else if ((m = part.match(/^pass\s+(\d+)\s*(minutes?|hours?|watch(?:es)?|days?)$/i))) out.push({ op: 'pass', mins: unitMins(+m[1], m[2]) });
+    else if ((m = part.match(/^until\s+(\d{1,2})[:.](\d{2})$/i))) out.push({ op: 'until', at: (+m[1]) * 60 + (+m[2]) });
+    else if ((m = part.match(/^place\s+([a-z0-9_]+)$/i))) out.push({ op: 'place', name: m[1].toLowerCase() });
+    else if ((m = part.match(/^([a-z0-9_]+)\s*([+-])\s*(.+?)(?:\s+"([^"]*)")?$/i))){
+      const name = m[1].toLowerCase(), v = parseValue(name, m[3]);
+      if (v == null) prob('error', where, `I could not read the amount in "${part}".`);
+      else out.push({ op: 'add', name, value: m[2] === '-' ? -v : v, label: m[4] || '' });
+    }
+    else if ((m = part.match(/^([a-z0-9_]+)\s*=\s*(.+?)(?:\s+"([^"]*)")?$/i))){
+      const name = m[1].toLowerCase(), v = parseValue(name, m[2]);
+      if (v == null) prob('error', where, `I could not read the amount in "${part}".`);
+      else out.push({ op: 'setvar', name, value: v, label: m[3] || '' });
+    }
+    else prob('error', where, `I could not understand the effect "${part}".`);
+  }
+  return out;
+}
+
+function parseNext(v, where, prob){
+  const s = v.trim(); let m;
+  if (/^end$/i.test(s)) return { type: 'end' };
+  if ((m = s.match(/^any\s+([a-z0-9_]+)$/i))) return { type: 'any', tag: m[1].toLowerCase() };
+  if (/^[a-z0-9_]+$/i.test(s)) return { type: 'go', id: s };
+  prob('error', where, `"Next: ${s}" should name one event, or say "any <place>" or "end".`);
+  return null;
+}
+
+function parseContent(blocks){
+  const P = { settings: {}, events: {}, order: [], orders: {}, glossary: [], problems: [], stats: { words: 0 } };
+  const prob = (sev, where, msg) => P.problems.push({ sev, where, msg });
+
+  /* money values must be known before anything is parsed */
+  MONEY = new Set(['money']);
+  for (const blk of blocks){
+    const m = blk.text.match(/^\s*money values\s*:\s*(.+)$/im);
+    if (m) m[1].split(',').map(s => s.trim().toLowerCase()).filter(Boolean).forEach(n => MONEY.add(n));
+  }
+
+  for (const blk of blocks){
+    const lines = blk.text.replace(/\r/g, '').split('\n');
+    let section = null, ev = null, ch = null, target = null, lastKey = null, ord = null;
+    let para = [], paraLine = 0;
+    const where = i => `${blk.name}, line ${i + 1}`;
+    const flushPara = () => {
+      if (!para.length) return;
+      if (section === 'orders' && ord){ ord.paras.push({ text: para.join(' '), sig: false }); }
+      else if (ev){
+        let text = para.join(' '), cond = null, m;
+        if ((m = text.match(/^\[if\s+([^\]]+)\]\s*(.*)$/i))){ cond = parseConds(m[1], `${blk.name}, line ${paraLine}`, prob); text = m[2]; }
+        ev.paras.push({ text, cond, line: paraLine });
+      }
+      para = [];
+    };
+
+    lines.forEach((raw, i) => {
+      const t = raw.trim(); let m;
+      if (t.startsWith('#')) return;
+      if (t === ''){ flushPara(); if (lastKey !== 'gloss') lastKey = null; return; }
+
+      if (/^settings$/i.test(t)){ flushPara(); section = 'settings'; ev = ch = ord = null; return; }
+      if (/^glossary$/i.test(t)){ flushPara(); section = 'glossary'; ev = ch = ord = null; lastKey = null; return; }
+      if ((m = t.match(/^ORDERS\s*:\s*(.*)$/))){
+        flushPara(); section = 'orders'; ev = ch = null;
+        const id = m[1].trim().toLowerCase();
+        if (P.orders[id]) prob('error', where(i), `There are two sets of orders called "${id}".`);
+        ord = P.orders[id] = { id, heading: '', paras: [], where: where(i) };
+        return;
+      }
+      if ((m = t.match(/^event\s*:\s*(.*)$/i))){
+        flushPara(); section = 'event'; ch = null; ord = null; target = null; lastKey = null;
+        const id = m[1].trim();
+        if (!/^[a-z0-9_]+$/i.test(id)) prob('error', where(i), `The event name "${id}" should use only letters, numbers and underscores.`);
+        if (P.events[id]) prob('error', where(i), `There are two events called "${id}".`);
+        ev = { id, title: '', place: null, requires: [], weight: 1, weightMods: [], effects: [], tags: [], once: false, start: false, ending: false, hub: false, urgent: false, paras: [], choices: [], where: where(i) };
+        P.events[id] = ev; P.order.push(id); return;
+      }
+
+      if (section === 'settings'){
+        if ((m = t.match(/^([^:]+):\s*(.*)$/))) P.settings[m[1].trim().toLowerCase()] = m[2].trim();
+        else prob('warn', where(i), 'Settings lines should look like "name: value".');
+        return;
+      }
+      if (section === 'glossary'){
+        if ((m = t.match(/^([^:]+):\s*(.+)$/))){
+          const terms = m[1].split('|').map(s => s.trim()).filter(Boolean);
+          P.glossary.push({ terms, def: m[2].trim(), where: where(i) }); lastKey = 'gloss';
+        } else prob('warn', where(i), 'Glossary lines should look like "term | other form: definition".');
+        return;
+      }
+      if (section === 'orders'){
+        if ((m = t.match(/^heading\s*:\s*(.*)$/i))){ ord.heading = m[1].trim(); return; }
+        if (t.startsWith('>')){ flushPara(); ord.paras.push({ text: t.replace(/^>\s*/, ''), sig: true }); return; }
+        if (!para.length) paraLine = i + 1;
+        para.push(t); return;
+      }
+      if (section !== 'event'){ prob('warn', where(i), 'This line is not inside any EVENT, so it is ignored.'); return; }
+
+      if ((m = t.match(/^choice\s*:\s*(.+)$/i))){
+        flushPara();
+        ch = { text: m[1].trim(), requires: [], needs: [], why: '', chance: null, chanceMods: [], base: blankBranch(), success: blankBranch(), failure: blankBranch(), where: where(i) };
+        ev.choices.push(ch); target = ch.base; lastKey = null; return;
+      }
+
+      if (ch){
+        if ((m = t.match(/^chance\s+(\d+)\s*%?(.*)$/i))){
+          const rest = m[2].trim().replace(/:$/, '').trim().replace(/^,/, '').trim();
+          ch.chance = +m[1]; ch.chanceMods = rest ? parseMods(rest, where(i), prob) : [];
+          target = ch.success; lastKey = null;
+          if (+m[1] > 100) prob('warn', where(i), 'A chance above 100 is treated as 100.');
+          return;
+        }
+        if (/^otherwise\s*:?$/i.test(t)){
+          if (ch.chance == null) prob('error', where(i), '"Otherwise" needs a "Chance" line before it.');
+          target = ch.failure; lastKey = null; return;
+        }
+        if (/^greyed$/i.test(t)){ ch.needs.push(...ch.requires); ch.requires = []; return; }
+        if ((m = t.match(/^([a-z]+(?: not)?)\s*:\s*(.*)$/i)) && CHOICE_KEYS.has(m[1].toLowerCase())){
+          const k = m[1].toLowerCase(), v = m[2].trim(); lastKey = null;
+          if (k === 'requires' || k === 'needs'){
+            if (target !== ch.base) prob('error', where(i), `"${m[1]}" must come before any "Chance" line.`);
+            ch[k].push(...parseConds(v, where(i), prob));
+          }
+          else if (k === 'why not' || k === 'greyed') ch.why = v;
+          else if (k === 'effects' || k === 'effect') target.effects.push(...parseEffects(v, where(i), prob));
+          else if (k === 'log') target.effects.push({ op: 'log', text: v.replace(/^"|"$/g, '') });
+          else if (k === 'text'){ target.text += (target.text ? ' ' : '') + v; lastKey = 'text'; }
+          else if (k === 'next'){ target.next = parseNext(v, where(i), prob); target.nextWhere = where(i); }
+          return;
+        }
+        if (lastKey === 'text'){ target.text += ' ' + t; return; }
+        prob('warn', where(i), `I could not tell what this line under the choice "${short(ch.text)}" is meant to be. Result text needs "Text:" in front of it.`);
+        return;
+      }
+
+      if (/^(once|start|ending|hub|urgent)$/i.test(t)){ flushPara(); ev[t.toLowerCase()] = true; return; }
+      if ((m = t.match(/^([a-z]+)\s*:\s*(.*)$/i)) && EVENT_KEYS.has(m[1].toLowerCase())){
+        flushPara();
+        const k = m[1].toLowerCase(), v = m[2].trim();
+        if (k === 'title') ev.title = v;
+        else if (k === 'place') ev.place = v.toLowerCase();
+        else if (k === 'requires') ev.requires.push(...parseConds(v, where(i), prob));
+        else if (k === 'weight'){
+          const parts = v.split(','); ev.weight = parseFloat(parts.shift());
+          if (!(ev.weight >= 0)){ prob('error', where(i), 'Weight should start with a number.'); ev.weight = 1; }
+          ev.weightMods = parseMods(parts.join(','), where(i), prob);
+        }
+        else if (k === 'effects' || k === 'effect') ev.effects.push(...parseEffects(v, where(i), prob));
+        else if (k === 'log') ev.effects.push({ op: 'log', text: v.replace(/^"|"$/g, '') });
+        else if (k === 'tags') ev.tags = v.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+        return;
+      }
+      if (!para.length) paraLine = i + 1;
+      para.push(t);
+    });
+    flushPara();
+  }
+  validate(P, prob);
+  return P;
+}
+
+function allEffectsOf(ev){
+  const out = [...ev.effects];
+  for (const ch of ev.choices) out.push(...ch.base.effects, ...ch.success.effects, ...ch.failure.effects);
+  return out;
+}
+
+function validate(P, prob){
+  const ids = P.order;
+  if (!ids.length){ prob('error', 'Content', 'There are no events at all.'); return; }
+  const starts = ids.filter(id => P.events[id].start);
+  if (starts.length > 1) prob('warn', P.events[starts[1]].where, 'More than one event is marked "Start"; the first one is used.');
+  P.startId = starts[0] || ids[0];
+
+  const incoming = {};
+  const anyTags = new Set();
+  const ordersUsed = new Set();
+  for (const id of ids){
+    const ev = P.events[id];
+    const words = ev.paras.reduce((n, p) => n + p.text.split(/\s+/).length, 0);
+    P.stats.words += words;
+    if (!ev.title) prob('warn', ev.where, `The event "${id}" has no Title.`);
+    if (words > 150 && !ev.hub) prob('warn', ev.where, `"${id}" runs to ${words} words; on a phone the choices may fall below the fold. Aim for 150 or fewer.`);
+    if (!ev.ending && !ev.choices.length) prob('error', ev.where, `"${id}" has no choices and is not marked "Ending", so the player would be stuck.`);
+    if (ev.ending && ev.choices.length) prob('warn', ev.where, `"${id}" is an Ending, so its choices are never shown.`);
+    if (ev.choices.length > 4 && !ev.hub) prob('warn', ev.where, `"${id}" offers ${ev.choices.length} choices; the design calls for two to four.`);
+    if (ev.hub && !ev.place) prob('error', ev.where, `"${id}" is a Hub but has no Place.`);
+    for (const e of allEffectsOf(ev)) if (e.op === 'orders'){
+      ordersUsed.add(e.name);
+      if (!P.orders[e.name]) prob('error', e.where, `"orders ${e.name}" names orders that have not been written.`);
+    }
+    for (const ch of ev.choices){
+      const branches = [ch.base, ch.success, ch.failure];
+      if (ch.chance != null && !ch.failure.text && !ch.failure.next && !ch.failure.effects.length)
+        prob('warn', ch.where, `"${short(ch.text)}" has a Chance but no "Otherwise", so failing the roll does nothing special.`);
+      if (ch.why && !ch.needs.length) prob('warn', ch.where, `"${short(ch.text)}" has a "Why not" but no "Needs", so the reason is never shown.`);
+      let hasNext = false;
+      for (const b of branches){
+        if (!b.next) continue;
+        hasNext = true;
+        if (b.next.type === 'go'){
+          if (!P.events[b.next.id]) prob('error', b.nextWhere, `"Next: ${b.next.id}" names an event that does not exist.`);
+          else incoming[b.next.id] = true;
+        }
+        if (b.next.type === 'any') anyTags.add(b.next.tag);
+      }
+      const goesSomewhere = ch.base.next || (ch.chance != null && ch.success.next && ch.failure.next);
+      if (!goesSomewhere && !hasHub(P, ev.place))
+        prob('error', ch.where, `"${short(ch.text)}" does not say where to go on every outcome, and there is no Hub for this place to fall back on.`);
+    }
+  }
+  for (const id of ids){
+    const ev = P.events[id];
+    if (id === P.startId || incoming[id]) continue;
+    if (ev.hub || ev.tags.some(t => anyTags.has(t))) continue;
+    prob('warn', ev.where, `Nothing leads to "${id}" yet.`);
+  }
+  for (const t of anyTags){
+    if (!ids.some(id => P.events[id].tags.includes(t)) && !hasHub(P, t))
+      prob('error', 'Content', `Something says "Next: any ${t}", but no event has that tag and there is no Hub for that place.`);
+  }
+  for (const id of Object.keys(P.orders)){
+    if (!ordersUsed.has(id)) prob('warn', P.orders[id].where, `The orders "${id}" are never given.`);
+    if (!P.orders[id].heading) prob('warn', P.orders[id].where, `The orders "${id}" have no Heading.`);
+  }
+  const seen = {};
+  for (const g of P.glossary) for (const t of g.terms){
+    const k = normTerm(t);
+    if (seen[k]) prob('warn', g.where, `The glossary term "${t}" appears twice.`);
+    seen[k] = true;
+  }
+}
+function hasHub(P, place){ return !!place && P.order.some(id => P.events[id].hub && P.events[id].place === place); }
+function normTerm(t){ return String(t).toLowerCase().replace(/[’‘]/g, "'").replace(/\s+/g, ' ').trim(); }
+
+/* ============================================================
+   GAME STATE AND RULES
+   ============================================================ */
+let content = null;
+let state = null;
+let downloadsApi = null;
+let prefs = { scale: 1 };
+
+function surname(){ const p = (state && state.name || '').trim().split(/\s+/); return p[p.length - 1] || 'Captain'; }
+function placeName(p){ return content.settings['place.' + p] || (p ? p.charAt(0).toUpperCase() + p.slice(1) : ''); }
+function getVar(name){
+  if (name === 'money') return state.money;
+  if (name === 'day') return Math.floor(state.minutes / 1440) + 1;
+  if (name === 'hour') return clockOf(state.minutes).h;
+  return state.vars[name] || 0;
+}
+function setVar(name, v){ if (name === 'money') state.money = v; else state.vars[name] = v; }
+
+function condMet(c){
+  switch (c.type){
+    case 'flag': return !!state.flags[c.name] !== c.neg;
+    case 'place': return state.place === c.name;
+    case 'tod': { const now = minuteOfDay(state.minutes); return c.op === 'before' ? now < c.at : now >= c.at; }
+    case 'timer': {
+      const s = state.timers[c.name]; if (s == null) return false;
+      const el = state.minutes - s; return c.op === '>=' ? el >= c.mins : el <= c.mins;
+    }
+  }
+  const v = getVar(c.name);
+  switch (c.op){
+    case '>=': return v >= c.value; case '<=': return v <= c.value;
+    case '>': return v > c.value;   case '<': return v < c.value;
+    default: return v === c.value;
+  }
+}
+function condsMet(list){ return list.every(condMet); }
+function modded(base, mods){
+  let v = base;
+  for (const m of mods || []){ if (m.per) v += m.n * getVar(m.per); else if (condsMet(m.conds)) v += m.n; }
+  return v;
+}
+function whyNot(ch){
+  if (ch.why) return subst(ch.why);
+  const c = ch.needs.find(x => !condMet(x));
+  if (c && c.type === 'cmp' && MONEY.has(c.name) && c.op.startsWith('>')) return `You have not ${fmtMoney(c.value)} to spare.`;
+  return 'Not open to you now.';
+}
+
+function ordersHeading(){ const o = state.orders && content.orders[state.orders]; return o ? o.heading : 'none'; }
+function subst(s){
+  return String(s).replace(/\{(\w+)\}/g, (all, k0) => {
+    const k = k0.toLowerCase();
+    switch (k){
+      case 'name': return state.name;
+      case 'surname': return surname();
+      case 'ship': return content.settings.ship || 'the sloop';
+      case 'date': return fmtDate(state.minutes);
+      case 'issued': return fmtDate(state.ordersAt != null ? state.ordersAt : state.minutes);
+      case 'place': return placeName(state.place);
+      case 'orders': return ordersHeading().replace(/^./, c => c.toLowerCase());
+      case 'day': return String(getVar('day'));
+    }
+    if (MONEY.has(k)) return fmtMoney(getVar(k));
+    return (k in state.vars) ? String(state.vars[k]) : all;
+  });
+}
+
+function record(acct, amt, what){
+  if (!amt) return;
+  state.accounts.push({ t: state.minutes, acct, amt, what: what || 'Sundries' });
+}
+function applyEffects(list, label){
+  for (const e of list){
+    switch (e.op){
+      case 'flag': if (e.on) state.flags[e.name] = true; else delete state.flags[e.name]; break;
+      case 'add': setVar(e.name, getVar(e.name) + e.value); if (MONEY.has(e.name)) record(e.name, e.value, subst(e.label || label)); break;
+      case 'setvar': { const d = e.value - getVar(e.name); setVar(e.name, e.value); if (MONEY.has(e.name)) record(e.name, d, subst(e.label || label)); break; }
+      case 'pass': state.minutes += e.mins; break;
+      case 'until': { const now = minuteOfDay(state.minutes); state.minutes += (e.at - now + 1440) % 1440; break; }
+      case 'place': state.place = e.name; break;
+      case 'start': state.timers[e.name] = state.minutes; break;
+      case 'stop': delete state.timers[e.name]; break;
+      case 'orders':
+        for (const k of Object.keys(state.flags)) if (k.startsWith('orders_')) delete state.flags[k];
+        state.orders = e.name; state.ordersAt = state.minutes;
+        state.flags.has_orders = true; state.flags['orders_' + e.name] = true;
+        break;
+      case 'log': state.log.push({ t: state.minutes, text: subst(e.text) }); break;
+    }
+  }
+}
+
+function newGame(name, seed){
+  state = {
+    game: GAME_ID, v: 2, build: BUILD,
+    name: (name || content.settings['default name'] || 'John Hartley').trim(),
+    seed: (seed || makeSeed()).trim().toUpperCase(),
+    rng: null, minutes: 0, money: parseMoney(content.settings['start money'] || '£20') || 0,
+    vars: {}, flags: {}, seen: {}, timers: {}, orders: null, ordersAt: null, place: null, eventId: null,
+    log: [], accounts: [], history: [], pending: null, ended: false, tested: false, startedAt: Date.now()
+  };
+  state.rng = seedRng(state.seed);
+  state.minutes = startMinutes();
+  state.accounts.push({ t: state.minutes, acct: 'money', amt: state.money, what: 'In hand on coming ashore', open: true });
+  enterEvent(content.startId);
+  persist();
+}
+
+function enterEvent(id){
+  const ev = content.events[id];
+  if (!ev){ state.nowhere = id; state.eventId = '__nowhere__'; return; }
+  state.eventId = id;
+  state.seen[id] = (state.seen[id] || 0) + 1;
+  if (ev.place) state.place = ev.place;
+  applyEffects(ev.effects, ev.title ? subst(ev.title).replace(/\*/g, '') : '');
+  if (ev.ending) state.ended = true;
+}
+
+function hubFor(place){
+  return content.order.find(id => content.events[id].hub && content.events[id].place === place) || null;
+}
+function eligible(ev){
+  if (ev.once && state.seen[ev.id]) return false;
+  if (ev.id === state.eventId) return false;
+  return condsMet(ev.requires);
+}
+function resolveNext(next){
+  if (!next) return hubFor(state.place) || '__nowhere__';
+  if (next.type === 'end') return '__end__';
+  if (next.type === 'go') return next.id;
+  let pool = content.order.map(id => content.events[id])
+    .filter(ev => ev.tags.includes(next.tag) && !ev.hub && eligible(ev));
+  const urgent = pool.filter(ev => ev.urgent);
+  if (urgent.length) pool = urgent;
+  const weighted = pool.map(ev => ({ ev, w: Math.max(0, modded(ev.weight, ev.weightMods)) })).filter(x => x.w > 0);
+  const total = weighted.reduce((n, x) => n + x.w, 0);
+  if (!weighted.length || total <= 0) return hubFor(next.tag) || hubFor(state.place) || '__nowhere__';
+  let r = rand(state.rng) * total;
+  for (const x of weighted){ r -= x.w; if (r < 0) return x.ev.id; }
+  return weighted[weighted.length - 1].ev.id;
+}
+function goTo(id){
+  if (id === '__end__'){ state.ended = true; state.eventId = '__end__'; return; }
+  if (id === '__nowhere__'){ state.nowhere = state.eventId; state.eventId = '__nowhere__'; return; }
+  enterEvent(id);
+}
+
+function choiceOpen(ch){ return condsMet(ch.requires) && condsMet(ch.needs); }
+function choose(idx){
+  const ev = content.events[state.eventId];
+  if (!ev || state.pending || state.ended) return false;
+  const ch = ev.choices[idx];
+  if (!ch || !choiceOpen(ch)) return false;
+  state.history.push({ e: ev.id, c: idx });
+  const label = subst(ev.title || '').replace(/\*/g, '');
+  let branch = null;
+  applyEffects(ch.base.effects, label);
+  if (ch.chance != null){
+    const p = Math.max(0, Math.min(100, modded(ch.chance, ch.chanceMods)));
+    branch = (rand(state.rng) * 100 < p) ? ch.success : ch.failure;
+    applyEffects(branch.effects, label);
+  }
+  const text = (branch && branch.text) || ch.base.text;
+  const next = (branch && branch.next) || ch.base.next;
+  const nextId = resolveNext(next);
+  if (text) state.pending = { text: subst(text), next: nextId, choice: ch.text };
+  else goTo(nextId);
+  persist();
+  return true;
+}
+function carryOn(){
+  if (!state.pending) return;
+  const id = state.pending.next;
+  state.pending = null;
+  goTo(id);
+  persist();
+}
+
+/* ---------- saving ---------- */
+function persist(){ if (state) lsSet(SAVE_KEY, JSON.stringify({ game: GAME_ID, build: BUILD, state })); }
+function normalise(s){
+  s.vars = s.vars || {}; s.flags = s.flags || {}; s.seen = s.seen || {}; s.timers = s.timers || {};
+  if (!('orders' in s)) { s.orders = null; s.ordersAt = null; }
+  if (!Array.isArray(s.accounts)) s.accounts = [{ t: s.minutes, acct: 'money', amt: s.money, what: 'Balance brought forward', open: true }];
+  /* a commission saved at the end of build 1 carries on into the second day */
+  if (s.eventId === 'ending_build1'){
+    if (s.seen.secretary_meeting) s.flags.presented = true;
+    if (!('cabin_stores' in s.vars)) s.vars.cabin_stores = 2;
+    s.ended = false; s.pending = null; s.continueAt = 'morning_after';
+  }
+  return s;
+}
+function adopt(s){
+  state = normalise(s);
+  if (state.continueAt){ const id = state.continueAt; delete state.continueAt; enterEvent(id); }
+  persist();
+}
+function loadAutosave(){
+  const raw = lsGet(SAVE_KEY); if (!raw) return null;
+  try { const d = JSON.parse(raw); return d && d.game === GAME_ID && d.state ? d.state : null; } catch(e){ return null; }
+}
+function readSave(text){
+  let d;
+  try { d = JSON.parse(text); } catch(e){ throw new Error('That is not a saved commission: the file could not be read.'); }
+  if (!d || d.game !== GAME_ID || !d.state) throw new Error('That file is not a Sloop of War save.');
+  const s = d.state;
+  if (!Array.isArray(s.rng) || s.rng.length !== 4 || typeof s.minutes !== 'number') throw new Error('That save is damaged and cannot be loaded.');
+  return s;
+}
+function saveFileName(){ return `sloop-of-war-${surname().toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${state.seed.toLowerCase()}.json`; }
+
+/* ============================================================
+   RENDERING
+   ============================================================ */
+let glossIndex = null, glossRegex = null;
+function buildGloss(){
+  glossIndex = {};
+  const alts = [];
+  content.glossary.forEach((g, i) => g.terms.forEach(t => { glossIndex[normTerm(t)] = i; alts.push(t); }));
+  alts.sort((a, b) => b.length - a.length);
+  const pat = alts.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/['’]/g, "['’]").replace(/\s+/g, '\\s+')).join('|');
+  glossRegex = pat ? new RegExp(`(^|[^A-Za-z0-9’'-])(${pat})(?![A-Za-z0-9])`, 'gi') : null;
+}
+function smartQuotes(s){
+  return s.replace(/(^|[\s(\[—–-])'/g, '$1‘').replace(/'/g, '’')
+          .replace(/(^|[\s(\[—–-])"/g, '$1“').replace(/"/g, '”');
+}
+function inline(s){
+  return esc(smartQuotes(subst(s))).replace(/\*([^*]+)\*/g, '<em>$1</em>');
+}
+function glossify(root){
+  if (!glossRegex || !root) return;
+  const used = new Set();
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(n){ return n.parentElement && n.parentElement.closest('.gl, button, .noglossary') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT; }
+  });
+  const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+  for (const node of nodes){
+    const text = node.nodeValue; let m, last = 0; const frag = document.createDocumentFragment(); let changed = false;
+    glossRegex.lastIndex = 0;
+    while ((m = glossRegex.exec(text))){
+      const term = m[2], idx = glossIndex[normTerm(term)];
+      const start = m.index + m[1].length;
+      if (idx == null || used.has(idx)) continue;
+      used.add(idx); changed = true;
+      frag.append(text.slice(last, start));
+      const b = document.createElement('span');
+      b.className = 'gl'; b.dataset.g = idx; b.textContent = term;
+      b.setAttribute('role', 'button'); b.tabIndex = 0;
+      b.setAttribute('aria-label', `${term}: show meaning`);
+      frag.append(b);
+      last = start + term.length;
+    }
+    if (changed){ frag.append(text.slice(last)); node.parentNode.replaceChild(frag, node); }
+  }
+}
+
+function headerHtml(){
+  const errs = content.problems.filter(p => p.sev === 'error').length;
+  return `<div class="top">
+    <div class="ship">His Majesty’s Sloop <em>${esc(content.settings.ship || '')}</em></div>
+    <nav class="nav" aria-label="Ship’s papers">
+      <button type="button" data-act="log">Log</button>
+      ${state && state.orders ? '<button type="button" data-act="orders">Orders</button>' : ''}
+      <button type="button" data-act="accounts">Accounts</button>
+      <button type="button" data-act="glossary">Glossary</button>
+      <button type="button" data-act="papers">Papers${errs ? ` <span class="badge">(${errs})</span>` : ''}</button>
+    </nav></div>`;
+}
+function stripHtml(){
+  const w = watchOf(state.minutes);
+  return `<div class="strip num" role="status">
+    <span>${esc(fmtDate(state.minutes, true))}</span>
+    <span>${esc(w.name)}, ${esc(w.bell)}</span>
+    <span>${esc(placeName(state.place))}</span>
+    <span class="purse" title="Your own purse">Purse ${esc(fmtMoney(state.money))}</span>
+  </div>`;
+}
+
+function render(){
+  hideTip();
+  const app = $('#app');
+  if (!state){ renderTitle(app); return; }
+  if (state.ended){ renderEnding(app); return; }
+  if (state.eventId === '__nowhere__' || !content.events[state.eventId]){ renderNowhere(app); return; }
+  const ev = content.events[state.eventId];
+  let body;
+  if (state.pending){
+    body = `<div class="prose result"><p>${inline(state.pending.text)}</p></div>
+      <div class="cont"><button type="button" class="btn" data-act="continue" id="continue">Continue</button></div>`;
+  } else {
+    const paras = ev.paras.filter(p => !p.cond || condsMet(p.cond)).map(p => `<p>${inline(p.text)}</p>`).join('');
+    let n = 0;
+    const choices = ev.choices.map((ch, i) => {
+      if (!condsMet(ch.requires)) return '';
+      const ok = condsMet(ch.needs);
+      n++;
+      const why = ok ? '' : `<span class="why">${esc(whyNot(ch))}</span>`;
+      return `<li><button type="button" class="choice" data-choice="${i}" ${ok ? '' : 'disabled'}>
+        <span class="n" aria-hidden="true">${n}</span><span>${inline(ch.text)}${why}</span></button></li>`;
+    }).join('');
+    body = `<div class="prose">${paras}</div><ol class="choices">${choices}</ol>`;
+  }
+  app.innerHTML = `${headerHtml()}${stripHtml()}
+    <section class="scene"><h2 tabindex="-1" id="scene-title">${inline(ev.title || '')}</h2>${body}</section>`;
+  glossify($('.prose', app));
+  focusTop();
+}
+
+function focusTop(){
+  try { window.scrollTo(0, 0); } catch(e){}
+  const h = $('#scene-title'); if (h) h.focus({ preventScroll: true });
+}
+
+function roseSvg(){
+  let lines = '';
+  for (let i = 0; i < 32; i++){
+    const a = i * Math.PI / 16;
+    const len = i % 8 === 0 ? 92 : i % 4 === 0 ? 70 : i % 2 === 0 ? 52 : 40;
+    const w = i % 8 === 0 ? 1.6 : i % 4 === 0 ? 1.1 : .7;
+    lines += `<line x1="0" y1="0" x2="${(Math.sin(a) * len).toFixed(2)}" y2="${(-Math.cos(a) * len).toFixed(2)}" stroke-width="${w}"/>`;
+  }
+  return `<svg class="rose" viewBox="-100 -112 200 212" aria-hidden="true" fill="none" stroke="var(--accent)">
+    <circle r="96" stroke-width=".8"/><circle r="30" stroke-width=".6"/>${lines}
+    <path d="M0,-92 L6,-30 L0,-36 L-6,-30 Z" fill="var(--accent)" stroke="none"/>
+    <text x="0" y="-100" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="15" fill="var(--accent)" stroke="none">N</text></svg>`;
+}
+
+function renderTitle(app){
+  const saved = loadAutosave();
+  const errs = content.problems.filter(p => p.sev === 'error').length;
+  const savedLine = saved ? `<p class="muted" style="margin:0 0 .8rem">A commission is in hand: ${esc(saved.name)}, ${esc(fmtDate(saved.minutes))}.</p>` : '';
+  app.innerHTML = `<section class="title">
+    ${roseSvg()}
+    <h1>Sloop of War</h1>
+    <p class="sub">A commission in the Mediterranean</p>
+    ${savedLine}
+    ${saved ? `<div class="row" style="margin-bottom:1.6rem"><button type="button" class="btn" data-act="resume" id="resume">Continue the commission</button></div>
+      <h2 class="sc" style="font-size:1.1rem;color:var(--ink-2);margin-bottom:.8rem">Or begin a new one</h2>` : ''}
+    <div class="field"><label for="cmdr-name">Your name</label>
+      <input id="cmdr-name" autocomplete="off" value="${esc(content.settings['default name'] || '')}"></div>
+    <div class="field"><label for="seed">Seed</label>
+      <input id="seed" autocomplete="off" class="num" value="${esc(makeSeed())}">
+      <small>The same seed and the same choices always give the same commission.</small></div>
+    <div class="row"><button type="button" class="btn ${saved ? 'quiet' : ''}" data-act="begin" id="begin">Take up the commission</button></div>
+    <div class="foot"><span>${esc(BUILD)}</span>
+      <button type="button" class="link" data-act="glossary">Glossary</button>
+      <button type="button" class="link" data-act="check">Content check${errs ? ` <span class="badge">(${errs})</span>` : ''}</button></div>
+  </section>`;
+}
+
+function renderNowhere(app){
+  const from = state.nowhere || state.eventId;
+  app.innerHTML = `${headerHtml()}${stripHtml()}<section class="scene">
+    <h2 tabindex="-1" id="scene-title">The Log Runs Out</h2>
+    <div class="prose"><p>This passage leads nowhere yet. The writing after <b>${esc(from)}</b> has not been written, or a “Next:” line names something that does not exist. The Content check under Papers will say which.</p></div>
+    <div class="row cont"><button type="button" class="btn" data-act="replay">Replay this commission</button>
+    <button type="button" class="btn quiet" data-act="title">Return to the title</button></div></section>`;
+  focusTop();
+}
+
+function logTableHtml(){
+  if (!state.log.length) return `<p class="note">Nothing has been entered in the log yet.</p>`;
+  let rows = '', lastDay = null;
+  for (const e of state.log){
+    const day = fmtDate(e.t);
+    if (day !== lastDay){ rows += `<tr class="day"><td colspan="2">${esc(day)}</td></tr>`; lastDay = day; }
+    rows += `<tr><td class="h">${esc(fmtHour(e.t))}</td><td>${inline(e.text)}</td></tr>`;
+  }
+  return `<div class="scroll-x"><table class="log"><thead><tr><th scope="col">H</th><th scope="col">Remarks</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+function ledgerHtml(acct, opts){
+  const rows = state.accounts.filter(a => a.acct === acct);
+  if (!rows.length) return '';
+  let bal = 0, body = '';
+  for (const r of rows){
+    bal += r.amt;
+    const c = clockOf(r.t);
+    const amt = (r.amt < 0 ? '−' : '+') + fmtMoney(Math.abs(r.amt));
+    body += `<tr><td class="h">${c.date} ${c.month.slice(0,3)}</td><td>${inline(r.what)}</td>
+      <td class="amt">${esc(amt)}</td><td class="amt">${esc(fmtMoney(bal))}</td></tr>`;
+  }
+  return `<div class="scroll-x"><table class="log"><thead><tr><th scope="col">Date</th><th scope="col">Particulars</th>
+    <th scope="col" class="amt">Sum</th><th scope="col" class="amt">${opts.bal}</th></tr></thead>
+    <tbody>${body}<tr class="total"><td></td><td>${opts.bal}</td><td></td><td class="amt">${esc(fmtMoney(bal))}</td></tr></tbody></table></div>`;
+}
+function accountsHtml(){
+  if (!state) return `<p class="note">No commission is in hand.</p>`;
+  const purse = ledgerHtml('money', { bal: 'In hand' });
+  const debts = ledgerHtml('debt', { bal: 'Owing' });
+  return `<p class="note">Your own money, kept by your own hand. The ship's books are the purser’s affair, and come later.</p>
+    <h3>Your purse</h3>${purse}
+    ${debts ? `<h3>Owing to agents</h3>${debts}<p class="note">Interest at five per cent is reckoned for a year and entered at the time of the advance.</p>` : ''}`;
+}
+function ordersHtml(){
+  if (!state || !state.orders || !content.orders[state.orders]) return `<p class="note">You have no orders yet.</p>`;
+  const o = content.orders[state.orders];
+  return `<p class="heading">${inline(o.heading)}</p><article class="orders">${o.paras.map(p => `<p${p.sig ? ' class="sig"' : ''}>${inline(p.text)}</p>`).join('')}</article>`;
+}
+
+function renderEnding(app){
+  const ev = content.events[state.eventId];
+  const title = ev ? ev.title : 'The Commission Closes';
+  const paras = ev ? ev.paras.filter(p => !p.cond || condsMet(p.cond)).map(p => `<p>${inline(p.text)}</p>`).join('') : '<p>The commission is at an end.</p>';
+  app.innerHTML = `${headerHtml()}${stripHtml()}<section class="scene">
+    <h2 tabindex="-1" id="scene-title">${inline(title)}</h2>
+    <div class="prose">${paras}</div>
+    <h3 class="sc" style="font-size:1.1rem;color:var(--ink-2);margin:1.6rem 0 .4rem">Log of His Majesty’s Sloop <em>${esc(content.settings.ship || '')}</em>, ${esc(state.name)}, Commander</h3>
+    ${logTableHtml()}
+    ${state.tested ? '<p class="note">Writer’s tools were used during this commission.</p>' : ''}
+    <p class="note num">Seed ${esc(state.seed)} · ${state.history.length} choices</p>
+    <div class="row cont">
+      <button type="button" class="btn" data-act="replay">Replay this commission</button>
+      <button type="button" class="btn quiet" data-act="title">New commission</button>
+      <button type="button" class="btn quiet" data-act="savelog">Save the log</button>
+    </div><p class="status" id="end-status" role="status"></p></section>`;
+  glossify($('.prose', app));
+  focusTop();
+}
+
+/* ---------- glossary tooltip ---------- */
+let tipFor = null;
+function showTip(btn){
+  const g = content.glossary[+btn.dataset.g]; if (!g) return;
+  const tip = $('#tip');
+  tip.innerHTML = `<b>${esc(g.terms[0])}</b>${inline(g.def)}`;
+  tip.hidden = false; tipFor = btn;
+  const r = btn.getBoundingClientRect(), tw = tip.offsetWidth, th = tip.offsetHeight;
+  const left = Math.max(12, Math.min(r.left, window.innerWidth - tw - 12));
+  let top = r.bottom + 8;
+  if (top + th > window.innerHeight - 8) top = Math.max(8, r.top - th - 8);
+  tip.style.left = left + 'px'; tip.style.top = top + 'px';
+}
+function hideTip(){ const tip = $('#tip'); if (tip){ tip.hidden = true; } tipFor = null; }
+
+/* ============================================================
+   PANELS: log, orders, accounts, glossary, papers, writer's view, content check
+   ============================================================ */
+let panelReturnFocus = null;
+function openPanel(kind){
+  hideTip();
+  panelReturnFocus = document.activeElement;
+  const p = $('#panel');
+  let title = '', html = '';
+  if (kind === 'log'){
+    title = 'The Log';
+    html = state ? `<p class="note">Kept by the commander. The record of this commission.</p>${logTableHtml()}
+      <div class="row cont"><button type="button" class="btn quiet" data-act="savelog">Save the log</button></div><p class="status" id="log-status" role="status"></p>`
+      : `<p class="note">No commission is in hand.</p>`;
+  }
+  else if (kind === 'orders'){ title = 'Orders'; html = ordersHtml(); }
+  else if (kind === 'accounts'){ title = 'Accounts'; html = accountsHtml(); }
+  else if (kind === 'glossary'){
+    title = 'Glossary';
+    const items = content.glossary.slice().sort((a, b) => a.terms[0].localeCompare(b.terms[0]));
+    html = `<dl class="gloss">${items.map(g => `<dt>${esc(g.terms[0])}</dt><dd>${inline(g.def)}${g.terms.length > 1 ? `<div class="also">Also: ${g.terms.slice(1).map(esc).join(', ')}</div>` : ''}</dd>`).join('')}</dl>`;
+  }
+  else if (kind === 'papers') { title = 'Papers'; html = papersHtml(); }
+  else if (kind === 'writer') { title = 'Writer’s View'; html = writerHtml(); }
+  else if (kind === 'check') { title = 'Content Check'; html = checkHtml(); }
+  p.innerHTML = `<div class="col panel" style="padding-top:0">
+    <div class="phead"><h2 id="panel-title" tabindex="-1">${title}</h2><button type="button" class="link" data-act="close">Close</button></div>
+    ${html}</div>`;
+  p.hidden = false; p.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+  if (kind === 'orders') glossify($('.orders', p));
+  $('#panel-title').focus({ preventScroll: true });
+}
+function closePanel(){
+  const p = $('#panel'); p.hidden = true; p.innerHTML = '';
+  document.body.style.overflow = '';
+  if (panelReturnFocus && document.contains(panelReturnFocus)) panelReturnFocus.focus({ preventScroll: true });
+}
+
+function papersHtml(){
+  const errs = content.problems.filter(x => x.sev === 'error').length, warns = content.problems.length - errs;
+  return `${state ? `<dl class="kv num"><dt>Commander</dt><dd>${esc(state.name)}</dd><dt>Seed</dt><dd>${esc(state.seed)}</dd>
+      <dt>Date</dt><dd>${esc(fmtDate(state.minutes))}</dd><dt>Choices made</dt><dd>${state.history.length}</dd></dl>` : ''}
+    <h3>Saving</h3>
+    <p class="note">The game saves itself in this browser after every choice. To keep a commission safe, or carry it to another device, save it to a file.</p>
+    <div class="row">${state ? `<button type="button" class="btn" data-act="export">Save to a file</button>` : ''}
+      <label class="btn quiet" for="import-file" style="display:inline-block">Load from a file</label>
+      <input type="file" id="import-file" accept=".json,application/json" hidden></div>
+    <details style="margin-top:.7rem"><summary class="muted">Paste a save instead</summary>
+      <textarea id="paste-save" aria-label="Pasted save"></textarea>
+      <div class="row" style="margin-top:.4rem"><button type="button" class="btn quiet" data-act="loadpaste">Load pasted save</button></div></details>
+    <div id="export-fallback" hidden><p class="note">Saving files is not available here. Copy this text and keep it somewhere; paste it back with “Paste a save instead”.</p>
+      <textarea id="export-text" readonly aria-label="Save text"></textarea>
+      <div class="row"><button type="button" class="btn quiet" data-act="copysave">Copy</button></div></div>
+    <p class="status" id="papers-status" role="status"></p>
+    ${state ? `<h3>This commission</h3>
+    <div class="row"><button type="button" class="btn quiet" data-act="replay">Replay from the start</button>
+      <button type="button" class="btn quiet" data-act="askabandon">Begin a new commission</button></div>
+    <div id="abandon" class="confirm" hidden><p style="margin:0 0 .5rem">Abandon this commission? It cannot be recovered unless you have saved it to a file.</p>
+      <div class="row"><button type="button" class="btn" data-act="abandon">Abandon it</button><button type="button" class="btn quiet" data-act="keep">Keep it</button></div></div>` : ''}
+    <h3>Reading</h3>
+    <div class="row"><button type="button" class="btn quiet" data-act="smaller" aria-label="Smaller text">A−</button>
+      <button type="button" class="btn quiet" data-act="larger" aria-label="Larger text">A+</button>
+      <span class="muted num">Text size ${Math.round(prefs.scale * 100)}%</span></div>
+    <h3>Writer’s tools</h3>
+    <div class="row">${state ? `<button type="button" class="btn quiet" data-act="writer">Writer’s view</button>` : ''}
+      <button type="button" class="btn quiet" data-act="check">Content check${errs ? ` <span class="badge">(${errs})</span>` : ''}</button></div>
+    <p class="note">${errs} mistakes and ${warns} cautions in the content. ${esc(BUILD)}.</p>`;
+}
+
+function writerHtml(){
+  const vars = Object.keys(state.vars).sort();
+  const flags = Object.keys(state.flags).sort();
+  const timers = Object.keys(state.timers).sort();
+  const seen = Object.keys(state.seen);
+  const opts = content.order.map(id => `<option value="${esc(id)}" ${id === state.eventId ? 'selected' : ''}>${esc(id)}</option>`).join('');
+  return `<p class="note">For testing only. These hidden numbers are never shown to the player.</p>
+    <dl class="kv num"><dt>Event</dt><dd>${esc(state.eventId)}</dd><dt>Place</dt><dd>${esc(state.place || '')}</dd>
+      <dt>Day</dt><dd>${getVar('day')}</dd>
+      <dt>Purse</dt><dd>${esc(fmtMoney(state.money))}</dd><dt>Clock</dt><dd>${esc(fmtDate(state.minutes))}, ${esc(fmtHour(state.minutes))}</dd>
+      <dt>Orders</dt><dd>${esc(state.orders || 'none')}</dd>
+      <dt>Seed</dt><dd>${esc(state.seed)}</dd><dt>Choices</dt><dd>${state.history.map(h => h.c + 1).join(' ') || 'none yet'}</dd></dl>
+    <h3>Numbers</h3>${vars.length ? `<dl class="kv num">${vars.map(k => `<dt>${esc(k)}</dt><dd>${esc(MONEY.has(k) ? fmtMoney(state.vars[k]) : state.vars[k])}</dd>`).join('')}</dl>` : '<p class="note">None set yet.</p>'}
+    <h3>Flags</h3><p>${flags.length ? flags.map(esc).join(', ') : '<span class="note">None set yet.</span>'}</p>
+    <h3>Timers</h3>${timers.length ? `<dl class="kv num">${timers.map(k => `<dt>${esc(k)}</dt><dd>started ${esc(fmtSpan(state.minutes - state.timers[k]))} ago</dd>`).join('')}</dl>` : '<p class="note">None running.</p>'}
+    <h3>Events seen</h3><p>${seen.map(esc).join(', ')}</p>
+    <h3>Jump to an event</h3>
+    <div class="row"><select id="jump" aria-label="Event to jump to" style="font:inherit;padding:.35rem;background:var(--paper-2);color:var(--ink);border:1px solid var(--rule);max-width:100%">${opts}</select>
+      <button type="button" class="btn quiet" data-act="jump">Jump</button></div>
+    <p class="note">Jumping keeps your flags and numbers as they are, and marks the commission as tested.</p>`;
+}
+
+function checkHtml(){
+  const P = content.problems;
+  const nEv = content.order.length, nCh = content.order.reduce((n, id) => n + content.events[id].choices.length, 0);
+  const stats = `<p class="note num">${nEv} events, ${nCh} choices, ${Object.keys(content.orders).length} sets of orders, ${content.glossary.length} glossary entries, about ${content.stats.words} words of scene prose.</p>`;
+  if (!P.length) return `${stats}<p class="status good">The content reads cleanly: no mistakes and no cautions.</p>`;
+  const order = { error: 0, warn: 1 };
+  const items = P.slice().sort((a, b) => order[a.sev] - order[b.sev]).map(p =>
+    `<li><span class="sev ${p.sev}">${p.sev === 'error' ? 'Mistake' : 'Caution'}</span>${esc(p.msg)}<span class="where">${esc(p.where)}</span></li>`).join('');
+  return `${stats}<p class="note">Mistakes stop a scene working. Cautions are worth a look but do no harm.</p><ul class="problems">${items}</ul>`;
+}
+
+function setStatus(id, msg, good){ const el = $('#' + id); if (el){ el.textContent = msg; el.className = 'status ' + (good ? 'good' : 'bad'); } }
+
+async function offerFile(filename, data, statusId, fallback){
+  if (downloadsApi){
+    try { await downloadsApi.save({ filename, data }); setStatus(statusId, 'Saved.', true); return; }
+    catch(e){
+      if (e && e.code === 'declined'){ setStatus(statusId, 'Not saved.', false); return; }
+      if (e && e.code === 'rate_limited'){ setStatus(statusId, 'A save is already waiting for your answer.', false); return; }
+    }
+  }
+  fallback();
+}
+function exportSave(){
+  const data = JSON.stringify({ game: GAME_ID, build: BUILD, savedAt: new Date().toISOString(), state }, null, 1);
+  offerFile(saveFileName(), data, 'papers-status', () => {
+    const box = $('#export-fallback'); if (!box) return;
+    box.hidden = false; $('#export-text').value = data;
+  });
+}
+function logAsText(){
+  let out = `Log of His Majesty's Sloop ${content.settings.ship}, ${state.name}, Commander\nSeed ${state.seed}\n`;
+  let lastDay = null;
+  for (const e of state.log){
+    const day = fmtDate(e.t);
+    if (day !== lastDay){ out += `\n${day}\n`; lastDay = day; }
+    out += `  ${fmtHour(e.t)}. ${e.text.replace(/\*/g, '')}\n`;
+  }
+  return out;
+}
+function saveLog(statusId){
+  const name = `log-${content.settings.ship.toLowerCase()}-${surname().toLowerCase().replace(/[^a-z0-9]+/g, '-')}.txt`;
+  offerFile(name, logAsText(), statusId, () => {
+    const el = $('#' + statusId); if (!el) return;
+    el.className = 'status';
+    el.innerHTML = `<span class="note">Saving files is not available here; copy the log below.</span><textarea readonly aria-label="Log text">${esc(logAsText())}</textarea>`;
+  });
+}
+function importText(text, statusId){
+  try {
+    adopt(readSave(text));
+    closePanel(); render();
+  } catch(e){ setStatus(statusId, e.message, false); }
+}
+
+/* ---------- prefs ---------- */
+function loadPrefs(){ try { const p = JSON.parse(lsGet(PREF_KEY) || '{}'); if (p.scale) prefs.scale = p.scale; } catch(e){} applyPrefs(); }
+function applyPrefs(){ document.documentElement.style.setProperty('--scale', prefs.scale); }
+function savePrefs(){ lsSet(PREF_KEY, JSON.stringify(prefs)); }
+
+/* ============================================================
+   INPUT
+   ============================================================ */
+document.addEventListener('click', e => {
+  const gl = e.target.closest('.gl');
+  if (gl){ e.preventDefault(); if (tipFor === gl) hideTip(); else showTip(gl); return; }
+  if (!e.target.closest('#tip')) hideTip();
+
+  const c = e.target.closest('[data-choice]');
+  if (c && !c.disabled){ if (choose(+c.dataset.choice)) render(); return; }
+
+  const a = e.target.closest('[data-act]'); if (!a) return;
+  switch (a.dataset.act){
+    case 'continue': carryOn(); render(); break;
+    case 'begin': newGame($('#cmdr-name').value, $('#seed').value); render(); break;
+    case 'resume': { const s = loadAutosave(); if (s) adopt(s); render(); break; }
+    case 'replay': { const n = state.name, s = state.seed; closePanelIfOpen(); newGame(n, s); render(); break; }
+    case 'title': closePanelIfOpen(); state = null; render(); break;
+    case 'log': openPanel('log'); break;
+    case 'orders': openPanel('orders'); break;
+    case 'accounts': openPanel('accounts'); break;
+    case 'glossary': openPanel('glossary'); break;
+    case 'papers': openPanel('papers'); break;
+    case 'writer': openPanel('writer'); break;
+    case 'check': openPanel('check'); break;
+    case 'close': closePanel(); break;
+    case 'export': exportSave(); break;
+    case 'copysave': copyFrom('export-text', 'papers-status'); break;
+    case 'loadpaste': importText($('#paste-save').value, 'papers-status'); break;
+    case 'savelog': saveLog($('#log-status') ? 'log-status' : 'end-status'); break;
+    case 'askabandon': $('#abandon').hidden = false; break;
+    case 'keep': $('#abandon').hidden = true; break;
+    case 'abandon': lsDel(SAVE_KEY); state = null; closePanel(); render(); break;
+    case 'smaller': prefs.scale = Math.max(.8, Math.round((prefs.scale - .1) * 10) / 10); applyPrefs(); savePrefs(); openPanel('papers'); break;
+    case 'larger': prefs.scale = Math.min(1.5, Math.round((prefs.scale + .1) * 10) / 10); applyPrefs(); savePrefs(); openPanel('papers'); break;
+    case 'jump': { const id = $('#jump').value; state.pending = null; state.ended = false; state.tested = true; enterEvent(id); persist(); closePanel(); render(); break; }
+  }
+});
+function closePanelIfOpen(){ if (!$('#panel').hidden) closePanel(); }
+function copyFrom(id, statusId){
+  const ta = $('#' + id); if (!ta) return;
+  const done = () => setStatus(statusId, 'Copied.', true);
+  try { navigator.clipboard.writeText(ta.value).then(done, () => { ta.select(); setStatus(statusId, 'Selected: press copy to take it.', true); }); }
+  catch(e){ ta.select(); }
+}
+document.addEventListener('change', e => {
+  if (e.target.id === 'import-file' && e.target.files[0]){
+    const r = new FileReader();
+    r.onload = () => importText(String(r.result), 'papers-status');
+    r.onerror = () => setStatus('papers-status', 'That file could not be read.', false);
+    r.readAsText(e.target.files[0]);
+  }
+});
+document.addEventListener('mouseover', e => { const gl = e.target.closest && e.target.closest('.gl'); if (gl && matchMedia('(hover: hover)').matches) showTip(gl); });
+document.addEventListener('mouseout', e => { const gl = e.target.closest && e.target.closest('.gl'); if (gl && gl === tipFor && !gl.contains(e.relatedTarget)) hideTip(); });
+document.addEventListener('focusin', e => { if (e.target.classList && e.target.classList.contains('gl')) showTip(e.target); });
+document.addEventListener('focusout', e => { if (e.target === tipFor) hideTip(); });
+window.addEventListener('scroll', hideTip, { passive: true });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape'){ if (!$('#tip').hidden) hideTip(); else if (!$('#panel').hidden) closePanel(); return; }
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('gl')){
+    e.preventDefault(); if (tipFor === e.target) hideTip(); else showTip(e.target); return;
+  }
+  if (!$('#panel').hidden) return;
+  const tag = (e.target.tagName || '').toLowerCase();
+  if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if (/^[1-9]$/.test(e.key)){
+    const btns = [...document.querySelectorAll('.choice')];
+    const b = btns[+e.key - 1];
+    if (b && !b.disabled){ e.preventDefault(); b.click(); }
+  } else if ((e.key === 'Enter' || e.key === ' ') && state && state.pending && !e.target.closest('button')){
+    e.preventDefault(); carryOn(); render();
+  }
+});
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+function boot(){
+  const blocks = [...document.querySelectorAll('script.content')].map(s => ({ name: s.dataset.name || 'Content', text: s.textContent }));
+  content = parseContent(blocks);
+  buildGloss();
+  loadPrefs();
+  state = null;   /* always open on the title, offering to continue */
+  render();
+  if (window.claude && typeof window.claude.use === 'function'){
+    window.claude.use('downloads').then(d => { downloadsApi = d; }).catch(() => {});
+  }
+}
+
+/* test hooks, used to check that replays are deterministic */
+window.SloopTest = {
+  newGame: (n, s) => { newGame(n, s); render(); },
+  choose: i => { const r = choose(i); render(); return r; },
+  carryOn: () => { carryOn(); render(); },
+  adopt: s => { adopt(s); render(); },
+  open: () => content.events[state.eventId] ? content.events[state.eventId].choices.map((c, i) => condsMet(c.requires) && condsMet(c.needs) ? i : -1).filter(i => i >= 0) : [],
+  get state(){ return clone(state); },
+  get content(){ return content; },
+  parseMoney, fmtMoney, watchOf: m => watchOf(m)
+};
+
+boot();
+})();
+</script>
