@@ -495,3 +495,6 @@ Thirteen steps, each ending in a playable build published to the same link. Comb
 | Build order | Thirteen playable steps (see Build sequence); combat prototyped as a standalone sandbox at step 5 before it joins the campaign |
 | Code | Plain JavaScript with no build step; each build is one page published to a single link that always opens the latest version |
 | Content authoring | A plain-text event format the writer drafts directly; the game reads it as is and reports mistakes on a Content check screen |
+| Stores | Issued at noon each day at sea on the Navy's 1800 scale, wine in place of beer; casks numbered, oldest first; the purser's books and the real hold kept separately, so skimming shows up only by survey, by short weight, or by comparing cask numbers opened in the log with the books |
+| Victualling in port | Simplified: in harbour the people are victualled from shore and the hold is not drawn on; water is about a gallon a man a day |
+| Passage times | Until the chart (step 6), each set of orders states its passage, time on station and return in watches or days |

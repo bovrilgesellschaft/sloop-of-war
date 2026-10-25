@@ -19,7 +19,7 @@ Built in thirteen playable steps (see "Build sequence" in the design document).
 
 - [x] 1. Engine shell
 - [x] 2. Mahon and orders
-- [ ] 3. Ship, stores and time
+- [x] 3. Ship, stores and time
 - [ ] 4. Wind and weather
 - [ ] 5. Combat sandbox
 - [ ] 6. Chart and navigation

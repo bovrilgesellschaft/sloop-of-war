@@ -59,7 +59,7 @@ Start a paragraph with `[if condition]` and it appears only when the condition h
 - `Effects:` what happens when chosen.
 - `Text:` a short result passage shown before moving on. Optional.
 - `Log:` a line written into the commander's log, in his own voice.
-- `Next:` where to go: an event name, `any <tag>` (a random event from that pool), or `end`.
+- `Next:` where to go: an event name, `any <tag>` (a random event from that pool), `watches 6` (sail on; see At sea), or `end`.
 
 ## Chances
 
@@ -107,7 +107,7 @@ Flags and numbers can be invented as needed; any new name simply starts at zero.
 
 ## In the text
 
-- `{name}`, `{surname}`, `{ship}`, `{money}`, `{debt}`, `{date}`, `{place}` and `{orders}` are filled in.
+- `{name}`, `{surname}`, `{ship}`, `{money}`, `{debt}`, `{cash}`, `{date}`, `{place}`, `{orders}` and `{voyage}` are filled in, and so is any number, such as `{leak}` or `{water_days}`.
 - `*Wryneck*` sets italics. Ordinary quotes and apostrophes are curled automatically.
 - Glossary terms are underlined automatically: write the word and the game finds it.
 
@@ -129,6 +129,74 @@ You are hereby required and directed ...
 
 A line starting with `>` is set to the right, like a signature. `{issued}` is the date the orders were given.
 
+Orders also say how long each leg of the voyage takes, until the chart arrives:
+
+```
+Passage: 8 watches
+Station: 42 days
+Return: 8 watches
+```
+
+## At sea
+
+- `Next: watches 6` sails up to six watches (four hours each), one at a time. After each watch, an `Urgent` event tagged `sea` happens at once if one fits; otherwise there is a small chance (`sea event chance` in Settings, per watch) of an ordinary `sea` event. If nothing happens, the player comes back to the sea hub.
+- `voyage outward`, `voyage station`, `voyage homeward` start a leg, with its length taken from the orders. `voyage station 10 days` sets the length yourself. When a leg runs out, the flag `outward_done`, `station_done` or `homeward_done` is set, so an `Urgent` event can pick it up.
+- Conditions: `voyage station`, `not voyage homeward`.
+- Stores are issued at noon each day while the flag `at_sea` is set.
+
+## The ship and her stores
+
+The `SHIP` block gives the ship's starting numbers. They behave like any other number (`leak +3`, `hull 80 or more`):
+
+```
+SHIP
+victualled: 98
+leak: 2
+hull: 86
+cash: £11 4s 6d
+```
+
+Each `STORE` block describes one kind of store:
+
+```
+STORE: beef
+Name: Beef
+Unit: cask | casks
+Holds: 152 lb
+Pieces: 38
+Ration: 2 lb on Tuesday and Saturday
+Capacity: 28
+Keeps: 365
+Bad: 3
+Short: 15
+Bad word: stinking
+Log openings
+Stock: 9 casks, Nos 205–213, received 1799-10-14 from the victualling yard at Gibraltar
+```
+
+- `Holds:` what one cask (bag, butt) holds: `112 lb`, `108 gallons`, `64 pints`, or a plain `1` for things counted singly, like shot.
+- `Ration:` per man, `every day` or `on` named days. Use the same kind of measure as `Holds`.
+- `Kept by:` purser (the default), master, gunner, boatswain or carpenter. It decides which page of the Books it appears on, and only the purser's stores can be skimmed.
+- `Capacity:` how many the ship can stow.
+- `Keeps:` days before it goes off. `Bad:` the chance in 100 that a cask opened is found bad, trebled once it is past keeping. `Bad word:` how the steward describes it.
+- `Pieces:` and `Short:` for salt meat: pieces to a cask, and the chance in 100 that a cask opened is short of some.
+- `Log openings`: write each cask opened into the log, by number.
+- `Instead of: wine`: issued only when that store has run out.
+- `Only if: carronades`: starting stock only if the condition holds.
+- `Bought`: not supplied by the victualler, so not filled by "complete provisions".
+- `Stock:` lines give what is aboard at the start: how many, the first cask number, when and where received.
+
+In events:
+
+- Conditions: `water_days 10 or less` (days left at the present allowance, by the books), `powder 1 or more` (casks, by the books).
+- `store powder -0.48 "Expended in exercise"`, `store lemon_juice +3 "Bought of the contractor"`
+- `empty shot6 "Returned into store"`
+- `fill provisions "Received of the agent victualler"` (all the purser's victualling stores), `fill water "..."`
+- `allowance short`, `allowance full` (two-thirds allowance; also sets or clears the flag `short_allowance`)
+- `survey`: counts the hold and corrects the books, setting `survey_over`, `survey_short` or `survey_right`. `{survey}` gives the result in words.
+- When a cask is found bad, the flag `bad_cask` is set. `{bad_item}`, `{bad_no}` and `{bad_word}` describe it, and `condemn` throws it out and enters it in the books.
+- `roll purser_skims 50` sets a flag with that chance in 100.
+
 ## Glossary
 
 ```
@@ -141,7 +209,7 @@ Alternative forms go before the colon, separated by `|`.
 
 ## Settings
 
-`money values: debt` marks a number as money, so it is written in pounds, shillings and pence and kept in the Accounts. `place.office: The Admiral's office` sets the name shown in the strip for a place.
+`money values: debt, cash` marks a number as money, so it is written in pounds, shillings and pence and kept in the Accounts. `place.office: The Admiral's office` sets the name shown in the strip for a place.
 
 ## Comments
 

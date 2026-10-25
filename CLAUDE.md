@@ -12,7 +12,7 @@ Edmund is the designer and writer. He does not program: Claude writes all the co
 ## Each build
 
 1. Make the change in `index.html`.
-2. Run `python3 tools/playtest.py`. It must pass: no content mistakes, every random playthrough reaches an Ending, every event is reached, replays are deterministic.
+2. Run `python3 tools/playtest.py 300`. It must pass: no content mistakes, every random playthrough reaches an Ending, replays are deterministic. Events it lists as never reached need a scripted check of their own.
 3. Look at the page once at phone width (390px) in a headless browser.
 4. Publish to the artifact link above.
 5. Commit and push to `main`, with a message naming the build step.

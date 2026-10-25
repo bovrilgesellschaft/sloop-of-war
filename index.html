@@ -116,6 +116,15 @@ dl.gloss .also{color:var(--ink-2);font-size:.85rem;font-style:italic}
 .confirm{border:1px solid var(--rule);padding:.6rem .8rem;margin-top:.5rem}
 textarea{min-height:7rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem}
 
+/* ship's books */
+.tabs{display:flex;flex-wrap:wrap;gap:.2rem;margin:0 0 1rem;border-bottom:1px solid var(--rule)}
+.tabs button{background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:.35rem .6rem;cursor:pointer;font-family:var(--display-sc);letter-spacing:.03em;color:var(--ink-2)}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+details.ledger{border-bottom:1px solid var(--rule);padding:.45rem 0}
+details.ledger summary{cursor:pointer;color:var(--accent);font-family:var(--display-sc);letter-spacing:.03em}
+ul.receipts{margin:.1rem 0 .6rem;padding-left:1.1rem;font-size:.92rem}
+.panel table.log + details.ledger{margin-top:.8rem}
+
 /* orders: a written document */
 .orders{background:var(--paper-2);border:1px solid var(--rule);padding:1.1rem 1.2rem;font-size:.95rem;line-height:1.65}
 .orders p{margin:0 0 .75rem;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
@@ -140,8 +149,11 @@ ship: Wryneck
 start date: 1800-03-03
 start time: 06:00
 start money: £27 10s
-money values: debt
+money values: debt, cash
 default name: John Hartley
+sea event chance: 8
+purser dishonest: 50
+purser skim: 12
 place.mahon: Port Mahon
 place.harbour: Mahon harbour
 place.ship: Aboard the Wryneck
@@ -149,6 +161,229 @@ place.office: The Admiral's office
 place.dockyard: The dockyard
 place.agent: Mr Crouch's
 place.governor: The Governor's house
+place.victualling: The victualling stores
+place.sea: At sea
+voyage.outward: outward bound
+voyage.station: on her station
+voyage.homeward: homeward bound
+</script>
+
+<script type="text/plain" class="content" data-name="Ship and stores">
+# ------------------------------------------------------------
+# The sloop and her stores as she lies at Mahon when you take
+# command. Ration amounts follow the Navy's scale of 1800;
+# wine is issued in place of beer, as on the Mediterranean
+# station. Quantities per cask are simplified.
+# ------------------------------------------------------------
+
+SHIP
+complement: 121
+victualled: 98
+leak: 2
+hull: 86
+standing_rigging: 78
+running_rigging: 72
+sails: 64
+guns: 16
+cash: £11 4s 6d
+
+STORE: biscuit
+Name: Biscuit
+Unit: bag | bags
+Holds: 112 lb
+Ration: 1 lb every day
+Capacity: 62
+Keeps: 240
+Bad: 2
+Bad word: mouldy through, and alive with maggots beyond what is usual
+Stock: 26 bags, Nos 412–437, received 1799-12-02 from the victualling yard at Gibraltar
+
+STORE: beef
+Name: Beef
+Unit: cask | casks
+Holds: 152 lb
+Pieces: 38
+Ration: 2 lb on Tuesday and Saturday
+Capacity: 28
+Keeps: 365
+Bad: 3
+Short: 15
+Bad word: stinking
+Log openings
+Stock: 9 casks, Nos 205–213, received 1799-10-14 from the victualling yard at Gibraltar
+Stock: 5 casks, Nos 377–381, received 1800-01-20 from the agent victualler at Mahon
+
+STORE: pork
+Name: Pork
+Unit: cask | casks
+Holds: 160 lb
+Pieces: 80
+Ration: 1 lb on Sunday and Thursday
+Capacity: 14
+Keeps: 365
+Bad: 3
+Short: 15
+Bad word: stinking
+Log openings
+Stock: 7 casks, Nos 88–94, received 1799-10-14 from the victualling yard at Gibraltar
+
+STORE: pease
+Name: Pease
+Unit: bushel | bushels
+Holds: 64 pints
+Ration: 0.5 pints on Sunday, Wednesday, Thursday and Friday
+Capacity: 32
+Keeps: 365
+Stock: 16 bushels, received 1799-12-02 from the victualling yard at Gibraltar
+
+STORE: oatmeal
+Name: Oatmeal
+Unit: bushel | bushels
+Holds: 64 pints
+Ration: 1 pint on Monday, Wednesday and Friday
+Capacity: 46
+Keeps: 240
+Bad: 2
+Bad word: sour, and full of weevils
+Stock: 20 bushels, received 1799-12-02 from the victualling yard at Gibraltar
+
+STORE: butter
+Name: Butter
+Unit: firkin | firkins
+Holds: 56 lb
+Ration: 2 oz on Monday, Wednesday and Friday
+Capacity: 8
+Keeps: 90
+Bad: 8
+Bad word: rancid beyond eating, even by the standard of the service
+Stock: 3 firkins, received 1800-01-20 from the agent victualler at Mahon
+
+STORE: cheese
+Name: Cheese
+Unit: cheese | cheeses
+Holds: 20 lb
+Ration: 4 oz on Monday, Wednesday and Friday
+Capacity: 26
+Keeps: 120
+Bad: 6
+Bad word: rotten, and walking
+Stock: 12 cheeses, received 1800-01-20 from the agent victualler at Mahon
+
+STORE: wine
+Name: Wine
+Unit: hogshead | hogsheads
+Holds: 63 gallons
+Ration: 1 pint every day
+Capacity: 10
+Keeps: 365
+Bad: 2
+Bad word: sour
+Stock: 6 hogsheads, Nos 51–56, received 1800-01-20 from the agent victualler at Mahon
+
+STORE: spirits
+Name: Spirits
+Unit: puncheon | puncheons
+Holds: 72 gallons
+Ration: 0.5 pints every day
+Instead of: wine
+Capacity: 2
+Stock: 1 puncheon, No. 9, received 1799-10-14 from the victualling yard at Gibraltar
+
+STORE: lemon_juice
+Name: Lemon juice
+Unit: keg | kegs
+Holds: 10 gallons
+Ration: 0.75 oz every day
+Capacity: 4
+Bought
+
+STORE: water
+Name: Water
+Unit: butt | butts
+Holds: 108 gallons
+Ration: 1 gallon every day
+Kept by: master
+Capacity: 45
+Keeps: 60
+Bad: 4
+Bad word: stinking
+Stock: 19 butts, received 1800-02-24 from the watering place at Mahon
+
+STORE: powder
+Name: Powder
+Unit: barrel | barrels
+Holds: 100 lb
+Kept by: gunner
+Capacity: 40
+Stock: 30 barrels, received 1799-10-14 from the Ordnance at Gibraltar
+
+STORE: shot6
+Name: Round shot, six-pound
+Unit: shot | shot
+Holds: 1
+Kept by: gunner
+Capacity: 960
+Only if: not carronades
+Stock: 900 shot, received 1799-10-14 from the Ordnance at Gibraltar
+
+STORE: grape6
+Name: Grape, six-pound
+Unit: round | rounds
+Holds: 1
+Kept by: gunner
+Capacity: 160
+Only if: not carronades
+Stock: 160 rounds, received 1799-10-14 from the Ordnance at Gibraltar
+
+STORE: shot18
+Name: Round shot, eighteen-pound
+Unit: shot | shot
+Holds: 1
+Kept by: gunner
+Capacity: 640
+Only if: carronades
+Stock: 600 shot, received 1800-03-05 from the Ordnance at Mahon
+
+STORE: grape18
+Name: Grape, eighteen-pound
+Unit: round | rounds
+Holds: 1
+Kept by: gunner
+Capacity: 160
+Only if: carronades
+Stock: 128 rounds, received 1800-03-05 from the Ordnance at Mahon
+
+STORE: cordage
+Name: Cordage
+Unit: coil | coils
+Holds: 1
+Kept by: boatswain
+Capacity: 20
+Stock: 6 coils, received 1799-10-14 from the dockyard at Gibraltar
+
+STORE: canvas
+Name: Canvas
+Unit: bolt | bolts
+Holds: 1
+Kept by: boatswain
+Capacity: 30
+Stock: 9 bolts, received 1799-10-14 from the dockyard at Gibraltar
+
+STORE: spars
+Name: Spare spars
+Unit: spar | spars
+Holds: 1
+Kept by: carpenter
+Capacity: 6
+Stock: 2 spars, received 1799-10-14 from the dockyard at Gibraltar
+
+STORE: oakum
+Name: Oakum
+Unit: hundredweight | hundredweight
+Holds: 112 lb
+Kept by: carpenter
+Capacity: 6
+Stock: 2 hundredweight, received 1799-10-14 from the dockyard at Gibraltar
 </script>
 
 <script type="text/plain" class="content" data-name="Events: The opening">
@@ -462,7 +697,7 @@ Tags: ship
 Urgent
 Once
 Requires: admiral_appointment, not summoned
-Effects: set summoned
+Effects: set summoned; start summoned_at
 
 A boat comes off from the shore with a note in Mr Pardoe's narrow hand. The Commander-in-Chief will see Captain {surname} at his office this forenoon, and Mr Pardoe has the honour to be his most obedient humble servant.
 
@@ -481,7 +716,7 @@ Tags: ship
 Urgent
 Once
 Requires: presented, not summoned, day 3 or more
-Effects: set summoned
+Effects: set summoned; start summoned_at
 
 A note comes off from the shore. The Commander-in-Chief desires to see Captain {surname} at his office, at Captain {surname}'s earliest convenience, which is to say at once. It is signed by Mr Pardoe, who has the honour to be his most obedient humble servant.
 
@@ -514,6 +749,58 @@ Next: mahon_hub
 
 CHOICE: Put it in your pocket
 Next: ship_hub
+
+
+EVENT: purser_books
+Title: The Purser's Books
+Place: ship
+Tags: ship
+Urgent
+Once
+Requires: day 2 or more, after 09:00, before 18:00
+
+Mr Hosken, the purser, waits upon you with his books under his arm: a soft-spoken Cornishman, neat in black, with a careful eye and a pencil behind his ear. The books want your signature, as they want every captain's, and he has marked the places.
+
+CHOICE: Sign where he has marked
+Effects: set signed_blind
+Text: You sign. Mr Hosken blots each signature as you make it, thanks you, and is gone.
+
+CHOICE: Read them through before you sign
+Effects: set read_books; pass 2 hours
+Text: You read them through, which takes the whole of the forenoon. The figures agree with one another, which proves that Mr Hosken can add. You sign.
+
+CHOICE: Ask him about the late captain's stores
+Text: The late captain's stores, says Mr Hosken, were the late captain's affair. He has an account of them, which he will be happy to show you at some convenient time.
+
+
+EVENT: orders_by_hand
+Title: Orders by Hand
+Place: ship
+Tags: ship
+Urgent
+Once
+Requires: summoned, not admiral_seen, summoned_at 2 days or more
+Effects: set admiral_seen; orders convoy_toulon; start sail_by; standing -2
+
+A midshipman from the flagship comes up the side with a sealed packet and a face carefully empty of expression. It contains your orders, which are to take three victuallers to the squadron off Toulon, and a note in Mr Pardoe's hand observing that the Commander-in-Chief had hoped for the pleasure of seeing Captain {surname} in person, and has given up hoping.
+
+CHOICE: Acknowledge them
+Log: Received orders from the Commander-in-Chief, by hand, to see three victuallers safe to the squadron off Toulon.
+
+
+EVENT: sail_at_once
+Title: An Order to Sail
+Place: ship
+Tags: ship
+Urgent
+Once
+Requires: has_orders, not at_sea, sail_by 5 days or more
+Effects: standing -2; set ordered_to_sail
+
+A note from the flagship, unsealed, so that the midshipman who brings it, and the officer of the watch who receives it, and very likely the whole ship, may know what it says. The Commander-in-Chief directs Captain {surname} to put to sea in His Majesty's sloop *{ship}* at first light tomorrow, in execution of the orders he has already received.
+
+CHOICE: Weigh at first light, as ordered
+Next: weigh
 
 
 EVENT: governor_invitation
@@ -619,22 +906,15 @@ At first light you unmoor. The capstan goes round to the fiddler's tune, the cab
 
 [if sail_by 3 days or more] Mr Pardoe's last note, received at the gangway, observed that the Commander-in-Chief had expected the *{ship}* at sea some days since.
 
+[if not water_completed] Mr Treharne observes, to nobody in particular, that the water was never completed.
+
 CHOICE: Take her out under topsails, with every attention to the forms
 Log: Unmoored and weighed. Proceeded to sea under topsails, in obedience to orders.
-Next: ending_build2
+Next: stand_out
 
 CHOICE: Make all sail as soon as the harbour mouth is cleared
 Log: Unmoored and weighed. Made all sail on clearing the harbour.
-Next: ending_build2
-
-
-EVENT: ending_build2
-Title: Here the Log Breaks Off
-Ending
-
-The *{ship}* stands out to sea with her orders in your desk: {orders}.
-
-The sea itself (the ship's stores, the wind and the weather, the chart) is still to be built. Your log stands below, and your accounts are under Accounts.
+Next: stand_out
 </script>
 
 <script type="text/plain" class="content" data-name="Events: Mahon">
@@ -844,7 +1124,7 @@ CHOICE: Send in your name to Mr Pardoe
 Requires: not summoned
 Effects: pass 1 hour
 Chance 30, +25 if clerk_obliged, -20 if pardoe_grudge:
-Effects: set summoned
+Effects: set summoned; start summoned_at
 Text: Mr Pardoe comes out himself, which is a mark of something. The Admiral, he says, will see you now, if you are at leisure.
 Next: office_hub
 Otherwise:
@@ -1014,6 +1294,12 @@ CHOICE: Present your order at the Ordnance gun wharf
 Requires: gun_order, not carronades, not kept_long_guns
 Next: gun_exchange
 
+CHOICE: The agent victualler's storehouses
+Needs: before 16:00
+Why not: The storehouses are shut for the day.
+Effects: pass 15 minutes
+Next: victualling
+
 CHOICE: Return to the town
 Effects: pass 30 minutes
 Next: mahon_hub
@@ -1060,14 +1346,14 @@ Mr Lusk, Storekeeper of the Ordnance, reads the Admiral's order twice and holds 
 'Carronades,' he says. 'Eighteen-pounders. Sixteen of them, with slides and fittings.' He has them, it emerges; he has had them since the autumn. What he has not got is anybody to sway your six-pounders out and the carronades in, nor a lighter to carry them, nor any wish to hurry.
 
 CHOICE: Have the exchange made in the ordinary course
-Effects: pass 3 days; set carronades
+Effects: pass 3 days; set carronades; empty shot6 "Returned into the Ordnance stores"; empty grape6 "Returned into the Ordnance stores"; store shot18 +600 "Received of the Ordnance stores at Mahon"; store grape18 +128 "Received of the Ordnance stores at Mahon"
 Text: It takes three days, the loan of half your people, and a great deal of language from Mr Treharne. At the end of it the *{ship}* mounts sixteen eighteen-pounder carronades, and rides an inch higher for the want of the long guns' weight.
 Log: Exchanged the six-pounders for eighteen-pounder carronades at the Ordnance wharf.
 Next: dockyard_hub
 
 CHOICE: Ease the business with a present to his clerk
 Needs: money £3 or more
-Effects: money -£3 "A present to the Ordnance storekeeper's clerk"; pass 1 day; set carronades
+Effects: money -£3 "A present to the Ordnance storekeeper's clerk"; pass 1 day; set carronades; empty shot6 "Returned into the Ordnance stores"; empty grape6 "Returned into the Ordnance stores"; store shot18 +600 "Received of the Ordnance stores at Mahon"; store grape18 +128 "Received of the Ordnance stores at Mahon"
 Text: The lighter appears that afternoon with a working party, and the thing is done by the next day's dusk. Mr Lusk affects not to know how.
 Log: Exchanged the six-pounders for eighteen-pounder carronades at the Ordnance wharf.
 Next: dockyard_hub
@@ -1075,6 +1361,46 @@ Next: dockyard_hub
 CHOICE: Think better of it, and keep your long guns
 Effects: set kept_long_guns
 Text: Mr Lusk hands back the order with the look of a man whose afternoon has been restored to him.
+Next: dockyard_hub
+
+
+EVENT: victualling
+Title: The Victualling Stores
+Place: victualling
+Hub
+
+The agent victualler's storehouses stand on the quay below the dockyard, cool and dark and smelling of salt meat and tar. Mr Hosken, the purser, has come with you, with his steward and his books.
+
+[if provisions_completed, water_completed] The *{ship}* is stored and watered for as long as she can stow.
+
+CHOICE: Complete provisions to the ship's capacity
+Requires: not provisions_completed
+Effects: fill provisions "Received of the agent victualler at Mahon"; set provisions_completed; pass 1 day
+Text: It takes a day, the launch and two hired lighters. Mr Hosken counts every cask over the side and signs for every one, and the hold fills to the beams.
+Log: Received provisions from the agent victualler at Mahon.
+
+CHOICE: Complete the water
+Requires: not water_completed
+Effects: fill water "Filled by the launch at the watering place"; set water_completed; pass 1 day
+Text: The launch goes to and fro all day between the ship and the watering place with her empty butts, and comes back each time low in the water with full ones. By dusk the master reports the water complete.
+Log: Completed water.
+
+CHOICE: Buy lemon juice of the contractor, on the purser's cash
+Requires: not lemons_bought
+Needs: cash £6 or more
+Why not: The purser's cash will not run to it.
+Effects: cash -£6 "Lemon juice, three kegs, of the contractor at Mahon"; store lemon_juice +3 "Bought of the contractor at Mahon"; set lemons_bought
+Text: The contractor, the same Minorcan gentleman in black, has lemon juice in kegs at a price he describes as a kindness. Mr Hosken pays it out of the ship's money, and enters it.
+Log: Bought lemon juice for the ship's company.
+
+CHOICE: Buy onions and greens for the people, at your own charge
+Requires: not greens_bought
+Needs: money £3 or more
+Effects: money -£3 "Onions and greens for the ship's company"; set greens_bought; start fresh_food; morale +1
+Text: A boatload of onions and cabbages comes off to the ship that evening. The people eat them as if they had never seen a cabbage, which some of them have not, for months.
+
+CHOICE: Return to the dockyard
+Effects: pass 15 minutes
 Next: dockyard_hub
 </script>
 
@@ -1153,6 +1479,435 @@ CHOICE: Thank him, and take nothing
 Next: agent_hub
 </script>
 
+<script type="text/plain" class="content" data-name="Events: At sea">
+# ------------------------------------------------------------
+# At sea. Time passes watch by watch. "Next: watches 6" sails
+# up to six watches, stopping if anything tagged "sea" happens.
+# Choices with no "Next:" come back to sea_hub.
+# ------------------------------------------------------------
+
+EVENT: stand_out
+Title: Standing Out
+Place: sea
+Effects: set at_sea; voyage outward; pass 2 hours
+
+By the forenoon Mahon is a white smudge on the quarter, and the *{ship}* is lifting to the long Mediterranean swell. The watches are set. The master lays off the course, and the purser's steward goes below to his casks.
+
+[if not provisions_completed] Mr Hosken has made no complaint about the provisions, which is unlike a purser.
+
+CHOICE: Stand on
+Next: watches 1
+
+CHOICE: Exercise the great guns while the light serves
+Requires: after 08:00, before 16:00
+Next: exercise_guns
+
+
+EVENT: sea_hub
+Title: At Sea
+Place: sea
+Hub
+
+[if voyage outward, orders_cruise_catalan] The *{ship}* stands on for the coast of Catalonia.
+
+[if voyage outward, orders_convoy_toulon] The *{ship}* keeps company with her three victuallers, shortening sail every hour for the slowest of them, which is always the *Three Brothers*.
+
+[if voyage outward, orders_despatches_hebe] The *{ship}* carries everything she can for Barcelona, with the Admiral's packet in your desk.
+
+[if voyage station] She is on her cruising ground. There is not a sail in sight from the masthead, nor has there been all day.
+
+[if voyage homeward] The *{ship}* is homeward bound for Mahon.
+
+[if short_allowance] The people are on two-thirds allowance, and know it.
+
+CHOICE: Stand on for a watch
+Next: watches 1
+
+CHOICE: Stand on until something happens
+Next: watches 42
+
+CHOICE: Exercise the great guns
+Needs: after 08:00, before 16:00
+Why not: Not by night.
+Next: exercise_guns
+
+CHOICE: Order a survey of the provisions
+Requires: not surveyed
+Next: provisions_survey
+
+CHOICE: Put the people to two-thirds allowance
+Requires: not short_allowance
+Effects: allowance short; set short_allowance; morale -1
+Text: The order is given at dinner. Six men now draw what four drew before, and every one of them can do the sum. They will be paid the difference in money, eventually, which is something, and is not dinner.
+Log: Put the ship's company to two-thirds allowance of all species.
+
+CHOICE: Restore full allowance
+Requires: short_allowance
+Effects: allowance full; morale +1
+Text: Full allowance is restored at dinner. It is the most popular order you have given.
+Log: Restored the ship's company to full allowance.
+
+CHOICE: Bear up for Mahon
+Requires: not voyage homeward
+Next: bear_up
+
+
+EVENT: exercise_guns
+Title: Exercising the Great Guns
+Place: sea
+
+The drum beats to quarters. The guns are cast loose, the gun captains take their stations, and Mr Treharne stands by you with his watch in his hand.
+
+[if gunnery 2 or less] It is not a quick business. Half the crews are landmen who have never seen a gun fired, and the other half remember the late captain, who never fired one.
+
+[if gunnery 3 or more] They are quicker than they were, and they know it.
+
+CHOICE: Go through the motions without powder
+Effects: gunnery +1; pass 2 hours
+Text: The guns are run in, sponged, loaded with nothing, run out and pointed at nothing, over and over, until the men can do it in the dark. It is dull, and it answers, up to a point.
+Log: Exercised the great guns.
+
+CHOICE: Fire three broadsides at a cask
+Requires: not carronades
+Needs: powder 1 or more
+Effects: store powder -0.48 "Expended in exercising the great guns"; store shot6 -24 "Expended in exercising the great guns"; gunnery +2; pass 2 hours
+Text: A cask with a flag on it is dropped astern. The first broadside is ragged and wide, the second less so, and the third knocks the flag away, though nobody will swear which gun did it.
+Log: Exercised the great guns. Fired three broadsides at a mark.
+
+CHOICE: Fire three broadsides at a cask
+Requires: carronades
+Needs: powder 1 or more
+Effects: store powder -0.36 "Expended in exercising the great guns"; store shot18 -24 "Expended in exercising the great guns"; gunnery +2; pass 2 hours
+Text: A cask with a flag on it is dropped astern. The carronades go off with a short, flat bang and a great deal of recoil. At three cables they throw wide; at one cable they would have smashed it to staves, as the gunner observes.
+Log: Exercised the great guns. Fired three broadsides at a mark.
+
+CHOICE: Pipe down; another day
+Text: The guns are secured again. The people go back to their work, not all of them sorry.
+
+
+EVENT: provisions_survey
+Title: A Survey of the Provisions
+Place: sea
+Effects: survey; set surveyed; pass 1 watch
+
+Mr Treharne, the master and the boatswain go down into the hold with the purser's steward, a lantern and a slate, and spend the watch among the casks. The purser goes with them, and does not enjoy it.
+
+{survey}
+
+[if survey_over] The hold holds more than the purser's books allow. Nobody says what that means. Nobody needs to.
+
+CHOICE: Send for Mr Hosken
+Requires: survey_over
+Next: purser_confronted
+
+CHOICE: Have the books corrected, and say nothing
+Requires: survey_over
+Effects: set purser_tolerated
+Log: Held a survey on the provisions.
+
+CHOICE: Sign the survey
+Requires: not survey_over
+Log: Held a survey on the provisions.
+
+
+EVENT: purser_confronted
+Title: Mr Hosken
+Place: sea
+
+Mr Hosken comes aft with his books, and stands with his hat in his hand while you put the question to him. He has his explanation ready: leakage allowed for and not suffered, the purser's eighth, the custom of the service, and the late captain, who understood these things.
+
+CHOICE: Order the surplus issued to the people, as theirs by right
+Effects: clear purser_skims; set purser_checked; morale +2
+Text: He bows, and it is done, and the people know of it within the hour, as the people know of everything.
+Log: Held a survey on the provisions. Ordered the provisions found over to be issued to the ship's company.
+
+CHOICE: Tell him privately that it will stop
+Chance 70:
+Effects: clear purser_skims; set purser_checked
+Text: 'Certainly, sir,' says Mr Hosken. And, so far as anyone can tell, it does.
+Log: Held a survey on the provisions.
+Otherwise:
+Text: 'Certainly, sir,' says Mr Hosken.
+Log: Held a survey on the provisions.
+
+CHOICE: Accept his explanation
+Effects: set purser_tolerated
+Text: Mr Hosken thanks you. He has served under a great many captains, he says, and few have understood the business so well.
+Log: Held a survey on the provisions.
+
+
+EVENT: bear_up
+Title: Bearing Up for Mahon
+Place: sea
+
+To leave your station before your time is a thing the Commander-in-Chief will want explained, in writing, at length.
+
+[if water_days 10 or less] With the water as it stands, the explanation writes itself.
+
+CHOICE: Bear up for Mahon
+Requires: water_days 11 or more
+Effects: voyage homeward; set left_station_early
+Log: Bore up for Mahon.
+
+CHOICE: Bear up for Mahon, for want of water
+Requires: water_days 10 or less
+Effects: voyage homeward; set returned_for_water
+Log: Bore up for Mahon, for want of water.
+
+CHOICE: Think better of it
+
+
+EVENT: cruise_station
+Title: The Coast of Catalonia
+Place: sea
+Tags: sea
+Urgent
+Once
+Requires: outward_done, orders_cruise_catalan
+Effects: voyage station
+
+The masthead hails the deck: land on the lee bow. By the change of the watch it is the coast of Catalonia, brown hills and a white town and a church on a headland, which the master names as near Cape San Sebastián, though he will not swear to it.
+
+This is your cruising ground for six weeks. There is not a sail in sight.
+
+CHOICE: Begin the cruise
+Log: Made the coast of Catalonia. Began to cruise according to orders.
+
+
+EVENT: despatches_delivered
+Title: The Hebe
+Place: sea
+Tags: sea
+Urgent
+Once
+Requires: outward_done, orders_despatches_hebe
+Effects: voyage station
+
+Off Barcelona you raise a frigate under easy sail and exchange the private signal, and she is the *Hebe*. You go across in the cutter with the packet in your coat. Captain Wyatt, a tall, grey, hurried man, signs for it on the capstan head, asks for the news of Mahon, and does not listen to the answer.
+
+You are free now to cruise a fortnight on this coast.
+
+CHOICE: Return aboard, and begin the cruise
+Log: Spoke His Majesty's Ship Hebe off Barcelona. Delivered the Commander-in-Chief's packet into Captain Wyatt's hand and received his receipt.
+
+
+EVENT: convoy_delivered
+Title: The Squadron off Toulon
+Place: sea
+Tags: sea
+Urgent
+Once
+Requires: outward_done, orders_convoy_toulon
+Effects: voyage homeward
+
+The topsails of the squadron rise over the horizon at last: four sail of the line and a frigate, standing off and on before a harbour you cannot see. The victuallers are delivered to the senior officer, who signs for three ships, so much beef and biscuit, and no great opinion of the escort.
+
+CHOICE: Make sail for Mahon
+Log: Joined the squadron off Toulon and delivered the victuallers to the senior officer.
+
+
+EVENT: station_done
+Title: Time Expired
+Place: sea
+Tags: sea
+Urgent
+Once
+Requires: station_done
+Effects: voyage homeward
+
+Your time on the station is up. The master lays off the course for Mahon without being asked, and the people, who can count days as well as anyone, are cheerful at their work for the first time in a week.
+
+CHOICE: Bear up for Mahon
+Log: The time of cruising being expired, bore up for Mahon.
+
+
+EVENT: bad_cask
+Title: A Cask Found Bad
+Place: sea
+Tags: sea
+Urgent
+Requires: bad_cask
+
+The purser's steward comes aft with his hat in his hand. The {bad_item}, No. {bad_no}, is found on opening to be {bad_word}.
+
+He would like to know whether it is to be surveyed and condemned, or issued, it being, as he says, no worse than some.
+
+CHOICE: Order a survey, and have it condemned
+Effects: condemn; clear bad_cask; pass 1 hour
+Text: Mr Treharne, the master and the boatswain survey it with their noses and condemn it in writing. It goes over the side, and the purser's account is the lighter by what was left in it.
+Log: Surveyed and condemned {bad_item}, No. {bad_no}.
+
+CHOICE: Have it issued all the same
+Effects: clear bad_cask; set issued_bad; morale -1
+Text: It is issued. The people say what they think of it, at length, and the Navy is the richer by what it would have cost.
+
+
+EVENT: water_low
+Title: The Water
+Place: sea
+Tags: sea
+Urgent
+Once
+Requires: at_sea, water_days 10 or less, not voyage homeward
+
+The master reports that there are {water_days} days' water remaining at the present allowance, and not a drop more, and that he thought you would wish to know.
+
+CHOICE: Put the people to two-thirds allowance
+Requires: not short_allowance
+Effects: allowance short; set short_allowance; morale -1
+Log: Put the ship's company to two-thirds allowance, the water being short.
+
+CHOICE: Bear up for Mahon
+Effects: voyage homeward; set returned_for_water
+Log: Bore up for Mahon, for want of water.
+
+CHOICE: Stand on as you are
+
+
+EVENT: water_out
+Title: The Last of the Water
+Place: sea
+Tags: sea
+Urgent
+Once
+Requires: at_sea, water_days 0 or less
+Effects: set water_ran_out; morale -2; standing -1
+
+The master reports that the last butt was started this forenoon and is now empty. The people have wine, and the wine will last a while; but there is no water to boil the beef in, and they are already saying so.
+
+CHOICE: Crack on for Mahon with every stitch she will carry
+Requires: not voyage homeward
+Effects: voyage homeward
+Log: The water being expended, bore up for Mahon.
+
+CHOICE: Crack on for Mahon with every stitch she will carry
+Requires: voyage homeward
+
+
+EVENT: bread_low
+Title: The Bread
+Place: sea
+Tags: sea
+Urgent
+Once
+Requires: at_sea, biscuit_days 7 or less, not voyage homeward
+
+Mr Hosken reports, with every appearance of regret, that there is bread for {biscuit_days} days at the present allowance, and no more.
+
+CHOICE: Put the people to two-thirds allowance
+Requires: not short_allowance
+Effects: allowance short; set short_allowance; morale -1
+Log: Put the ship's company to two-thirds allowance, the bread being short.
+
+CHOICE: Bear up for Mahon
+Effects: voyage homeward; set returned_for_bread
+Log: Bore up for Mahon, for want of bread.
+
+CHOICE: Stand on as you are
+
+
+EVENT: short_weight
+Title: Short Weight
+Place: sea
+Tags: sea
+Once
+Weight: 2
+Requires: purser_skims, day 4 or more, not purser_checked
+
+At dinner the cooks of three messes come aft together, which is itself a thing to notice, and stand at the break of the quarterdeck with a piece of beef on a platter. It is, they say, a four-pound piece, and it is not.
+
+CHOICE: Have it weighed in your presence
+Effects: set short_weight_proved; morale +1
+Text: The purser's steward brings his scales. The piece weighs three pounds and a little over. The steward says that meat shrinks in the boiling, which is true, and that the scales are the Navy's, which is also true. The messes go forward satisfied that they have been heard, if nothing else.
+Log: Heard a complaint of the ship's company of short weight in the beef.
+
+CHOICE: Refer them to the purser
+Effects: morale -1
+Text: They go, and Mr Hosken explains the purser's eighth to them, and they come away knowing exactly what they knew before.
+
+CHOICE: Send them forward with a flea in their ear
+Effects: morale -2; set men_rebuffed
+Text: They go forward. Complaining in a body is near enough to mutiny that they will not try it twice. They will not forget it, either.
+
+
+EVENT: leak_found
+Title: The Carpenter's Report
+Place: sea
+Tags: sea
+Once
+Requires: day 4 or more
+Effects: leak +3
+
+The carpenter comes aft at the change of the watch to report that she is making more water than she did: {leak} inches an hour, and the pumps going for half of every watch to keep her free.
+
+CHOICE: Have him search for it
+Effects: pass 1 watch
+Chance 55:
+Effects: leak -3
+Text: He finds it at last in the fore peak: a treenail started under the bows, and the sea coming in round it in a thin, steady stream. He plugs it, and she is easier at once.
+Log: The carpenter found and stopped a leak in the bows.
+Otherwise:
+Text: He searches for a whole watch with a candle and a mallet, and finds nothing he can come at from inside the ship.
+
+CHOICE: Keep the pumps going
+Text: The pumps go on clanking. The people pump, and say what people at pumps say.
+
+
+EVENT: rats_bread
+Title: Rats in the Bread-Room
+Place: sea
+Tags: sea
+Once
+Requires: day 3 or more
+Effects: store biscuit -1 "Destroyed by rats in the bread-room"
+
+The purser's steward reports that the rats have got into the bread-room, through a hole nobody knew of, and have spoilt a whole bag of biscuit before anyone found them out.
+
+CHOICE: Have the bread-room cleared and smoked
+Effects: pass 1 watch; set bread_room_smoked
+Text: The bread is got up, the bread-room smoked with brimstone, and the hole nailed over with tin. A good many rats come out of it. The ship's boys are paid a penny a tail.
+
+CHOICE: Ask whether there is a cat aboard
+Text: There are, it emerges, three, all of them belonging to the gunroom and none of them interested.
+
+
+EVENT: topsail_split
+Title: A Split Topsail
+Place: sea
+Tags: sea
+Once
+Requires: day 2 or more
+Effects: sails -4
+
+In a sudden squall the fore-topsail splits from head to foot with a noise like a gun, and flogs itself to rags before the men aloft can master it.
+
+CHOICE: Bend the spare topsail, and set the sailmaker to the old one
+Effects: store canvas -1 "Expended in repairing the fore-topsail"; pass 1 hour
+Text: The new sail is bent and set within the hour, which is not bad for this crew. The sailmaker sits in the waist with the old one across his knees for three days.
+Log: In a squall split the fore-topsail. Bent another.
+
+
+EVENT: home_arrival
+Title: Here the Log Breaks Off
+Place: harbour
+Tags: sea
+Urgent
+Once
+Ending
+Requires: homeward_done
+Effects: clear at_sea; log "Came to in Mahon harbour, and moored."
+
+The *{ship}* comes up the long harbour of Mahon and moors off the hospital on {date}.
+
+[if left_station_early] Mr Pardoe will want to know why she is back before her time.
+
+[if returned_for_water] She has come back for water, which is a reason the Admiral has heard before.
+
+[if water_ran_out] She came in with her water out, and the people know whose fault that is.
+
+The wind, the chart and the enemy are still to be built. Your log stands below, and the ship's books are under Books.
+</script>
+
 <script type="text/plain" class="content" data-name="Orders">
 # ------------------------------------------------------------
 # Written orders, as the player reads them under Orders.
@@ -1161,6 +1916,9 @@ Next: agent_hub
 
 ORDERS: cruise_catalan
 Heading: A cruise on the coast of Catalonia
+Passage: 8 watches
+Station: 42 days
+Return: 8 watches
 
 By Sir Robert Lessingham, Knight of the Most Honourable Order of the Bath, Vice-Admiral of the White, and Commander-in-Chief of His Majesty's Ships and Vessels employed and to be employed in the Mediterranean.
 
@@ -1181,6 +1939,9 @@ To {name} Esquire, Commander of His Majesty's Sloop *{ship}*.
 
 ORDERS: convoy_toulon
 Heading: Victuallers to the squadron off Toulon
+Passage: 16 watches
+Station: 0 days
+Return: 12 watches
 
 By Sir Robert Lessingham, Knight of the Most Honourable Order of the Bath, Vice-Admiral of the White, and Commander-in-Chief of His Majesty's Ships and Vessels employed and to be employed in the Mediterranean.
 
@@ -1203,6 +1964,9 @@ To {name} Esquire, Commander of His Majesty's Sloop *{ship}*.
 
 ORDERS: despatches_hebe
 Heading: Despatches for the Hebe off Barcelona
+Passage: 7 watches
+Station: 14 days
+Return: 7 watches
 
 By Sir Robert Lessingham, Knight of the Most Honourable Order of the Bath, Vice-Admiral of the White, and Commander-in-Chief of His Majesty's Ships and Vessels employed and to be employed in the Mediterranean.
 
@@ -1287,7 +2051,7 @@ sanding: Sprinkling fine sand over wet ink to dry it.
 claret: Red wine of Bordeaux. In wartime it came by prize, or by smugglers, or with a story attached.
 Manxman: A native of the Isle of Man.
 capstan: The great upright drum, turned by men pushing on bars, that heaves in the anchor cable.
-cable: The great rope by which a ship rides to her anchor.
+cable | cables: The great rope by which a ship rides to her anchor. As a measure of distance, a cable is a tenth of a sea mile, about two hundred yards.
 unmoor | moorings: A ship moored in harbour lay to two anchors or to a fixed mooring; unmooring was the first business of getting under way.
 falls off | gathers way: A ship falls off when her head swings away from the wind, and gathers way as she begins to move through the water.
 topsails: The second sails up each mast and the workhorse of the square rig; a ship under topsails alone is under easy control.
@@ -1340,6 +2104,53 @@ two bells | four bells | eight bells: Time aboard is struck on the ship's bell e
 first watch: The watch from eight in the evening until midnight.
 watch: One of the divisions of the ship's day, mostly of four hours: the first watch (8 p.m. to midnight), middle, morning, forenoon, afternoon, and the two short dog watches between 4 and 8 p.m.
 fortnight: Two weeks.
+biscuit | bread: Ship's biscuit, baked hard to keep. "Bread" in the Navy meant biscuit. A pound a day per man.
+pease: Dried split peas, boiled into a thick soup. Half a pint, four days a week.
+oatmeal: Boiled with water into burgoo for breakfast. A pint, three days a week.
+beef | pork | pieces: Salt meat came in casks of pieces of a fixed weight: four pounds of beef, two of pork, before boiling. Casks were numbered, and opening one was entered in the log, with the number of pieces found and any shortfall.
+firkin | firkins: A small cask; a firkin of butter held 56 pounds.
+hogshead | hogsheads: A cask of about 63 gallons.
+puncheon | puncheons: A large cask of about 72 gallons, the usual cask for spirits.
+butt | butts: A large cask of about 108 gallons, the usual cask for water.
+bushel | bushels: A measure of dry goods: eight gallons, or 64 pints.
+allowance | full allowance | two-thirds allowance: The ration. On "two-thirds allowance" (six men sharing four men's food) the men were paid short-allowance money for what they went without, eventually.
+purser's eighth: A purser was allowed one-eighth of most provisions for waste and leakage, so that the men's "pound" was fourteen ounces. Anything he kept back beyond that was fraud.
+purser's steward: The purser's assistant, who kept the bread-room and issued the provisions.
+agent victualler: The Victualling Board's officer at a foreign port, who supplied ships with provisions.
+victualling yard: A naval establishment for storing and issuing provisions. Gibraltar had one.
+contractor: A merchant engaged to supply fresh provisions to the fleet. Contractors were widely believed to grow rich on it.
+lemon juice: Issued against scurvy, mixed with sugar. Its use was ordered throughout the fleet in these years, though not every captain troubled with it.
+scurvy: The sailor's disease, from want of fresh food. Lemon juice and fresh greens keep it off.
+survey: A formal inspection by three officers, whose signed report the Navy accepted as evidence. Stores were condemned, and accounts corrected, only by survey.
+condemned: Declared unfit by survey, and so removed from the purser's charge.
+watering place: A spring or fountain where ships filled their water casks, carried to and fro in the boats.
+masthead | the masthead: The lookout, posted high on the mast, who sees a sail or land long before the deck does.
+lee bow: Ahead and to the side away from the wind.
+private signal: A secret signal by which British warships recognised each other at sea. It was changed regularly and guarded closely.
+sail of the line: A ship of the line of battle: a two- or three-decker of sixty-four guns or more.
+standing off and on: Sailing back and forth off a harbour or coast, keeping watch on it.
+drum beats to quarters | beats to quarters: The drum roll calling every man to his station for action, or for exercise.
+cast loose: Freed from the lashings that secure a gun at sea.
+gun captains: The leading men of each gun's crew, who aim and fire it.
+gunner: The warrant officer in charge of the guns, powder and shot, who answers for every round to the Board of Ordnance.
+boatswain: The warrant officer in charge of the rigging, sails, anchors and cables, and of driving the men to their work.
+carpenter: The warrant officer in charge of the hull, masts and boats, and of stopping leaks.
+master: The warrant officer responsible for navigation, and for the stowage of the hold.
+sailmaker: The petty officer who makes and mends the sails.
+bend: To make a sail fast to its yard, ready for setting.
+squall: A sudden, violent gust of wind, often with rain.
+treenail: A wooden peg, used in place of an iron bolt, that fastens a ship's planks to her frames.
+fore peak: The narrow space right forward in the bottom of the ship.
+pumps | the pumps: The chain pumps, worked by hand, that clear the water a ship makes. Every wooden ship leaks some; the question is how much.
+inches an hour | inches of water: Water rising in the well, measured with a sounding rod. A tight ship might make an inch or two an hour.
+oakum: Old rope picked apart into loose fibre, driven into seams to make them watertight.
+bread-room: The lined compartment aft where the biscuit is kept, as dry, and as free of rats, as can be managed.
+brimstone: Sulphur, burnt to smoke out rats and vermin.
+grape: Grapeshot: a cluster of small iron balls fired together, murderous at close range.
+round shot: Solid iron balls, the ordinary ammunition of a great gun.
+spars: Masts, yards and booms, or the spare timbers carried to replace them.
+fished: Splinted, as a broken limb is splinted, with lengths of timber bound round a sprung spar.
+sprung: Of a mast or yard: cracked, but still standing.
 </script>
 
 <!-- ============================================================
@@ -1349,7 +2160,7 @@ fortnight: Two weeks.
 (function(){
 'use strict';
 
-const BUILD = 'Build 2: Mahon and orders';
+const BUILD = 'Build 3: ship, stores and time';
 const SAVE_KEY = 'sloop.autosave.v1';
 const PREF_KEY = 'sloop.prefs.v1';
 const GAME_ID = 'sloop-of-war';
@@ -1501,6 +2312,18 @@ function parseValue(name, raw){
   const n = parseFloat(String(raw).replace(/^\+/, ''));
   return isNaN(n) ? null : n;
 }
+/* weights are kept in ounces, liquids in fluid ounces (sixteen to the pint), counted things as numbers */
+function parseMeasure(str, dimHint){
+  const m = String(str).trim().match(/^(\d+(?:\.\d+)?)\s*(lb|oz|pints?|quarts?|gallons?)?$/i);
+  if (!m) return null;
+  const n = +m[1], u = (m[2] || '').toLowerCase();
+  if (!u) return { dim: 'n', base: n };
+  if (u === 'lb') return { dim: 'w', base: n * 16 };
+  if (u === 'oz') return { dim: dimHint === 'v' ? 'v' : 'w', base: n };
+  if (u.startsWith('pint')) return { dim: 'v', base: n * 16 };
+  if (u.startsWith('quart')) return { dim: 'v', base: n * 32 };
+  return { dim: 'v', base: n * 128 };
+}
 function unitMins(n, u){
   u = u.toLowerCase();
   return u.startsWith('minute') ? n : u.startsWith('hour') ? n * 60 : u.startsWith('watch') ? n * 240 : n * 1440;
@@ -1510,8 +2333,10 @@ function parseConds(str, where, prob){
   const out = [];
   for (const part0 of splitOutsideQuotes(str.replace(/\band\b/gi, ','), /,/)){
     const part = part0.trim(); let m;
-    if ((m = part.match(/^(?:not|no)\s+([a-z0-9_]+)$/i))) out.push({ type: 'flag', name: m[1].toLowerCase(), neg: true });
+    if ((m = part.match(/^(?:not|no)\s+voyage\s+([a-z0-9_]+)$/i))) out.push({ type: 'voyage', name: m[1].toLowerCase(), neg: true });
+    else if ((m = part.match(/^(?:not|no)\s+([a-z0-9_]+)$/i))) out.push({ type: 'flag', name: m[1].toLowerCase(), neg: true });
     else if ((m = part.match(/^place\s+([a-z0-9_]+)$/i))) out.push({ type: 'place', name: m[1].toLowerCase() });
+    else if ((m = part.match(/^voyage\s+([a-z0-9_]+)$/i))) out.push({ type: 'voyage', name: m[1].toLowerCase() });
     else if ((m = part.match(/^(before|after)\s+(\d{1,2})[:.](\d{2})$/i))) out.push({ type: 'tod', op: m[1].toLowerCase(), at: (+m[2]) * 60 + (+m[3]) });
     else if ((m = part.match(/^([a-z0-9_]+)\s+(\d+(?:\.\d+)?)\s*(minutes?|hours?|watch(?:es)?|days?)\s+or\s+(more|less)$/i)))
       out.push({ type: 'timer', name: m[1].toLowerCase(), mins: unitMins(+m[2], m[3]), op: m[4].toLowerCase() === 'more' ? '>=' : '<=' });
@@ -1553,6 +2378,14 @@ function parseEffects(str, where, prob){
     else if ((m = part.match(/^start\s+([a-z0-9_]+)$/i))) out.push({ op: 'start', name: m[1].toLowerCase() });
     else if ((m = part.match(/^stop\s+([a-z0-9_]+)$/i))) out.push({ op: 'stop', name: m[1].toLowerCase() });
     else if ((m = part.match(/^orders\s+([a-z0-9_]+)$/i))) out.push({ op: 'orders', name: m[1].toLowerCase(), where });
+    else if ((m = part.match(/^store\s+([a-z0-9_]+)\s*([+-])\s*(\d+(?:\.\d+)?)(?:\s+"([^"]*)")?$/i))) out.push({ op: 'store', name: m[1].toLowerCase(), value: (m[2] === '-' ? -1 : 1) * +m[3], label: m[4] || '', where });
+    else if ((m = part.match(/^empty\s+([a-z0-9_]+)(?:\s+"([^"]*)")?$/i))) out.push({ op: 'empty', name: m[1].toLowerCase(), label: m[2] || '', where });
+    else if ((m = part.match(/^fill\s+([a-z0-9_]+)(?:\s+"([^"]*)")?$/i))) out.push({ op: 'fill', name: m[1].toLowerCase(), label: m[2] || '', where });
+    else if (/^condemn$/i.test(part)) out.push({ op: 'condemn' });
+    else if (/^survey$/i.test(part)) out.push({ op: 'survey' });
+    else if ((m = part.match(/^allowance\s+(short|full)$/i))) out.push({ op: 'allowance', short: m[1].toLowerCase() === 'short' });
+    else if ((m = part.match(/^voyage\s+([a-z0-9_]+)(?:\s+(\d+(?:\.\d+)?)\s*(watch(?:es)?|days?|hours?))?$/i))) out.push({ op: 'voyage', name: m[1].toLowerCase(), watches: m[2] ? unitMins(+m[2], m[3]) / 240 : null });
+    else if ((m = part.match(/^roll\s+([a-z0-9_]+)\s+(\d+(?:\.\d+)?)$/i))) out.push({ op: 'roll', name: m[1].toLowerCase(), chance: +m[2] });
     else if ((m = part.match(/^pass\s+(\d+)\s*(minutes?|hours?|watch(?:es)?|days?)$/i))) out.push({ op: 'pass', mins: unitMins(+m[1], m[2]) });
     else if ((m = part.match(/^until\s+(\d{1,2})[:.](\d{2})$/i))) out.push({ op: 'until', at: (+m[1]) * 60 + (+m[2]) });
     else if ((m = part.match(/^place\s+([a-z0-9_]+)$/i))) out.push({ op: 'place', name: m[1].toLowerCase() });
@@ -1575,13 +2408,14 @@ function parseNext(v, where, prob){
   const s = v.trim(); let m;
   if (/^end$/i.test(s)) return { type: 'end' };
   if ((m = s.match(/^any\s+([a-z0-9_]+)$/i))) return { type: 'any', tag: m[1].toLowerCase() };
+  if ((m = s.match(/^watch(?:es)?(?:\s+(\d+))?$/i))) return { type: 'watches', n: m[1] ? +m[1] : 1 };
   if (/^[a-z0-9_]+$/i.test(s)) return { type: 'go', id: s };
   prob('error', where, `"Next: ${s}" should name one event, or say "any <place>" or "end".`);
   return null;
 }
 
 function parseContent(blocks){
-  const P = { settings: {}, events: {}, order: [], orders: {}, glossary: [], problems: [], stats: { words: 0 } };
+  const P = { settings: {}, events: {}, order: [], orders: {}, ship: {}, stores: {}, storeOrder: [], glossary: [], problems: [], stats: { words: 0 } };
   const prob = (sev, where, msg) => P.problems.push({ sev, where, msg });
 
   /* money values must be known before anything is parsed */
@@ -1593,7 +2427,7 @@ function parseContent(blocks){
 
   for (const blk of blocks){
     const lines = blk.text.replace(/\r/g, '').split('\n');
-    let section = null, ev = null, ch = null, target = null, lastKey = null, ord = null;
+    let section = null, ev = null, ch = null, target = null, lastKey = null, ord = null, sto = null;
     let para = [], paraLine = 0;
     const where = i => `${blk.name}, line ${i + 1}`;
     const flushPara = () => {
@@ -1613,6 +2447,15 @@ function parseContent(blocks){
       if (t === ''){ flushPara(); if (lastKey !== 'gloss') lastKey = null; return; }
 
       if (/^settings$/i.test(t)){ flushPara(); section = 'settings'; ev = ch = ord = null; return; }
+      if (/^SHIP$/.test(t)){ flushPara(); section = 'ship'; ev = ch = ord = null; return; }
+      if ((m = t.match(/^STORE\s*:\s*(.*)$/))){
+        flushPara(); section = 'store'; ev = ch = ord = null;
+        const id = m[1].trim().toLowerCase();
+        if (!/^[a-z0-9_]+$/.test(id)) prob('error', where(i), `The store name "${id}" should use only letters, numbers and underscores.`);
+        if (P.stores[id]) prob('error', where(i), `There are two stores called "${id}".`);
+        sto = P.stores[id] = { id, name: id, unit: ['cask', 'casks'], dim: 'n', size: 1, ration: null, officer: 'purser', capacity: 0, keeps: 0, bad: 0, badWord: 'bad', short: 0, pieces: 0, instead: null, only: null, bought: false, logOpen: false, stock: [], where: where(i), rationRaw: null };
+        P.storeOrder.push(id); return;
+      }
       if (/^glossary$/i.test(t)){ flushPara(); section = 'glossary'; ev = ch = ord = null; lastKey = null; return; }
       if ((m = t.match(/^ORDERS\s*:\s*(.*)$/))){
         flushPara(); section = 'orders'; ev = ch = null;
@@ -1642,8 +2485,40 @@ function parseContent(blocks){
         } else prob('warn', where(i), 'Glossary lines should look like "term | other form: definition".');
         return;
       }
+      if (section === 'ship'){
+        if ((m = t.match(/^([a-z0-9_]+)\s*:\s*(.*)$/i))) P.ship[m[1].toLowerCase()] = m[2].trim();
+        else prob('warn', where(i), 'Ship lines should look like "leak: 2".');
+        return;
+      }
+      if (section === 'store'){
+        if (/^log openings$/i.test(t)){ sto.logOpen = true; return; }
+        if (/^bought$/i.test(t)){ sto.bought = true; return; }
+        if (!(m = t.match(/^([a-z ]+?)\s*:\s*(.*)$/i))){ prob('warn', where(i), 'Store lines should look like "Holds: 112 lb".'); return; }
+        const k = m[1].toLowerCase(), v = m[2].trim();
+        if (k === 'name') sto.name = v;
+        else if (k === 'unit'){ const u = v.split('|').map(x => x.trim()); sto.unit = [u[0], u[1] || u[0] + 's']; }
+        else if (k === 'holds'){ const ms = parseMeasure(v); if (!ms) prob('error', where(i), `I could not read "${v}". Write it like "112 lb", "108 gallons" or "1".`); else { sto.dim = ms.dim; sto.size = ms.base; } }
+        else if (k === 'ration') sto.rationRaw = { v, where: where(i) };
+        else if (k === 'kept by') sto.officer = v.toLowerCase();
+        else if (k === 'capacity') sto.capacity = parseFloat(v) || 0;
+        else if (k === 'keeps') sto.keeps = parseFloat(v) || 0;
+        else if (k === 'bad') sto.bad = parseFloat(v) || 0;
+        else if (k === 'bad word') sto.badWord = v;
+        else if (k === 'short') sto.short = parseFloat(v) || 0;
+        else if (k === 'pieces') sto.pieces = parseFloat(v) || 0;
+        else if (k === 'instead of') sto.instead = v.toLowerCase();
+        else if (k === 'only if') sto.only = parseConds(v, where(i), prob);
+        else if (k === 'stock'){
+          const sm = v.match(/^(\d+(?:\.\d+)?)\s+[a-z]+(?:,\s*nos?\.?\s*(\d+)(?:\s*[–-]\s*\d+)?)?(?:,\s*received\s+(\d{4}-\d{1,2}-\d{1,2}))?(?:\s+(?:from|of)\s+(.+))?$/i);
+          if (!sm) prob('error', where(i), `I could not read the stock line "${short(v)}".`);
+          else sto.stock.push({ qty: +sm[1], no: sm[2] ? +sm[2] : null, date: sm[3] || null, from: sm[4] || '' });
+        }
+        else prob('warn', where(i), `"${m[1]}" is not something a store has.`);
+        return;
+      }
       if (section === 'orders'){
         if ((m = t.match(/^heading\s*:\s*(.*)$/i))){ ord.heading = m[1].trim(); return; }
+        if ((m = t.match(/^(passage|station|return)\s*:\s*(\d+(?:\.\d+)?)\s*(watch(?:es)?|days?|hours?)$/i))){ ord[m[1].toLowerCase()] = unitMins(+m[2], m[3]) / 240; return; }
         if (t.startsWith('>')){ flushPara(); ord.paras.push({ text: t.replace(/^>\s*/, ''), sig: true }); return; }
         if (!para.length) paraLine = i + 1;
         para.push(t); return;
@@ -1709,6 +2584,25 @@ function parseContent(blocks){
     });
     flushPara();
   }
+  for (const id of P.storeOrder){
+    const d = P.stores[id];
+    if (d.rationRaw){
+      const rm = d.rationRaw.v.match(/^(.+?)\s+(every day|daily|on\s+(.+))$/i);
+      const ms = rm && parseMeasure(rm[1], d.dim);
+      if (!ms || ms.dim !== d.dim) prob('error', d.rationRaw.where, `I could not read the ration "${d.rationRaw.v}". Write it like "1 lb every day" or "2 lb on Tuesday and Saturday", in the same kind of measure as Holds.`);
+      else {
+        let days = null;
+        if (rm[3]){
+          days = rm[3].replace(/\band\b/gi, ',').split(',').map(x => x.trim()).filter(Boolean).map(x => x.charAt(0).toUpperCase() + x.slice(1).toLowerCase());
+          const badDay = days.find(x => !DAYS.includes(x));
+          if (badDay) prob('error', d.rationRaw.where, `"${badDay}" is not a day of the week.`);
+        }
+        d.ration = { amt: ms.base, days };
+      }
+    }
+    if (!d.size) prob('error', d.where, `The store "${id}" has no "Holds:" line.`);
+    if (d.instead && !P.stores[d.instead]) prob('error', d.where, `"Instead of: ${d.instead}" names a store that does not exist.`);
+  }
   validate(P, prob);
   return P;
 }
@@ -1739,6 +2633,8 @@ function validate(P, prob){
     if (ev.ending && ev.choices.length) prob('warn', ev.where, `"${id}" is an Ending, so its choices are never shown.`);
     if (ev.choices.length > 4 && !ev.hub) prob('warn', ev.where, `"${id}" offers ${ev.choices.length} choices; the design calls for two to four.`);
     if (ev.hub && !ev.place) prob('error', ev.where, `"${id}" is a Hub but has no Place.`);
+    for (const e of allEffectsOf(ev)) if ((e.op === 'store' || e.op === 'empty' || (e.op === 'fill' && e.name !== 'provisions')) && !P.stores[e.name])
+      prob('error', e.where, `"${e.op} ${e.name}" names a store that does not exist.`);
     for (const e of allEffectsOf(ev)) if (e.op === 'orders'){
       ordersUsed.add(e.name);
       if (!P.orders[e.name]) prob('error', e.where, `"orders ${e.name}" names orders that have not been written.`);
@@ -1757,6 +2653,7 @@ function validate(P, prob){
           else incoming[b.next.id] = true;
         }
         if (b.next.type === 'any') anyTags.add(b.next.tag);
+        if (b.next.type === 'watches') anyTags.add('sea');
       }
       const goesSomewhere = ch.base.next || (ch.chance != null && ch.success.next && ch.failure.next);
       if (!goesSomewhere && !hasHub(P, ev.place))
@@ -1796,12 +2693,21 @@ let downloadsApi = null;
 let prefs = { scale: 1 };
 
 function surname(){ const p = (state && state.name || '').trim().split(/\s+/); return p[p.length - 1] || 'Captain'; }
-function placeName(p){ return content.settings['place.' + p] || (p ? p.charAt(0).toUpperCase() + p.slice(1) : ''); }
+function placeName(p){
+  const base = content.settings['place.' + p] || (p ? p.charAt(0).toUpperCase() + p.slice(1) : '');
+  if (p === 'sea' && state.voyage) return `${base}, ${content.settings['voyage.' + state.voyage.name] || state.voyage.name}`;
+  return base;
+}
 function getVar(name){
   if (name === 'money') return state.money;
   if (name === 'day') return Math.floor(state.minutes / 1440) + 1;
   if (name === 'hour') return clockOf(state.minutes).h;
-  return state.vars[name] || 0;
+  if (name in state.vars) return state.vars[name];
+  if (content.stores[name]) return state.stores && state.stores[name] ? state.stores[name].book / content.stores[name].size : 0;
+  const m = name.match(/^([a-z0-9_]+)_days$/);
+  if (m && content.stores[m[1]]) return daysOf(m[1]);
+  if (name === 'voyage_left') return state.voyage ? state.voyage.left : 0;
+  return 0;
 }
 function setVar(name, v){ if (name === 'money') state.money = v; else state.vars[name] = v; }
 
@@ -1809,6 +2715,7 @@ function condMet(c){
   switch (c.type){
     case 'flag': return !!state.flags[c.name] !== c.neg;
     case 'place': return state.place === c.name;
+    case 'voyage': return (!!state.voyage && state.voyage.name === c.name) !== !!c.neg;
     case 'tod': { const now = minuteOfDay(state.minutes); return c.op === 'before' ? now < c.at : now >= c.at; }
     case 'timer': {
       const s = state.timers[c.name]; if (s == null) return false;
@@ -1850,7 +2757,14 @@ function subst(s){
       case 'day': return String(getVar('day'));
     }
     if (MONEY.has(k)) return fmtMoney(getVar(k));
-    return (k in state.vars) ? String(state.vars[k]) : all;
+    const bad = state.lastBad && content.stores[state.lastBad.id];
+    if (k === 'bad_item') return bad ? bad.name.toLowerCase() : 'stores';
+    if (k === 'bad_no') return state.lastBad ? String(state.lastBad.no) : '';
+    if (k === 'bad_word') return bad ? bad.badWord : 'bad';
+    if (k === 'survey') return state.surveyText || '';
+    if (k === 'voyage') return state.voyage ? (content.settings['voyage.' + state.voyage.name] || state.voyage.name) : 'in harbour';
+    if ((k in state.vars) || content.stores[k] || /_days$/.test(k)) return String(Math.max(0, Math.floor(getVar(k))));
+    return all;
   });
 }
 
@@ -1864,8 +2778,16 @@ function applyEffects(list, label){
       case 'flag': if (e.on) state.flags[e.name] = true; else delete state.flags[e.name]; break;
       case 'add': setVar(e.name, getVar(e.name) + e.value); if (MONEY.has(e.name)) record(e.name, e.value, subst(e.label || label)); break;
       case 'setvar': { const d = e.value - getVar(e.name); setVar(e.name, e.value); if (MONEY.has(e.name)) record(e.name, d, subst(e.label || label)); break; }
-      case 'pass': state.minutes += e.mins; break;
-      case 'until': { const now = minuteOfDay(state.minutes); state.minutes += (e.at - now + 1440) % 1440; break; }
+      case 'pass': advance(e.mins); break;
+      case 'until': { const now = minuteOfDay(state.minutes); advance((e.at - now + 1440) % 1440); break; }
+      case 'store': if (e.value > 0) receive(e.name, e.value, subst(e.label || label)); else takeOut(e.name, -e.value * content.stores[e.name].size, subst(e.label || label)); break;
+      case 'empty': { const st = state.stores[e.name]; takeOut(e.name, realQty(e.name), ''); if (st.book > 0) book(e.name, -st.book, subst(e.label || label)); break; }
+      case 'fill': fill(e.name, subst(e.label || label)); break;
+      case 'condemn': condemn(); break;
+      case 'survey': survey(); break;
+      case 'allowance': if (e.short) state.flags.short_allowance = true; else delete state.flags.short_allowance; break;
+      case 'voyage': startVoyage(e.name, e.watches); break;
+      case 'roll': if (rand(state.rng) * 100 < e.chance) state.flags[e.name] = true; else delete state.flags[e.name]; break;
       case 'place': state.place = e.name; break;
       case 'start': state.timers[e.name] = state.minutes; break;
       case 'stop': delete state.timers[e.name]; break;
@@ -1881,16 +2803,18 @@ function applyEffects(list, label){
 
 function newGame(name, seed){
   state = {
-    game: GAME_ID, v: 2, build: BUILD,
+    game: GAME_ID, v: 3, build: BUILD,
     name: (name || content.settings['default name'] || 'John Hartley').trim(),
     seed: (seed || makeSeed()).trim().toUpperCase(),
     rng: null, minutes: 0, money: parseMoney(content.settings['start money'] || '£20') || 0,
     vars: {}, flags: {}, seen: {}, timers: {}, orders: null, ordersAt: null, place: null, eventId: null,
-    log: [], accounts: [], history: [], pending: null, ended: false, tested: false, startedAt: Date.now()
+    log: [], accounts: [], history: [], pending: null, ended: false, tested: false, startedAt: Date.now(),
+    stores: null, storeLog: null, storeBad: null, lastBad: null, voyage: null, surveyText: ''
   };
   state.rng = seedRng(state.seed);
   state.minutes = startMinutes();
   state.accounts.push({ t: state.minutes, acct: 'money', amt: state.money, what: 'In hand on coming ashore', open: true });
+  initShip();
   enterEvent(content.startId);
   persist();
 }
@@ -1913,20 +2837,26 @@ function eligible(ev){
   if (ev.id === state.eventId) return false;
   return condsMet(ev.requires);
 }
+function pickFrom(tag, mode){
+  let pool = content.order.map(id => content.events[id])
+    .filter(ev => ev.tags.includes(tag) && !ev.hub && eligible(ev));
+  const urgent = pool.filter(ev => ev.urgent);
+  if (mode === 'urgent') pool = urgent;
+  else if (mode === 'ordinary') pool = pool.filter(ev => !ev.urgent);
+  else if (urgent.length) pool = urgent;
+  const weighted = pool.map(ev => ({ ev, w: Math.max(0, modded(ev.weight, ev.weightMods)) })).filter(x => x.w > 0);
+  const total = weighted.reduce((n, x) => n + x.w, 0);
+  if (!weighted.length || total <= 0) return null;
+  let r = rand(state.rng) * total;
+  for (const x of weighted){ r -= x.w; if (r < 0) return x.ev.id; }
+  return weighted[weighted.length - 1].ev.id;
+}
 function resolveNext(next){
   if (!next) return hubFor(state.place) || '__nowhere__';
   if (next.type === 'end') return '__end__';
   if (next.type === 'go') return next.id;
-  let pool = content.order.map(id => content.events[id])
-    .filter(ev => ev.tags.includes(next.tag) && !ev.hub && eligible(ev));
-  const urgent = pool.filter(ev => ev.urgent);
-  if (urgent.length) pool = urgent;
-  const weighted = pool.map(ev => ({ ev, w: Math.max(0, modded(ev.weight, ev.weightMods)) })).filter(x => x.w > 0);
-  const total = weighted.reduce((n, x) => n + x.w, 0);
-  if (!weighted.length || total <= 0) return hubFor(next.tag) || hubFor(state.place) || '__nowhere__';
-  let r = rand(state.rng) * total;
-  for (const x of weighted){ r -= x.w; if (r < 0) return x.ev.id; }
-  return weighted[weighted.length - 1].ev.id;
+  if (next.type === 'watches') return sailWatches(next.n);
+  return pickFrom(next.tag) || hubFor(next.tag) || hubFor(state.place) || '__nowhere__';
 }
 function goTo(id){
   if (id === '__end__'){ state.ended = true; state.eventId = '__end__'; return; }
@@ -1965,12 +2895,231 @@ function carryOn(){
   persist();
 }
 
+/* ============================================================
+   SHIP, STORES AND TIME
+   ============================================================ */
+function dateToMin(str){ const d = str.split('-').map(Number); return (Date.UTC(d[0], d[1] - 1, d[2]) - startEpoch()) / 60000; }
+
+/* time passes; at every noon at sea the day's allowance is issued */
+function advance(mins){
+  const end = state.minutes + Math.max(0, mins);
+  let noon = Math.floor((state.minutes - 720) / 1440) * 1440 + 2160;
+  while (noon <= end){
+    state.minutes = noon;
+    if (state.flags.at_sea && state.stores) dailyIssue();
+    noon += 1440;
+  }
+  state.minutes = end;
+}
+
+function initShip(){
+  for (const [k, raw] of Object.entries(content.ship)){
+    const v = parseValue(k, raw);
+    if (v == null) continue;
+    setVar(k, v);
+    if (MONEY.has(k) && k !== 'money') record(k, v, 'Balance on taking command');
+  }
+  state.stores = {}; state.storeLog = {}; state.storeBad = null; state.lastBad = null;
+  for (const id of content.storeOrder){
+    const d = content.stores[id];
+    const st = state.stores[id] = { book: 0, lots: [], receipts: [], nextNo: 1 };
+    state.storeLog[id] = [];
+    if (d.only && !condsMet(d.only)) continue;
+    let total = 0;
+    for (const sk of d.stock){
+      const recv = sk.date ? dateToMin(sk.date) : state.minutes;
+      const first = sk.no || st.nextNo;
+      st.lots.push({ units: sk.qty, opened: 0, rem: 0, recv, first });
+      st.receipts.push({ t: recv, units: sk.qty, first, from: sk.from });
+      st.nextNo = Math.max(st.nextNo, first + Math.ceil(sk.qty));
+      total += sk.qty * d.size;
+    }
+    if (total) book(id, total, 'Remaining on board on taking command');
+  }
+  const chance = parseFloat(content.settings['purser dishonest'] || '0');
+  if (rand(state.rng) * 100 < chance) state.flags.purser_skims = true;
+}
+
+function book(id, d, what){
+  const st = state.stores[id];
+  st.book = Math.max(0, st.book + d);
+  if (Math.abs(d) > 1e-6) state.storeLog[id].push({ t: state.minutes, d, what, bal: st.book });
+}
+function realQty(id){
+  const st = state.stores && state.stores[id]; if (!st) return 0;
+  const size = content.stores[id].size;
+  return st.lots.reduce((n, l) => n + (l.units - l.opened) * size + l.rem, 0);
+}
+function receive(id, units, from){
+  const st = state.stores[id];
+  const first = st.nextNo;
+  st.lots.push({ units, opened: 0, rem: 0, recv: state.minutes, first });
+  st.receipts.push({ t: state.minutes, units, first, from });
+  st.nextNo += Math.ceil(units);
+  book(id, units * content.stores[id].size, from || 'Received');
+}
+/* removes stores without opening casks in the ordinary way (losses, transfers, expenditure) */
+function takeOut(id, amt, what){
+  const st = state.stores[id], size = content.stores[id].size;
+  let left = amt;
+  for (const lot of st.lots){
+    if (left <= 1e-9) break;
+    const a = Math.min(lot.rem, left); lot.rem -= a; left -= a;
+    const unopened = (lot.units - lot.opened) * size;
+    const b = Math.min(unopened, left); lot.units -= b / size; left -= b;
+  }
+  st.lots = st.lots.filter(l => l.rem > 1e-9 || l.units - l.opened > 1e-9);
+  if (what) book(id, -(amt - left), what);
+  return amt - left;
+}
+function openCask(id, lot){
+  const d = content.stores[id];
+  const part = Math.min(1, lot.units - lot.opened);
+  const no = lot.first + Math.floor(lot.opened + 1e-9);
+  lot.opened += part; lot.rem = part * d.size;
+  if (part < 0.999) return;
+  let note = '';
+  if (d.pieces && rand(state.rng) * 100 < d.short){
+    const k = 1 + Math.floor(rand(state.rng) * 3);
+    const lose = k * d.size / d.pieces;
+    lot.rem -= lose;
+    book(id, -lose, `Short in ${d.unit[0]} No. ${no}, ${k} ${k === 1 ? 'piece' : 'pieces'}`);
+    note = `, short ${k}`;
+  }
+  if (d.logOpen) state.log.push({ t: state.minutes, text: `Opened a ${d.unit[0]} of ${d.name.toLowerCase()}, No. ${no}${d.pieces ? `, contents ${d.pieces} pieces${note}` : ''}.` });
+  if (d.bad && !state.storeBad){
+    const age = (state.minutes - lot.recv) / 1440;
+    const p = d.bad * (d.keeps && age > d.keeps ? 3 : 1);
+    if (rand(state.rng) * 100 < p){ state.storeBad = { id, no }; state.lastBad = { id, no }; state.flags.bad_cask = true; }
+  }
+}
+/* the ordinary issue: draws from the oldest casks first, opening new ones as needed */
+function draw(id, amt){
+  const st = state.stores[id]; let got = 0;
+  for (const lot of st.lots){
+    while (amt - got > 1e-9){
+      if (lot.rem > 1e-9){ const a = Math.min(lot.rem, amt - got); lot.rem -= a; got += a; continue; }
+      if (lot.units - lot.opened > 1e-9){ openCask(id, lot); continue; }
+      break;
+    }
+    if (amt - got <= 1e-9) break;
+  }
+  st.lots = st.lots.filter(l => l.rem > 1e-9 || l.units - l.opened > 1e-9);
+  return got;
+}
+function dailyNeed(id, perDay){
+  const d = content.stores[id];
+  if (!d.ration) return 0;
+  const frac = perDay ? 1 : (d.ration.days ? d.ration.days.length / 7 : 1);
+  return d.ration.amt * getVar('victualled') * (state.flags.short_allowance ? 2 / 3 : 1) * frac;
+}
+function daysOf(id){
+  const st = state.stores && state.stores[id]; if (!st) return 0;
+  const need = dailyNeed(id);
+  return need > 0 ? st.book / need : 9999;
+}
+function dailyIssue(){
+  const day = clockOf(state.minutes).day, n = getVar('victualled'), shortA = !!state.flags.short_allowance;
+  const skimPart = parseFloat(content.settings['purser skim'] || '0') / 100;
+  for (const id of content.storeOrder){
+    const d = content.stores[id], st = state.stores[id];
+    if (!d.ration || !st) continue;
+    if (d.ration.days && !d.ration.days.includes(day)) continue;
+    if (d.instead && realQty(d.instead) > 1e-6) continue;
+    const need = d.ration.amt * n * (shortA ? 2 / 3 : 1);
+    if (need <= 0) continue;
+    const skim = state.flags.purser_skims && d.officer === 'purser' ? skimPart : 0;
+    const want = need * (1 - skim);
+    const got = draw(id, want);
+    const issued = (skim && got >= want - 1e-6) ? need : got;
+    if (issued > st.book + 1e-6 && realQty(id) > 1e-6) book(id, realQty(id) + issued - st.book, 'Found in the hold, not before brought to account');
+    if (issued > 1e-6) book(id, -issued, `${day}’s allowance to ${n} men${shortA ? ', at two-thirds' : ''}`);
+    if (got < want - 1e-6) state.flags['out_' + id] = true; else delete state.flags['out_' + id];
+  }
+}
+function fill(which, from){
+  const ids = which === 'provisions'
+    ? content.storeOrder.filter(id => content.stores[id].officer === 'purser' && content.stores[id].ration && !content.stores[id].bought)
+    : [which];
+  for (const id of ids){
+    const d = content.stores[id];
+    if (!d.capacity) continue;
+    const units = Math.floor(d.capacity - realQty(id) / d.size + 1e-9);
+    if (units > 0) receive(id, units, from || 'Received');
+  }
+}
+function condemn(){
+  const b = state.storeBad; if (!b) return;
+  const st = state.stores[b.id];
+  const lot = st.lots.find(l => b.no >= l.first && b.no < l.first + Math.ceil(l.opened - 1e-9) && l.rem > 1e-9 && l.first + Math.ceil(l.opened - 1e-9) - 1 === b.no);
+  if (lot){ const lose = lot.rem; lot.rem = 0; book(b.id, -lose, `Condemned by survey, ${content.stores[b.id].unit[0]} No. ${b.no}`); }
+  st.lots = st.lots.filter(l => l.rem > 1e-9 || l.units - l.opened > 1e-9);
+  state.storeBad = null;
+}
+function listJoin(a){ return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
+function survey(){
+  const found = [];
+  for (const k of ['survey_over', 'survey_short', 'survey_right']) delete state.flags[k];
+  for (const id of content.storeOrder){
+    const d = content.stores[id], st = state.stores[id];
+    if (!st || (d.officer !== 'purser' && d.officer !== 'master')) continue;
+    const diff = realQty(id) - st.book;
+    if (Math.abs(diff) < d.size * 0.05) continue;
+    book(id, diff, diff > 0 ? 'Found over by survey' : 'Found short by survey');
+    found.push(`the ${d.name.toLowerCase()} ${diff > 0 ? 'over' : 'short'} by ${fmtAmt(d, Math.abs(diff))}`);
+    state.flags[diff > 0 ? 'survey_over' : 'survey_short'] = true;
+  }
+  if (!found.length) state.flags.survey_right = true;
+  state.surveyText = found.length ? `The survey finds ${listJoin(found)}, against the purser’s books.` : 'The survey finds the purser’s books right, to within what a slate and a lantern can tell.';
+}
+function startVoyage(name, watches){
+  const o = state.orders && content.orders[state.orders];
+  const key = name === 'outward' ? 'passage' : name === 'homeward' ? 'return' : name;
+  const w = watches != null ? watches : (o && o[key] != null ? o[key] : 0);
+  for (const k of ['outward_done', 'station_done', 'homeward_done']) if (k === name + '_done') delete state.flags[k];
+  if (w <= 0){ state.voyage = null; state.flags[name + '_done'] = true; return; }
+  state.voyage = { name, left: Math.round(w) };
+}
+/* sail watch by watch; stop when something happens */
+function sailWatches(n){
+  const chance = parseFloat(content.settings['sea event chance'] || '0');
+  for (let i = 0; i < n; i++){
+    advance(240);
+    if (state.voyage){
+      state.voyage.left--;
+      if (state.voyage.left <= 0){ state.flags[state.voyage.name + '_done'] = true; state.voyage = null; }
+    }
+    const urgent = pickFrom('sea', 'urgent'); if (urgent) return urgent;
+    if (rand(state.rng) * 100 < chance){ const ev = pickFrom('sea', 'ordinary'); if (ev) return ev; }
+  }
+  return hubFor('sea') || hubFor(state.place) || '__nowhere__';
+}
+
+/* ---------- quantities, as a purser would write them ---------- */
+function round1(x){ return Math.abs(x) >= 10 ? Math.round(x) : Math.round(x * 10) / 10; }
+function fmtAmt(d, base){
+  if (d.dim === 'w') return `${round1(base / 16)} lb`.replace('.0 ', ' ');
+  if (d.dim === 'v') return d.size >= 8 * 128 ? `${round1(base / 128)} gallons`.replace('.0 ', ' ') : `${round1(base / 16)} pints`.replace('.0 ', ' ');
+  return `${Math.round(base)} ${Math.round(base) === 1 ? d.unit[0] : d.unit[1]}`;
+}
+function fmtBal(d, base){
+  if (d.dim === 'n' || d.size <= 1) return fmtAmt(d, base);
+  const units = Math.floor(base / d.size + 1e-6), rem = base - units * d.size;
+  const head = `${units} ${units === 1 ? d.unit[0] : d.unit[1]}`;
+  if (rem <= d.size * 0.01) return head;
+  return units ? `${head}, ${fmtAmt(d, rem)}` : fmtAmt(d, rem);
+}
+
 /* ---------- saving ---------- */
 function persist(){ if (state) lsSet(SAVE_KEY, JSON.stringify({ game: GAME_ID, build: BUILD, state })); }
 function normalise(s){
   s.vars = s.vars || {}; s.flags = s.flags || {}; s.seen = s.seen || {}; s.timers = s.timers || {};
   if (!('orders' in s)) { s.orders = null; s.ordersAt = null; }
   if (!Array.isArray(s.accounts)) s.accounts = [{ t: s.minutes, acct: 'money', amt: s.money, what: 'Balance brought forward', open: true }];
+  if (!s.stores) s.needShip = true;
+  if (!('voyage' in s)) s.voyage = null;
+  /* a commission saved at the end of build 2 stands out to sea */
+  if (s.eventId === 'ending_build2'){ s.ended = false; s.pending = null; s.continueAt = 'stand_out'; }
   /* a commission saved at the end of build 1 carries on into the second day */
   if (s.eventId === 'ending_build1'){
     if (s.seen.secretary_meeting) s.flags.presented = true;
@@ -1981,6 +3130,7 @@ function normalise(s){
 }
 function adopt(s){
   state = normalise(s);
+  if (state.needShip){ delete state.needShip; initShip(); }
   if (state.continueAt){ const id = state.continueAt; delete state.continueAt; enterEvent(id); }
   persist();
 }
@@ -2051,7 +3201,8 @@ function headerHtml(){
     <nav class="nav" aria-label="Ship’s papers">
       <button type="button" data-act="log">Log</button>
       ${state && state.orders ? '<button type="button" data-act="orders">Orders</button>' : ''}
-      <button type="button" data-act="accounts">Accounts</button>
+      <button type="button" data-act="books">Books</button>
+      <button type="button" data-act="accounts">Purse</button>
       <button type="button" data-act="glossary">Glossary</button>
       <button type="button" data-act="papers">Papers${errs ? ` <span class="badge">(${errs})</span>` : ''}</button>
     </nav></div>`;
@@ -2178,7 +3329,7 @@ function accountsHtml(){
   if (!state) return `<p class="note">No commission is in hand.</p>`;
   const purse = ledgerHtml('money', { bal: 'In hand' });
   const debts = ledgerHtml('debt', { bal: 'Owing' });
-  return `<p class="note">Your own money, kept by your own hand. The ship's books are the purser’s affair, and come later.</p>
+  return `<p class="note">Your own money, kept by your own hand. The ship’s stores and the purser’s cash are under Books.</p>
     <h3>Your purse</h3>${purse}
     ${debts ? `<h3>Owing to agents</h3>${debts}<p class="note">Interest at five per cent is reckoned for a year and entered at the time of the advance.</p>` : ''}`;
 }
@@ -2186,6 +3337,75 @@ function ordersHtml(){
   if (!state || !state.orders || !content.orders[state.orders]) return `<p class="note">You have no orders yet.</p>`;
   const o = content.orders[state.orders];
   return `<p class="heading">${inline(o.heading)}</p><article class="orders">${o.paras.map(p => `<p${p.sig ? ' class="sig"' : ''}>${inline(p.text)}</p>`).join('')}</article>`;
+}
+
+let booksTab = 'provisions';
+function storeIds(officers){
+  return content.storeOrder.filter(id => officers.includes(content.stores[id].officer) && state.stores[id] &&
+    (state.stores[id].book > 1e-6 || state.storeLog[id].length || !content.stores[id].only || condsMet(content.stores[id].only)));
+}
+function storeLedgerHtml(id){
+  const d = content.stores[id], st = state.stores[id], log = state.storeLog[id];
+  const rec = st.receipts.map(r => {
+    const last = r.first + Math.ceil(r.units) - 1;
+    const nos = d.dim === 'n' || d.size <= 1 ? '' : (Math.ceil(r.units) > 1 ? `Nos ${r.first}–${last}` : `No. ${r.first}`);
+    return `<li>${esc(fmtBal(d, r.units * d.size))}${nos ? ', ' + nos : ''}, received ${esc(fmtDate(r.t, true).replace(/^\w+ /, ''))}${r.from ? ', ' + inline(r.from.replace(/^(received |)(of |from )/i, '')) : ''}</li>`;
+  }).join('');
+  const rows = log.map(e => `<tr><td class="h">${clockOf(e.t).date} ${clockOf(e.t).month.slice(0, 3)}</td><td>${inline(e.what)}</td>
+    <td class="amt">${e.d < 0 ? '−' : '+'}${esc(fmtAmt(d, Math.abs(e.d)))}</td><td class="amt">${esc(fmtBal(d, e.bal))}</td></tr>`).join('');
+  return `<details class="ledger"><summary>${esc(d.name)}</summary>
+    ${rec ? `<p class="note" style="margin:.4rem 0 .2rem">Received</p><ul class="receipts">${rec}</ul>` : ''}
+    ${rows ? `<div class="scroll-x"><table class="log"><thead><tr><th scope="col">Date</th><th scope="col">Particulars</th><th scope="col" class="amt">Sum</th><th scope="col" class="amt">Remains</th></tr></thead><tbody>${rows}</tbody></table></div>` : '<p class="note">No entries.</p>'}
+    </details>`;
+}
+function storesSummary(ids, withDays){
+  const rows = ids.map(id => {
+    const d = content.stores[id], st = state.stores[id];
+    const days = withDays && d.ration ? (d.instead ? 'in lieu' : String(Math.floor(daysOf(id)))) : '';
+    return `<tr><td>${esc(d.name)}</td><td class="amt">${esc(fmtBal(d, st.book))}</td>${withDays ? `<td class="amt">${esc(days)}</td>` : ''}</tr>`;
+  }).join('');
+  return `<div class="scroll-x"><table class="log"><thead><tr><th scope="col">Store</th><th scope="col" class="amt">Remains</th>${withDays ? '<th scope="col" class="amt">Days</th>' : ''}</tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function word(v, bands){ for (const [min, w] of bands) if (v >= min) return w; return bands[bands.length - 1][1]; }
+function shipHtml(){
+  const v = k => getVar(k), f = k => !!state.flags[k];
+  const leak = v('leak');
+  const pumps = leak <= 2 ? 'a spell at the pumps in the morning watch keeps her free' : leak <= 5 ? 'the pumps are manned for a quarter of an hour in every watch' : leak <= 9 ? 'the pumps are going for half of every watch' : 'the pumps are never still';
+  const hull = word(v('hull'), [[90, 'sound and tight in her frame'], [75, 'sound, though her seams work in a seaway'], [55, 'much strained, and her seams want caulking'], [0, 'badly strained, and weak in her frame']]);
+  const mast = n => f(n + '_gone') ? 'gone' : f(n + '_sprung') ? 'sprung, and fished' : 'sound';
+  const boat = n => f(n + '_lost') ? 'lost' : f(n + '_damaged') ? 'stove, and under repair' : 'sound';
+  const standing = word(v('standing_rigging'), [[85, 'well set up'], [70, 'serviceable, though slack in places'], [50, 'much worn, and wants setting up'], [0, 'rotten in places, and not to be trusted in a blow']]);
+  const running = word(v('running_rigging'), [[85, 'new and sound'], [70, 'serviceable'], [50, 'much chafed, and parting here and there'], [0, 'worn out']]);
+  const sails = word(v('sails'), [[80, 'a good suit bent, and a second in the sail-room'], [60, 'the suit bent is old and much patched, and the second little better'], [40, 'worn thin; the sailmaker is never done with them'], [0, 'worn out; the sailmaker can do no more with them']]);
+  const guns = `${v('guns')} ${f('carronades') ? 'eighteen-pounder carronades' : 'six-pounders'}`;
+  return `<p class="note">As reported to you by the warrant officers.</p>
+    <h3>The carpenter</h3>
+    <p>She makes ${leak} ${leak === 1 ? 'inch' : 'inches'} of water an hour; ${pumps}. Her hull is ${hull}.</p>
+    <p>Foremast ${mast('fore')}. Mainmast ${mast('main')}. Bowsprit ${mast('bowsprit')}.</p>
+    <p>Boats: the launch ${boat('launch')}, the cutter ${boat('cutter')}, the jolly boat ${boat('jolly')}.</p>
+    ${storesSummary(storeIds(['carpenter']), false)}
+    <h3>The boatswain</h3>
+    <p>Standing rigging ${standing}. Running rigging ${running}. Sails: ${sails}.</p>
+    ${storesSummary(storeIds(['boatswain']), false)}
+    ${storeIds(['carpenter', 'boatswain']).map(storeLedgerHtml).join('')}`;
+}
+function booksHtml(){
+  if (!state || !state.stores) return `<p class="note">No commission is in hand.</p>`;
+  const tabs = [['provisions', 'Provisions'], ['cash', 'Purser’s cash'], ['gunner', 'Gunner'], ['ship', 'Hull and rigging']];
+  const nav = `<div class="tabs" role="tablist">${tabs.map(([k, l]) => `<button type="button" role="tab" aria-selected="${k === booksTab}" data-act="books" data-tab="${k}">${l}</button>`).join('')}</div>`;
+  let body = '';
+  if (booksTab === 'provisions'){
+    const ids = storeIds(['purser', 'master']);
+    body = `<p class="note">The purser’s account of the provisions, and the master’s of the water, as they keep them. Victualled: ${getVar('victualled')} men${state.flags.short_allowance ? ', at two-thirds allowance' : ''}. Days are at the present allowance.</p>
+      ${storesSummary(ids, true)}${ids.map(storeLedgerHtml).join('')}`;
+  } else if (booksTab === 'cash'){
+    const cash = ledgerHtml('cash', { bal: 'In hand' });
+    body = `<p class="note">Money in the purser’s hands for the ship’s use, kept apart from your own.</p>${cash || '<p class="note">No entries.</p>'}`;
+  } else if (booksTab === 'gunner'){
+    const ids = storeIds(['gunner']);
+    body = `<p>Mounted: ${getVar('guns')} ${state.flags.carronades ? 'eighteen-pounder carronades' : 'six-pounders'}, all serviceable.</p>${storesSummary(ids, false)}${ids.map(storeLedgerHtml).join('')}`;
+  } else body = shipHtml();
+  return nav + body;
 }
 
 function renderEnding(app){
@@ -2239,7 +3459,8 @@ function openPanel(kind){
       : `<p class="note">No commission is in hand.</p>`;
   }
   else if (kind === 'orders'){ title = 'Orders'; html = ordersHtml(); }
-  else if (kind === 'accounts'){ title = 'Accounts'; html = accountsHtml(); }
+  else if (kind === 'accounts'){ title = 'Your Purse'; html = accountsHtml(); }
+  else if (kind === 'books'){ title = 'The Ship’s Books'; html = booksHtml(); }
   else if (kind === 'glossary'){
     title = 'Glossary';
     const items = content.glossary.slice().sort((a, b) => a.terms[0].localeCompare(b.terms[0]));
@@ -2308,6 +3529,8 @@ function writerHtml(){
     <h3>Numbers</h3>${vars.length ? `<dl class="kv num">${vars.map(k => `<dt>${esc(k)}</dt><dd>${esc(MONEY.has(k) ? fmtMoney(state.vars[k]) : state.vars[k])}</dd>`).join('')}</dl>` : '<p class="note">None set yet.</p>'}
     <h3>Flags</h3><p>${flags.length ? flags.map(esc).join(', ') : '<span class="note">None set yet.</span>'}</p>
     <h3>Timers</h3>${timers.length ? `<dl class="kv num">${timers.map(k => `<dt>${esc(k)}</dt><dd>started ${esc(fmtSpan(state.minutes - state.timers[k]))} ago</dd>`).join('')}</dl>` : '<p class="note">None running.</p>'}
+    ${state.stores ? `<h3>Stores: books and hold</h3><div class="scroll-x"><table class="log"><thead><tr><th>Store</th><th class="amt">Books</th><th class="amt">In the hold</th></tr></thead><tbody>${content.storeOrder.filter(id => state.stores[id]).map(id => `<tr><td>${esc(id)}</td><td class="amt">${esc(fmtBal(content.stores[id], state.stores[id].book))}</td><td class="amt">${esc(fmtBal(content.stores[id], realQty(id)))}</td></tr>`).join('')}</tbody></table></div>` : ''}
+    <h3>Voyage</h3><p>${state.voyage ? esc(state.voyage.name + ', ' + state.voyage.left + ' watches to run') : 'none'}</p>
     <h3>Events seen</h3><p>${seen.map(esc).join(', ')}</p>
     <h3>Jump to an event</h3>
     <div class="row"><select id="jump" aria-label="Event to jump to" style="font:inherit;padding:.35rem;background:var(--paper-2);color:var(--ink);border:1px solid var(--rule);max-width:100%">${opts}</select>
@@ -2318,7 +3541,7 @@ function writerHtml(){
 function checkHtml(){
   const P = content.problems;
   const nEv = content.order.length, nCh = content.order.reduce((n, id) => n + content.events[id].choices.length, 0);
-  const stats = `<p class="note num">${nEv} events, ${nCh} choices, ${Object.keys(content.orders).length} sets of orders, ${content.glossary.length} glossary entries, about ${content.stats.words} words of scene prose.</p>`;
+  const stats = `<p class="note num">${nEv} events, ${nCh} choices, ${Object.keys(content.orders).length} sets of orders, ${content.storeOrder.length} kinds of stores, ${content.glossary.length} glossary entries, about ${content.stats.words} words of scene prose.</p>`;
   if (!P.length) return `${stats}<p class="status good">The content reads cleanly: no mistakes and no cautions.</p>`;
   const order = { error: 0, warn: 1 };
   const items = P.slice().sort((a, b) => order[a.sev] - order[b.sev]).map(p =>
@@ -2396,6 +3619,7 @@ document.addEventListener('click', e => {
     case 'log': openPanel('log'); break;
     case 'orders': openPanel('orders'); break;
     case 'accounts': openPanel('accounts'); break;
+    case 'books': booksTab = a.dataset.tab || booksTab; openPanel('books'); break;
     case 'glossary': openPanel('glossary'); break;
     case 'papers': openPanel('papers'); break;
     case 'writer': openPanel('writer'); break;
@@ -2471,10 +3695,14 @@ window.SloopTest = {
   newGame: (n, s) => { newGame(n, s); render(); },
   choose: i => { const r = choose(i); render(); return r; },
   carryOn: () => { carryOn(); render(); },
+  /* the same without redrawing the page, for fast automated playthroughs */
+  chooseQuiet: i => choose(i),
+  carryOnQuiet: () => carryOn(),
   adopt: s => { adopt(s); render(); },
   open: () => content.events[state.eventId] ? content.events[state.eventId].choices.map((c, i) => condsMet(c.requires) && condsMet(c.needs) ? i : -1).filter(i => i >= 0) : [],
   get state(){ return clone(state); },
   get content(){ return content; },
+  real: id => realQty(id),
   parseMoney, fmtMoney, watchOf: m => watchOf(m)
 };
 
