@@ -116,6 +116,10 @@ dl.gloss .also{color:var(--ink-2);font-size:.85rem;font-style:italic}
 .confirm{border:1px solid var(--rule);padding:.6rem .8rem;margin-top:.5rem}
 textarea{min-height:7rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem}
 
+/* wind in the strip */
+.strip .wind{display:inline-flex;align-items:center;gap:.3rem}
+.strip .wind svg{flex:none}
+
 /* ship's books */
 .tabs{display:flex;flex-wrap:wrap;gap:.2rem;margin:0 0 1rem;border-bottom:1px solid var(--rule)}
 .tabs button{background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:.35rem .6rem;cursor:pointer;font-family:var(--display-sc);letter-spacing:.03em;color:var(--ink-2)}
@@ -152,6 +156,7 @@ start money: £27 10s
 money values: debt, cash
 default name: John Hartley
 sea event chance: 8
+first weather: settled
 purser dishonest: 50
 purser skim: 12
 place.mahon: Port Mahon
@@ -185,6 +190,8 @@ standing_rigging: 78
 running_rigging: 72
 sails: 64
 guns: 16
+seamanship: 2
+master_skill: 3
 cash: £11 4s 6d
 
 STORE: biscuit
@@ -384,6 +391,100 @@ Holds: 112 lb
 Kept by: carpenter
 Capacity: 6
 Stock: 2 hundredweight, received 1799-10-14 from the dockyard at Gibraltar
+</script>
+
+<script type="text/plain" class="content" data-name="Wind and weather">
+# ------------------------------------------------------------
+# How the sloop sails, and the weather of the western
+# Mediterranean in spring. Wind is given in points of the
+# compass (32 to the circle) and force from 0 (calm) to 11
+# (storm). The player sees force only as words.
+# ------------------------------------------------------------
+
+SAILING
+# knots at each angle off the wind, in a moderate breeze, plain sail
+speed: 6 points 4.5, 8 points 6.5, 10 points 7.5, 12 points 8, 14 points 7.5, 16 points 6.5
+# the closest she will lie to the wind
+closest: 6
+# multiplier on speed for each force, calm to storm
+wind: 0, 0.15, 0.4, 0.65, 0.85, 1, 1.1, 1.1, 0.95, 0.75, 0.5, 0.3
+press of sail: 1.12
+snug: 0.85
+# speed lost close-hauled for each force above strong breezes, per cent
+close-hauled in a blow: 12
+sweeps: 1.5
+# chance in 100 of missing stays at each tack, calm to storm, for an ordinary crew
+missing stays: 0, 2, 3, 4, 6, 8, 12, 18, 28, 40, 55, 70
+
+WEATHER: settled
+Called: the present weather
+Wind: any
+Force: 2 to 4
+Lasts: 1 to 3 days
+Sky: fair, with a few high clouds
+Log: and fine weather
+Signs: a clear sky at sunset and the wind falling light
+Follows: mistral 3, tramontana 2, levanter 2, sirocco 2, westerly 2, calm 1
+
+WEATHER: mistral
+Called: the Mistral
+Wind: NW to N
+Force: 6 to 9
+Lasts: 1 to 3 days
+Sky: hard and clear, and bitter cold
+Log: with a hard clear sky and a heavy sea
+Signs: a long swell getting up from the north-west under a sky scoured hard and clear
+Follows: settled 4, tramontana 1, westerly 1
+
+WEATHER: tramontana
+Called: a Tramontana
+Wind: N to NE
+Force: 5 to 7
+Lasts: 1 to 2 days
+Sky: clear and cold
+Log: and clear cold weather
+Signs: cloud banking up over the mountains to the northward
+Follows: settled 3, mistral 1, levanter 1
+
+WEATHER: levanter
+Called: a Levanter
+Wind: NE to ESE
+Force: 4 to 7
+Lasts: 1 to 3 days
+Sky: overcast and hazy, with rain at times
+Log: and hazy, with rain at times
+Signs: a damp haze, and a swell coming in from the eastward against the wind
+Follows: settled 3, sirocco 1, calm 1
+
+WEATHER: sirocco
+Called: the Sirocco
+Wind: SE to SSW
+Force: 3 to 6
+Lasts: 1 to 3 days
+Sky: hot, thick and hazy, with a red dust on everything
+Log: and thick hazy weather
+Signs: a hot, heavy air, and a yellow haze to the southward
+Follows: settled 3, levanter 1, westerly 1
+
+WEATHER: westerly
+Called: a westerly blow
+Wind: SW to WNW
+Force: 4 to 7
+Lasts: 1 to 2 days
+Sky: cloudy, with squalls of rain
+Log: and cloudy, with squalls of rain
+Signs: mares' tails high up, and the sky thickening in the west
+Follows: settled 3, mistral 2
+
+WEATHER: calm
+Called: a calm
+Wind: any
+Force: 0 to 1
+Lasts: 0.5 to 1.5 days
+Sky: glassy and still
+Log: with a long oily swell
+Signs: an oily swell and not a breath stirring
+Follows: settled 3, sirocco 1, levanter 1
 </script>
 
 <script type="text/plain" class="content" data-name="Events: The opening">
@@ -657,6 +758,8 @@ Hub
 
 [if after 20:00] The ship is quiet but for the sentry's tread and the slap of water under the counter. The lights of the town are going out one by one.
 
+The wind is {wind}; the sky {sky}.
+
 [if has_orders] Your orders lie in your desk: {orders}.
 
 [if not has_orders] You have no orders yet.
@@ -685,8 +788,15 @@ Effects: until 07:00
 Next: any ship
 
 CHOICE: Weigh and proceed to sea
+Requires: not has_orders
 Needs: has_orders
 Why not: You have no orders yet.
+Next: weigh
+
+CHOICE: Weigh and proceed to sea
+Requires: has_orders
+Needs: force 2 or more, force 7 or less, not wind from SE
+Why not: There is no getting out of the harbour with the wind as it is. The master looks for a slant.
 Next: weigh
 
 
@@ -931,6 +1041,10 @@ Hub
 [if before 19:00] The town stands on its cliff above the harbour, white and shuttered against the sun, its streets steep and full of goats, soldiers, priests and women in black. Redcoats stand sentry where Spanish sentries stood two years since.
 
 [if after 19:00] Lamps are lit along the quay, and there is music somewhere in the upper town. The offices are shut. The taverns are not.
+
+[if weather mistral] The Mistral is blowing down the harbour, rattling the shutters and driving the dust along the quay in clouds.
+
+[if weather sirocco] The Sirocco has laid a hot, yellow haze over the town, and everyone in it is short-tempered.
 
 CHOICE: The Admiral's office
 Needs: before 16:00
@@ -1491,7 +1605,7 @@ Title: Standing Out
 Place: sea
 Effects: set at_sea; voyage outward; pass 2 hours
 
-By the forenoon Mahon is a white smudge on the quarter, and the *{ship}* is lifting to the long Mediterranean swell. The watches are set. The master lays off the course, and the purser's steward goes below to his casks.
+By the forenoon Mahon is a white smudge on the quarter, and the *{ship}* has {wind} and {sea}. The watches are set. The master lays off the course, and the purser's steward goes below to his casks.
 
 [if not provisions_completed] Mr Hosken has made no complaint about the provisions, which is unlike a purser.
 
@@ -1508,15 +1622,25 @@ Title: At Sea
 Place: sea
 Hub
 
-[if voyage outward, orders_cruise_catalan] The *{ship}* stands on for the coast of Catalonia.
+[if voyage outward, orders_convoy_toulon] She keeps company with her three victuallers, shortening sail every hour for the slowest of them, which is always the *Three Brothers*.
 
-[if voyage outward, orders_convoy_toulon] The *{ship}* keeps company with her three victuallers, shortening sail every hour for the slowest of them, which is always the *Three Brothers*.
+[if voyage outward, orders_despatches_hebe] The Admiral's packet is in your desk.
 
-[if voyage outward, orders_despatches_hebe] The *{ship}* carries everything she can for Barcelona, with the Admiral's packet in your desk.
+[if lying_course] She has {wind}, and is lying her course for {destination}: {distance} to run, by the master's reckoning.
 
-[if voyage station] She is on her cruising ground. There is not a sail in sight from the masthead, nor has there been all day.
+[if beating] She has {wind}, dead foul for {destination}, and is beating up against it, board and board: {distance} to run, by the master's reckoning.
 
-[if voyage homeward] The *{ship}* is homeward bound for Mahon.
+[if hove_to] She is hove to under a close-reefed main topsail, riding it out, with {wind} and {sea}.
+
+[if sweeps] The sweeps are out, and the people are toiling at them in the heat.
+
+[if voyage station] She is on her cruising ground, with {wind}. There is not a sail in sight from the masthead, nor has there been all day.
+
+[if not voyage outward, not voyage homeward, not voyage station] She has {wind}, and {sea}.
+
+[if press_of_sail] She is carrying a press of sail.
+
+[if snug] She is snugged down under reefed topsails.
 
 [if short_allowance] The people are on two-thirds allowance, and know it.
 
@@ -1526,9 +1650,15 @@ Next: watches 1
 CHOICE: Stand on until something happens
 Next: watches 42
 
+CHOICE: Make or shorten sail
+Next: sail_orders
+
+CHOICE: Ask the master what he makes of the weather
+Next: master_forecast
+
 CHOICE: Exercise the great guns
-Needs: after 08:00, before 16:00
-Why not: Not by night.
+Needs: after 08:00, before 16:00, force 5 or less
+Why not: Not by night, nor in a seaway like this.
 Next: exercise_guns
 
 CHOICE: Order a survey of the provisions
@@ -1588,7 +1718,7 @@ Text: The guns are secured again. The people go back to their work, not all of t
 EVENT: provisions_survey
 Title: A Survey of the Provisions
 Place: sea
-Effects: survey; set surveyed; pass 1 watch
+Effects: survey; set surveyed; pass 2 hours
 
 Mr Treharne, the master and the boatswain go down into the hold with the purser's steward, a lantern and a slate, and spend the watch among the casks. The purser goes with them, and does not enjoy it.
 
@@ -1666,7 +1796,7 @@ Once
 Requires: outward_done, orders_cruise_catalan
 Effects: voyage station
 
-The masthead hails the deck: land on the lee bow. By the change of the watch it is the coast of Catalonia, brown hills and a white town and a church on a headland, which the master names as near Cape San Sebastián, though he will not swear to it.
+The masthead hails the deck: land, fine on the bow. By the change of the watch it is the coast of Catalonia, brown hills and a white town and a church on a headland, which the master names as near Cape San Sebastián, though he will not swear to it.
 
 This is your cruising ground for six weeks. There is not a sail in sight.
 
@@ -1719,6 +1849,245 @@ Your time on the station is up. The master lays off the course for Mahon without
 
 CHOICE: Bear up for Mahon
 Log: The time of cruising being expired, bore up for Mahon.
+
+
+EVENT: sail_orders
+Title: Sail and Helm
+Place: sea
+
+The officer of the watch waits for your orders. The ship has {wind} and {sea}.
+
+[if beating] She is close-hauled, beating to windward, and the question is how she is to go about: tacking is quicker, if she will come round; wearing is surer, and loses ground.
+
+CHOICE: Crack on: carry every stitch she will bear
+Requires: not press_of_sail, force 1 or more
+Effects: set press_of_sail; clear snug; clear hove_to
+Text: Topgallants and royals go up, the reefs are shaken out, and she lies down to it with the water roaring under her lee bow. Mr Treharne looks aloft, and then at you, and says nothing.
+
+CHOICE: Plain sail, reefed as the weather requires
+Requires: press_of_sail
+Effects: clear press_of_sail
+Text: The light sails come in, and she rides easier at once.
+
+CHOICE: Snug her down under reefed topsails
+Requires: not snug, force 4 or more
+Effects: set snug; clear press_of_sail; clear hove_to
+Text: Topsails are reefed and the light yards sent down on deck. She goes slower, and a great deal more comfortably.
+
+CHOICE: Make plain sail again
+Requires: snug
+Effects: clear snug
+Text: The reefs are shaken out.
+
+CHOICE: Heave to, and ride it out
+Requires: force 7 or more, not hove_to
+Effects: set hove_to; clear press_of_sail; set snug
+Text: She is brought to under a close-reefed main topsail, her head a few points off the wind, and lies there like a gull, rising and falling, making no way at all.
+Log: Hove to.
+
+CHOICE: Get out the sweeps
+Requires: force 1 or less, not sweeps
+Effects: set sweeps
+Text: The sweeps are got out through the ports, and the people are told off to them by watches. She moves, at something better than a mile and a half an hour, and the men at the looms curse every yard of it.
+
+CHOICE: Tack when she must go about
+Requires: wear_ship
+Effects: clear wear_ship
+Text: She will tack, and take her chance of missing stays.
+
+CHOICE: Wear rather than tack, while this lasts
+Requires: not wear_ship
+Effects: set wear_ship
+Text: She will wear round, which is slow and certain, rather than tack, which is quick and is not.
+
+
+EVENT: master_forecast
+Title: The Master's Opinion
+Place: sea
+Effects: forecast
+
+The master comes up and looks at the sky, the sea, the set of the clouds and the dog-vane, in that order, and sucks his teeth.
+
+{forecast}
+
+CHOICE: Thank him
+
+
+EVENT: missed_stays
+Title: Missed Stays
+Place: sea
+Tags: sea
+Urgent
+Requires: missed_stays
+
+'Ready about!' The helm goes down, and the *{ship}* comes up into the wind, the sails shivering, the sea slamming at her bows; and there she hangs, losing way, until the sails fill aback and she falls off again on the old tack. She has missed stays, and lost the best part of a mile.
+
+CHOICE: Wear her round, and lose the ground
+Effects: clear missed_stays
+Text: She is put before the wind and brought round on the other tack in a long, slow circle. It is not seamanlike, and it answers.
+
+CHOICE: Try her again
+Effects: clear missed_stays
+Chance 55, +8 per seamanship, -15 if force 8 or more:
+Text: This time the headsails are let fly at the right moment, and she comes round like a lady.
+Otherwise:
+Effects: running_rigging -3; sails -3
+Text: She misses again, and this time she is taken aback, with her sails pressed back against the masts and her stern going astern, and everything aloft groaning. She is got round in the end, at the cost of some cordage and a good deal of canvas.
+
+CHOICE: Wear rather than tack, while this lasts
+Effects: clear missed_stays; set wear_ship
+Text: The order is passed: she will wear in future, until the weather moderates. Nobody aboard is sorry.
+
+
+EVENT: gale
+Title: Blowing Hard
+Place: sea
+Tags: sea
+Urgent
+Once per spell
+Requires: at_sea, force 8 or more, not hove_to
+
+It is blowing a gale, and getting up. The sea is high and steep, the decks are never dry, and every so often a green sea comes aboard over the bows and goes aft knee-deep along the waist.
+
+[if press_of_sail] She is still carrying a press of sail, and Mr Treharne has been looking aloft for the last half-hour with an expression you know well.
+
+CHOICE: Heave to under a close-reefed main topsail
+Effects: set hove_to; set snug; clear press_of_sail
+Text: She is brought to, and lies there, rising to the seas, making no way and taking no harm.
+Log: Hove to.
+
+CHOICE: Snug her down and keep her going
+Effects: set snug; clear press_of_sail
+Text: Topsails are close-reefed and the topgallant masts got down on deck. She goes on, wet and labouring, but she goes.
+
+CHOICE: Crack on regardless
+Effects: set press_of_sail; clear snug
+Text: She goes on under all the canvas she will bear and a little more. Everything aloft is complaining, and so is Mr Treharne, under his breath.
+
+
+EVENT: carried_away
+Title: Carried Away
+Place: sea
+Tags: sea
+Watch chance: 10, +12 if force 9 or more, +12 if press_of_sail
+Requires: at_sea, force 7 or more, not snug, not hove_to, not fore_sprung
+
+There is a crack like a gun from forward. The fore-topmast is sprung just above the cap, and the whole top-hamper of the foremast is swaying in a way that makes everyone below it look up.
+
+CHOICE: Fish it where it stands
+Effects: set fore_sprung; set snug; clear press_of_sail; pass 1 hour
+Text: The carpenter and the boatswain splint it with a pair of capstan bars and woolding, and the fore-topsail is set again close-reefed. It will hold, says the carpenter, if nobody asks too much of it.
+Log: Sprung the fore-topmast. Fished it.
+
+CHOICE: Send it down and get up the spare
+Needs: spars 1 or more
+Why not: There is no spare spar left to get up.
+Effects: store spars -1 "Expended in replacing the fore-topmast"; pass 1 watch
+Text: It takes the whole watch, in that sea, and a man is nearly lost from the fore-top doing it; but by the change of the watch the new topmast is fidded and rigged, and the old one is lashed on the booms.
+Log: Sprung the fore-topmast. Sent it down and got up a new one.
+
+
+EVENT: strained
+Title: She Is Working
+Place: sea
+Tags: sea
+Watch chance: 6, +8 if press_of_sail
+Requires: at_sea, force 8 or more, not hove_to
+Effects: leak +2; hull -3
+
+The carpenter comes aft, wet to the skin, to report that she is working badly in this sea: the seams are opening along the waterline and she makes {leak} inches an hour.
+
+CHOICE: Ease her
+Effects: set snug; clear press_of_sail
+Text: Sail is shortened, and she rides easier, though the pumps do not stop.
+
+CHOICE: Keep her as she is, and keep the pumps going
+Text: The pumps go on clanking through the watch.
+
+
+EVENT: sail_blown
+Title: A Sail Blown Out
+Place: sea
+Tags: sea
+Watch chance: 6, +10 if press_of_sail
+Requires: at_sea, force 7 or more, not snug, not hove_to
+Effects: sails -5; store canvas -1 "Expended in repairing sails blown out"
+
+A heavy gust strikes her, and the main-topsail goes out of its bolt-ropes with a report like a broadside, and streams away to leeward in ribbons.
+
+CHOICE: Bend another, and shorten sail
+Effects: set snug; clear press_of_sail; pass 1 hour
+Log: Split and lost the main-topsail. Bent another.
+
+CHOICE: Bend another, and carry on
+Effects: pass 1 hour
+Log: Split and lost the main-topsail. Bent another.
+
+
+EVENT: becalmed
+Title: Becalmed
+Place: sea
+Tags: sea
+Urgent
+Once per spell
+Requires: at_sea, force 1 or less, not voyage station
+
+The wind has died away to nothing. The sails hang from the yards, slatting as she rolls on the long oily swell; the tar softens in the seams, and the pitch bubbles. She has not steerage way.
+
+CHOICE: Get out the sweeps
+Effects: set sweeps
+Text: The sweeps are got out, and the people are told off to them by watches. She creeps on.
+
+CHOICE: Wait for a wind
+Text: The old hands whistle for one, softly, over the taffrail. Nothing comes.
+
+
+EVENT: mistral_comes
+Title: The Mistral
+Place: sea
+Tags: sea
+Urgent
+Once per spell
+Requires: at_sea, weather mistral
+
+It comes down out of the north-west with very little warning: a line of white water on the horizon, then a cold so sharp it makes the eyes water, then the wind, all at once, laying her over until her lee guns are under. The sky is scoured clean and hard as glass.
+
+[if snug] She is already snugged down, and takes it well.
+
+CHOICE: Shorten sail in good time
+Effects: set snug; clear press_of_sail
+Text: Topsails are reefed and topgallant yards sent down. She steadies.
+
+CHOICE: Hold on as you are
+Text: She holds on, labouring.
+
+
+EVENT: levanter_haze
+Title: A Levanter
+Place: sea
+Tags: sea
+Urgent
+Once per spell
+Requires: at_sea, weather levanter
+
+The wind has gone round into the east, damp and gusty, and brought a haze with it that shuts in the horizon to a mile or two. The masthead can see no further than the deck. Anything might be out there, and nothing can be seen.
+
+CHOICE: Double the lookouts
+Text: Lookouts are doubled. They see the haze in more detail.
+
+
+EVENT: sirocco_heat
+Title: The Sirocco
+Place: sea
+Tags: sea
+Urgent
+Once per spell
+Requires: at_sea, weather sirocco
+
+The wind has come round into the south, hot and heavy, straight off Africa. Everything is damp and nothing dries; a fine red dust settles on the sails and the decks, and the people go about their work in a sullen, listless way that has nothing to do with discipline.
+
+CHOICE: Rig awnings and windsails
+Text: Awnings are spread over the quarterdeck and the waist, and windsails rigged to send a little air down into the berth-deck. It is not much. It is noticed.
 
 
 EVENT: bad_cask
@@ -1876,7 +2245,7 @@ Title: A Split Topsail
 Place: sea
 Tags: sea
 Once
-Requires: day 2 or more
+Requires: day 2 or more, force 5 or more
 Effects: sails -4
 
 In a sudden squall the fore-topsail splits from head to foot with a noise like a gun, and flogs itself to rags before the men aloft can master it.
@@ -1916,9 +2285,9 @@ The wind, the chart and the enemy are still to be built. Your log stands below, 
 
 ORDERS: cruise_catalan
 Heading: A cruise on the coast of Catalonia
-Passage: 8 watches
+Passage: 130 miles NNW to Cape San Sebastián
 Station: 42 days
-Return: 8 watches
+Return: 130 miles SSE to Mahon
 
 By Sir Robert Lessingham, Knight of the Most Honourable Order of the Bath, Vice-Admiral of the White, and Commander-in-Chief of His Majesty's Ships and Vessels employed and to be employed in the Mediterranean.
 
@@ -1939,9 +2308,10 @@ To {name} Esquire, Commander of His Majesty's Sloop *{ship}*.
 
 ORDERS: convoy_toulon
 Heading: Victuallers to the squadron off Toulon
-Passage: 16 watches
+Passage: 205 miles NNE to the squadron off Toulon
+Convoy speed: 5 knots
 Station: 0 days
-Return: 12 watches
+Return: 205 miles SSW to Mahon
 
 By Sir Robert Lessingham, Knight of the Most Honourable Order of the Bath, Vice-Admiral of the White, and Commander-in-Chief of His Majesty's Ships and Vessels employed and to be employed in the Mediterranean.
 
@@ -1964,9 +2334,9 @@ To {name} Esquire, Commander of His Majesty's Sloop *{ship}*.
 
 ORDERS: despatches_hebe
 Heading: Despatches for the Hebe off Barcelona
-Passage: 7 watches
+Passage: 130 miles NW to Barcelona
 Station: 14 days
-Return: 7 watches
+Return: 130 miles SE to Mahon
 
 By Sir Robert Lessingham, Knight of the Most Honourable Order of the Bath, Vice-Admiral of the White, and Commander-in-Chief of His Majesty's Ships and Vessels employed and to be employed in the Mediterranean.
 
@@ -2104,6 +2474,42 @@ two bells | four bells | eight bells: Time aboard is struck on the ship's bell e
 first watch: The watch from eight in the evening until midnight.
 watch: One of the divisions of the ship's day, mostly of four hours: the first watch (8 p.m. to midnight), middle, morning, forenoon, afternoon, and the two short dog watches between 4 and 8 p.m.
 fortnight: Two weeks.
+Mistral: The cold north-westerly wind that pours down the Rhône valley into the Gulf of Lion, often for days together, raising a short, steep, dangerous sea.
+Tramontana: A cold northerly wind off the mountains, "from beyond the mountains".
+Levanter: An easterly wind, damp and hazy, bringing poor visibility and rain.
+Sirocco: A hot, humid southerly wind off the African desert, carrying fine red dust.
+westerly blow: A spell of westerly wind, with cloud and squalls of rain.
+calm | flat calm: No wind at all. A sailing ship becalmed is helpless, but for boats and sweeps.
+light airs | light breezes | gentle breezes | moderate breezes | fresh breezes | strong breezes | moderate gale | fresh gale | strong gale | whole gale | storm: The seaman's words for the strength of the wind, from barely moving the sails to a wind no ship can show canvas to. Admiral Beaufort put numbers to them a few years later.
+point | points: One of the thirty-two divisions of the compass, eleven and a quarter degrees. A square-rigged ship can sail no closer than about six points to the wind.
+lying her course | lie her course: Able to steer straight for her destination with the wind as it is.
+close-hauled: Sailing as close to the wind as she will, her yards braced hard round.
+beating | beat up | board and board: Working to windward by sailing close-hauled first on one tack and then the other, zigzagging towards a destination the wind blows from.
+tack | tacking | go about | Ready about: To turn the ship's head through the wind, from one tack to the other. Quick, and it gains ground, but it can fail.
+wear | wearing | wear round: To turn the ship's stern through the wind. Slow and certain, but it loses ground to leeward.
+missed stays | miss stays | missing stays: To fail in tacking: the ship comes up into the wind and hangs there, and falls back on the old tack. Commoner in heavy weather and with a poor crew.
+taken aback: With the wind on the wrong side of the sails, pressing them back against the masts. Dangerous in a blow.
+press of sail | crack on: Carrying as much sail as the ship will bear: faster, and harder on spars, sails and nerves.
+snug | snugged down | reefed: Under shortened sail, with the topsails reefed (made smaller by tying part of them up to the yard). Slower and safer.
+close-reefed: With every reef taken in, the sail as small as it can be made.
+heave to | hove to | lying to: To stop the ship at sea by setting the sails to work against one another, so that she rides out a gale making little or no way.
+sweeps: Long oars, worked through the gun ports, which could move a small ship slowly in a calm.
+knots: The ship's speed in sea miles an hour, measured by the log-line, a knotted line run out astern for a timed half-minute.
+league | leagues: Three sea miles.
+foul: Of the wind: blowing from where the ship wants to go.
+slant: A shift of wind in the ship's favour.
+dog-vane: A small vane of cork and feathers on the weather side, showing the helmsman the wind.
+topgallants | royals: The sails above the topsails, set in fair weather and the first taken in when it blows.
+lee guns: On the side away from the wind; in a strong wind the ship heels that way, and her lee guns go under.
+fore-topmast | cap: The fore-topmast is the second section of the foremast, joined to the lower mast at the cap.
+top-hamper: Everything aloft: masts, yards, rigging and sails.
+woolding: Rope wound tight round a fished spar to bind the splints to it.
+capstan bars: The long wooden bars, shipped in the capstan head, that the men push to turn it.
+fidded: Of a topmast, set up in place and secured by its fid, a wooden or iron pin.
+bolt-ropes: The ropes sewn round the edge of a sail to strengthen it.
+taffrail: The rail round the top of the stern.
+awnings | windsails: Awnings are canvas sheets spread over the deck against the sun; windsails are canvas funnels rigged to send fresh air down the hatchways.
+steerage way: Enough way through the water for the rudder to act.
 biscuit | bread: Ship's biscuit, baked hard to keep. "Bread" in the Navy meant biscuit. A pound a day per man.
 pease: Dried split peas, boiled into a thick soup. Half a pint, four days a week.
 oatmeal: Boiled with water into burgoo for breakfast. A pint, three days a week.
@@ -2160,7 +2566,7 @@ sprung: Of a mast or yard: cracked, but still standing.
 (function(){
 'use strict';
 
-const BUILD = 'Build 3: ship, stores and time';
+const BUILD = 'Build 4: wind and weather';
 const SAVE_KEY = 'sloop.autosave.v1';
 const PREF_KEY = 'sloop.prefs.v1';
 const GAME_ID = 'sloop-of-war';
@@ -2284,6 +2690,28 @@ function fmtHour(min){
   if (c.h === 0 && c.mi === 0) return 'midnight';
   return `${h12}${c.mi ? '.' + String(c.mi).padStart(2,'0') : ''} ${ap}`;
 }
+/* ---------- the compass: 32 points, numbered clockwise from north ---------- */
+const POINTS = ['N','NbE','NNE','NEbN','NE','NEbE','ENE','EbN','E','EbS','ESE','SEbE','SE','SEbS','SSE','SbE',
+                'S','SbW','SSW','SWbS','SW','SWbW','WSW','WbS','W','WbN','WNW','NWbW','NW','NWbN','NNW','NbW'];
+const CARDINAL = { N: 'north', E: 'east', S: 'south', W: 'west' };
+function parsePoint(str){
+  const t = String(str).trim();
+  const i = POINTS.findIndex(p => p.toLowerCase() === t.toLowerCase());
+  if (i >= 0) return i;
+  const j = POINTS.findIndex((p, k) => pointWords(k) === t.toLowerCase());
+  return j >= 0 ? j : null;
+}
+function pointWords(i){
+  const w = x => x.split('').map(c => CARDINAL[c]).join('-');
+  const parts = POINTS[((i % 32) + 32) % 32].split('b');
+  return parts.length > 1 ? `${w(parts[0])} by ${w(parts[1])}` : w(parts[0]);
+}
+function eightPoint(i){ return POINTS[(Math.round(i / 4) % 8) * 4]; }
+function pointsApart(a, b){ const d = ((a - b) % 32 + 32) % 32; return Math.min(d, 32 - d); }
+const FORCE_LOG = ['Calm', 'Light airs', 'Light breezes', 'Gentle breezes', 'Moderate breezes', 'Fresh breezes', 'Strong breezes', 'Moderate gales', 'Fresh gales', 'Strong gales', 'Whole gales', 'A storm'];
+const FORCE_PROSE = ['a flat calm', 'light airs', 'a light breeze', 'a gentle breeze', 'a moderate breeze', 'a fresh breeze', 'a strong breeze', 'a moderate gale', 'a fresh gale', 'a strong gale', 'a whole gale', 'a storm'];
+const SEA_WORDS = ['a smooth sea', 'a smooth sea', 'a slight sea', 'a slight sea', 'a moderate sea', 'a moderate sea', 'a rough sea', 'a rough sea', 'a high sea', 'a high sea', 'a very high sea', 'a very high sea'];
+
 function fmtSpan(mins){
   if (mins >= 1440){ const d = Math.floor(mins / 1440); return d + (d === 1 ? ' day' : ' days'); }
   const h = Math.floor(mins / 60); return h + (h === 1 ? ' hour' : ' hours');
@@ -2292,7 +2720,7 @@ function fmtSpan(mins){
 /* ============================================================
    CONTENT PARSER
    ============================================================ */
-const EVENT_KEYS = new Set(['title','place','requires','weight','effects','effect','log','tags']);
+const EVENT_KEYS = new Set(['title','place','requires','weight','effects','effect','log','tags','watch chance']);
 const CHOICE_KEYS = new Set(['requires','needs','why not','effects','effect','log','text','next','greyed']);
 const blankBranch = () => ({ effects: [], text: '', next: null });
 
@@ -2333,7 +2761,13 @@ function parseConds(str, where, prob){
   const out = [];
   for (const part0 of splitOutsideQuotes(str.replace(/\band\b/gi, ','), /,/)){
     const part = part0.trim(); let m;
-    if ((m = part.match(/^(?:not|no)\s+voyage\s+([a-z0-9_]+)$/i))) out.push({ type: 'voyage', name: m[1].toLowerCase(), neg: true });
+    if ((m = part.match(/^(not\s+|no\s+)?weather\s+([a-z0-9_]+)$/i))) out.push({ type: 'weather', name: m[2].toLowerCase(), neg: !!m[1] });
+    else if ((m = part.match(/^(not\s+)?wind\s+from\s+(\S+)$/i))){
+      const pt = parsePoint(m[2]);
+      if (pt == null) prob('error', where, `"${m[2]}" is not a point of the compass.`);
+      else out.push({ type: 'wind', point: pt, neg: !!m[1] });
+    }
+    else if ((m = part.match(/^(?:not|no)\s+voyage\s+([a-z0-9_]+)$/i))) out.push({ type: 'voyage', name: m[1].toLowerCase(), neg: true });
     else if ((m = part.match(/^(?:not|no)\s+([a-z0-9_]+)$/i))) out.push({ type: 'flag', name: m[1].toLowerCase(), neg: true });
     else if ((m = part.match(/^place\s+([a-z0-9_]+)$/i))) out.push({ type: 'place', name: m[1].toLowerCase() });
     else if ((m = part.match(/^voyage\s+([a-z0-9_]+)$/i))) out.push({ type: 'voyage', name: m[1].toLowerCase() });
@@ -2383,6 +2817,7 @@ function parseEffects(str, where, prob){
     else if ((m = part.match(/^fill\s+([a-z0-9_]+)(?:\s+"([^"]*)")?$/i))) out.push({ op: 'fill', name: m[1].toLowerCase(), label: m[2] || '', where });
     else if (/^condemn$/i.test(part)) out.push({ op: 'condemn' });
     else if (/^survey$/i.test(part)) out.push({ op: 'survey' });
+    else if (/^forecast$/i.test(part)) out.push({ op: 'forecast' });
     else if ((m = part.match(/^allowance\s+(short|full)$/i))) out.push({ op: 'allowance', short: m[1].toLowerCase() === 'short' });
     else if ((m = part.match(/^voyage\s+([a-z0-9_]+)(?:\s+(\d+(?:\.\d+)?)\s*(watch(?:es)?|days?|hours?))?$/i))) out.push({ op: 'voyage', name: m[1].toLowerCase(), watches: m[2] ? unitMins(+m[2], m[3]) / 240 : null });
     else if ((m = part.match(/^roll\s+([a-z0-9_]+)\s+(\d+(?:\.\d+)?)$/i))) out.push({ op: 'roll', name: m[1].toLowerCase(), chance: +m[2] });
@@ -2415,7 +2850,7 @@ function parseNext(v, where, prob){
 }
 
 function parseContent(blocks){
-  const P = { settings: {}, events: {}, order: [], orders: {}, ship: {}, stores: {}, storeOrder: [], glossary: [], problems: [], stats: { words: 0 } };
+  const P = { settings: {}, events: {}, order: [], orders: {}, ship: {}, stores: {}, storeOrder: [], weather: {}, sailing: {}, glossary: [], problems: [], stats: { words: 0 } };
   const prob = (sev, where, msg) => P.problems.push({ sev, where, msg });
 
   /* money values must be known before anything is parsed */
@@ -2427,7 +2862,7 @@ function parseContent(blocks){
 
   for (const blk of blocks){
     const lines = blk.text.replace(/\r/g, '').split('\n');
-    let section = null, ev = null, ch = null, target = null, lastKey = null, ord = null, sto = null;
+    let section = null, ev = null, ch = null, target = null, lastKey = null, ord = null, sto = null, wx = null;
     let para = [], paraLine = 0;
     const where = i => `${blk.name}, line ${i + 1}`;
     const flushPara = () => {
@@ -2448,6 +2883,14 @@ function parseContent(blocks){
 
       if (/^settings$/i.test(t)){ flushPara(); section = 'settings'; ev = ch = ord = null; return; }
       if (/^SHIP$/.test(t)){ flushPara(); section = 'ship'; ev = ch = ord = null; return; }
+      if (/^SAILING$/.test(t)){ flushPara(); section = 'sailing'; ev = ch = ord = null; return; }
+      if ((m = t.match(/^WEATHER\s*:\s*(.*)$/))){
+        flushPara(); section = 'weather'; ev = ch = ord = null;
+        const id = m[1].trim().toLowerCase();
+        if (P.weather[id]) prob('error', where(i), `There are two kinds of weather called "${id}".`);
+        wx = P.weather[id] = { id, called: id, from: 0, span: 31, force: [2, 4], lasts: [1, 2], sky: '', signs: '', log: '', follows: [], where: where(i) };
+        return;
+      }
       if ((m = t.match(/^STORE\s*:\s*(.*)$/))){
         flushPara(); section = 'store'; ev = ch = ord = null;
         const id = m[1].trim().toLowerCase();
@@ -2469,7 +2912,7 @@ function parseContent(blocks){
         const id = m[1].trim();
         if (!/^[a-z0-9_]+$/i.test(id)) prob('error', where(i), `The event name "${id}" should use only letters, numbers and underscores.`);
         if (P.events[id]) prob('error', where(i), `There are two events called "${id}".`);
-        ev = { id, title: '', place: null, requires: [], weight: 1, weightMods: [], effects: [], tags: [], once: false, start: false, ending: false, hub: false, urgent: false, paras: [], choices: [], where: where(i) };
+        ev = { id, title: '', place: null, requires: [], weight: 1, weightMods: [], watchChance: null, watchMods: [], effects: [], tags: [], once: false, oncePerSpell: false, start: false, ending: false, hub: false, urgent: false, paras: [], choices: [], where: where(i) };
         P.events[id] = ev; P.order.push(id); return;
       }
 
@@ -2483,6 +2926,40 @@ function parseContent(blocks){
           const terms = m[1].split('|').map(s => s.trim()).filter(Boolean);
           P.glossary.push({ terms, def: m[2].trim(), where: where(i) }); lastKey = 'gloss';
         } else prob('warn', where(i), 'Glossary lines should look like "term | other form: definition".');
+        return;
+      }
+      if (section === 'sailing'){
+        if ((m = t.match(/^([a-z -]+?)\s*:\s*(.*)$/i))) P.sailing[m[1].toLowerCase()] = m[2].trim();
+        else prob('warn', where(i), 'Sailing lines should look like "press of sail: 1.12".');
+        return;
+      }
+      if (section === 'weather'){
+        if (!(m = t.match(/^([a-z ]+?)\s*:\s*(.*)$/i))){ prob('warn', where(i), 'Weather lines should look like "Force: 6 to 9".'); return; }
+        const k = m[1].toLowerCase(), v = m[2].trim(); let r;
+        if (k === 'called') wx.called = v;
+        else if (k === 'wind'){
+          if (/^any$/i.test(v)){ wx.from = 0; wx.span = 31; }
+          else if ((r = v.match(/^(\S+)\s+to\s+(\S+)$/i)) && parsePoint(r[1]) != null && parsePoint(r[2]) != null){ wx.from = parsePoint(r[1]); wx.span = (parsePoint(r[2]) - wx.from + 32) % 32; }
+          else if (parsePoint(v) != null){ wx.from = parsePoint(v); wx.span = 0; }
+          else prob('error', where(i), `I could not read the wind "${v}". Write it like "NW to N", using points of the compass, or "any".`);
+        }
+        else if (k === 'force' || k === 'lasts'){
+          r = v.match(/^(\d+(?:\.\d+)?)(?:\s+to\s+(\d+(?:\.\d+)?))?(?:\s*days?)?$/i);
+          if (!r) prob('error', where(i), `I could not read "${v}". Write it like "6 to 9".`);
+          else wx[k] = [+r[1], r[2] ? +r[2] : +r[1]];
+          if (r && k === 'force' && (+r[1] > 11 || (r[2] && +r[2] > 11))) prob('error', where(i), 'Force runs from 0 (calm) to 11 (storm).');
+        }
+        else if (k === 'sky') wx.sky = v;
+        else if (k === 'signs') wx.signs = v;
+        else if (k === 'log') wx.log = v;
+        else if (k === 'follows'){
+          for (const part of v.split(',').map(x => x.trim()).filter(Boolean)){
+            r = part.match(/^([a-z0-9_]+)\s+(\d+(?:\.\d+)?)$/i);
+            if (!r) prob('error', where(i), `I could not read "${part}". Write it like "settled 4".`);
+            else wx.follows.push({ id: r[1].toLowerCase(), w: +r[2] });
+          }
+        }
+        else prob('warn', where(i), `"${m[1]}" is not something weather has.`);
         return;
       }
       if (section === 'ship'){
@@ -2518,7 +2995,14 @@ function parseContent(blocks){
       }
       if (section === 'orders'){
         if ((m = t.match(/^heading\s*:\s*(.*)$/i))){ ord.heading = m[1].trim(); return; }
-        if ((m = t.match(/^(passage|station|return)\s*:\s*(\d+(?:\.\d+)?)\s*(watch(?:es)?|days?|hours?)$/i))){ ord[m[1].toLowerCase()] = unitMins(+m[2], m[3]) / 240; return; }
+        if ((m = t.match(/^(passage|return)\s*:\s*(\d+(?:\.\d+)?)\s*miles?\s+(\S+)\s+to\s+(.+)$/i))){
+          const b = parsePoint(m[3]);
+          if (b == null) prob('error', where(i), `"${m[3]}" is not a point of the compass. Write it like NNW or SbE.`);
+          ord[m[1].toLowerCase()] = { dist: +m[2], bearing: b == null ? 0 : b, to: m[4].trim() };
+          return;
+        }
+        if ((m = t.match(/^station\s*:\s*(\d+(?:\.\d+)?)\s*(watch(?:es)?|days?|hours?)$/i))){ ord.station = unitMins(+m[1], m[2]) / 240; return; }
+        if ((m = t.match(/^convoy speed\s*:\s*(\d+(?:\.\d+)?)\s*knots?$/i))){ ord.cap = +m[1]; return; }
         if (t.startsWith('>')){ flushPara(); ord.paras.push({ text: t.replace(/^>\s*/, ''), sig: true }); return; }
         if (!para.length) paraLine = i + 1;
         para.push(t); return;
@@ -2562,8 +3046,9 @@ function parseContent(blocks){
         return;
       }
 
+      if (/^once per (spell|weather)$/i.test(t)){ flushPara(); ev.oncePerSpell = true; return; }
       if (/^(once|start|ending|hub|urgent)$/i.test(t)){ flushPara(); ev[t.toLowerCase()] = true; return; }
-      if ((m = t.match(/^([a-z]+)\s*:\s*(.*)$/i)) && EVENT_KEYS.has(m[1].toLowerCase())){
+      if ((m = t.match(/^([a-z]+(?: chance)?)\s*:\s*(.*)$/i)) && EVENT_KEYS.has(m[1].toLowerCase())){
         flushPara();
         const k = m[1].toLowerCase(), v = m[2].trim();
         if (k === 'title') ev.title = v;
@@ -2577,6 +3062,11 @@ function parseContent(blocks){
         else if (k === 'effects' || k === 'effect') ev.effects.push(...parseEffects(v, where(i), prob));
         else if (k === 'log') ev.effects.push({ op: 'log', text: v.replace(/^"|"$/g, '') });
         else if (k === 'tags') ev.tags = v.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+        else if (k === 'watch chance'){
+          const parts = v.split(','); ev.watchChance = parseFloat(parts.shift());
+          if (!(ev.watchChance >= 0)){ prob('error', where(i), 'Watch chance should start with a number.'); ev.watchChance = 0; }
+          ev.watchMods = parseMods(parts.join(','), where(i), prob);
+        }
         return;
       }
       if (!para.length) paraLine = i + 1;
@@ -2631,7 +3121,8 @@ function validate(P, prob){
     if (words > 150 && !ev.hub) prob('warn', ev.where, `"${id}" runs to ${words} words; on a phone the choices may fall below the fold. Aim for 150 or fewer.`);
     if (!ev.ending && !ev.choices.length) prob('error', ev.where, `"${id}" has no choices and is not marked "Ending", so the player would be stuck.`);
     if (ev.ending && ev.choices.length) prob('warn', ev.where, `"${id}" is an Ending, so its choices are never shown.`);
-    if (ev.choices.length > 4 && !ev.hub) prob('warn', ev.where, `"${id}" offers ${ev.choices.length} choices; the design calls for two to four.`);
+    const alwaysShown = ev.choices.filter(c => !c.requires.length).length;
+    if (alwaysShown > 4 && !ev.hub) prob('warn', ev.where, `"${id}" always shows ${alwaysShown} choices; the design calls for two to four.`);
     if (ev.hub && !ev.place) prob('error', ev.where, `"${id}" is a Hub but has no Place.`);
     for (const e of allEffectsOf(ev)) if ((e.op === 'store' || e.op === 'empty' || (e.op === 'fill' && e.name !== 'provisions')) && !P.stores[e.name])
       prob('error', e.where, `"${e.op} ${e.name}" names a store that does not exist.`);
@@ -2670,6 +3161,11 @@ function validate(P, prob){
     if (!ids.some(id => P.events[id].tags.includes(t)) && !hasHub(P, t))
       prob('error', 'Content', `Something says "Next: any ${t}", but no event has that tag and there is no Hub for that place.`);
   }
+  for (const id of Object.keys(P.weather)){
+    for (const f of P.weather[id].follows) if (!P.weather[f.id]) prob('error', P.weather[id].where, `"${id}" is followed by "${f.id}", which is not described.`);
+    if (!P.weather[id].follows.length) prob('warn', P.weather[id].where, `Nothing follows "${id}", so once it comes it never goes.`);
+  }
+  if (P.settings['first weather'] && !P.weather[P.settings['first weather'].toLowerCase()]) prob('error', 'Settings', `"first weather: ${P.settings['first weather']}" is not described.`);
   for (const id of Object.keys(P.orders)){
     if (!ordersUsed.has(id)) prob('warn', P.orders[id].where, `The orders "${id}" are never given.`);
     if (!P.orders[id].heading) prob('warn', P.orders[id].where, `The orders "${id}" have no Heading.`);
@@ -2706,7 +3202,10 @@ function getVar(name){
   if (content.stores[name]) return state.stores && state.stores[name] ? state.stores[name].book / content.stores[name].size : 0;
   const m = name.match(/^([a-z0-9_]+)_days$/);
   if (m && content.stores[m[1]]) return daysOf(m[1]);
-  if (name === 'voyage_left') return state.voyage ? state.voyage.left : 0;
+  if (name === 'voyage_left') return state.voyage ? (state.voyage.left || 0) : 0;
+  if (name === 'force') return state.weather ? state.weather.force : 0;
+  if (name === 'knots') return Math.round(state.lastSpeed || 0);
+  if (name === 'miles_to_run') return state.voyage && state.voyage.dist != null ? Math.max(0, Math.round(state.voyage.dist)) : 0;
   return 0;
 }
 function setVar(name, v){ if (name === 'money') state.money = v; else state.vars[name] = v; }
@@ -2716,6 +3215,8 @@ function condMet(c){
     case 'flag': return !!state.flags[c.name] !== c.neg;
     case 'place': return state.place === c.name;
     case 'voyage': return (!!state.voyage && state.voyage.name === c.name) !== !!c.neg;
+    case 'weather': return (!!state.weather && state.weather.sys === c.name) !== !!c.neg;
+    case 'wind': return (!!state.weather && state.weather.force >= 1 && pointsApart(state.weather.dir, c.point) <= 2) !== !!c.neg;
     case 'tod': { const now = minuteOfDay(state.minutes); return c.op === 'before' ? now < c.at : now >= c.at; }
     case 'timer': {
       const s = state.timers[c.name]; if (s == null) return false;
@@ -2763,6 +3264,13 @@ function subst(s){
     if (k === 'bad_word') return bad ? bad.badWord : 'bad';
     if (k === 'survey') return state.surveyText || '';
     if (k === 'voyage') return state.voyage ? (content.settings['voyage.' + state.voyage.name] || state.voyage.name) : 'in harbour';
+    if (k === 'wind') return windProse();
+    if (k === 'sky') return state.weather ? (content.weather[state.weather.sys].sky || '') : '';
+    if (k === 'sea') return state.weather ? SEA_WORDS[state.weather.force] : '';
+    if (k === 'weather') return state.weather ? content.weather[state.weather.sys].called : '';
+    if (k === 'forecast') return state.forecastText || '';
+    if (k === 'destination') return state.voyage && state.voyage.to ? state.voyage.to : 'your station';
+    if (k === 'distance'){ const d = getVar('miles_to_run'); return d < 6 ? 'a few miles' : `some ${Math.max(2, Math.round(d / 3))} leagues`; }
     if ((k in state.vars) || content.stores[k] || /_days$/.test(k)) return String(Math.max(0, Math.floor(getVar(k))));
     return all;
   });
@@ -2785,6 +3293,7 @@ function applyEffects(list, label){
       case 'fill': fill(e.name, subst(e.label || label)); break;
       case 'condemn': condemn(); break;
       case 'survey': survey(); break;
+      case 'forecast': forecast(); break;
       case 'allowance': if (e.short) state.flags.short_allowance = true; else delete state.flags.short_allowance; break;
       case 'voyage': startVoyage(e.name, e.watches); break;
       case 'roll': if (rand(state.rng) * 100 < e.chance) state.flags[e.name] = true; else delete state.flags[e.name]; break;
@@ -2803,18 +3312,20 @@ function applyEffects(list, label){
 
 function newGame(name, seed){
   state = {
-    game: GAME_ID, v: 3, build: BUILD,
+    game: GAME_ID, v: 4, build: BUILD,
     name: (name || content.settings['default name'] || 'John Hartley').trim(),
     seed: (seed || makeSeed()).trim().toUpperCase(),
     rng: null, minutes: 0, money: parseMoney(content.settings['start money'] || '£20') || 0,
     vars: {}, flags: {}, seen: {}, timers: {}, orders: null, ordersAt: null, place: null, eventId: null,
     log: [], accounts: [], history: [], pending: null, ended: false, tested: false, startedAt: Date.now(),
-    stores: null, storeLog: null, storeBad: null, lastBad: null, voyage: null, surveyText: ''
+    stores: null, storeLog: null, storeBad: null, lastBad: null, voyage: null, surveyText: '',
+    weather: null, spellSeen: {}, forecastText: '', lastSpeed: 0, dayRun: 0, dayMissed: 0
   };
   state.rng = seedRng(state.seed);
   state.minutes = startMinutes();
   state.accounts.push({ t: state.minutes, acct: 'money', amt: state.money, what: 'In hand on coming ashore', open: true });
   initShip();
+  initWeather();
   enterEvent(content.startId);
   persist();
 }
@@ -2824,6 +3335,7 @@ function enterEvent(id){
   if (!ev){ state.nowhere = id; state.eventId = '__nowhere__'; return; }
   state.eventId = id;
   state.seen[id] = (state.seen[id] || 0) + 1;
+  if (ev.oncePerSpell && state.weather){ state.spellSeen = state.spellSeen || {}; state.spellSeen[id] = state.weather.spell; }
   if (ev.place) state.place = ev.place;
   applyEffects(ev.effects, ev.title ? subst(ev.title).replace(/\*/g, '') : '');
   if (ev.ending) state.ended = true;
@@ -2834,6 +3346,7 @@ function hubFor(place){
 }
 function eligible(ev){
   if (ev.once && state.seen[ev.id]) return false;
+  if (ev.oncePerSpell && state.weather && state.spellSeen && state.spellSeen[ev.id] === state.weather.spell) return false;
   if (ev.id === state.eventId) return false;
   return condsMet(ev.requires);
 }
@@ -2842,7 +3355,7 @@ function pickFrom(tag, mode){
     .filter(ev => ev.tags.includes(tag) && !ev.hub && eligible(ev));
   const urgent = pool.filter(ev => ev.urgent);
   if (mode === 'urgent') pool = urgent;
-  else if (mode === 'ordinary') pool = pool.filter(ev => !ev.urgent);
+  else if (mode === 'ordinary') pool = pool.filter(ev => !ev.urgent && ev.watchChance == null);
   else if (urgent.length) pool = urgent;
   const weighted = pool.map(ev => ({ ev, w: Math.max(0, modded(ev.weight, ev.weightMods)) })).filter(x => x.w > 0);
   const total = weighted.reduce((n, x) => n + x.w, 0);
@@ -2901,15 +3414,146 @@ function carryOn(){
 function dateToMin(str){ const d = str.split('-').map(Number); return (Date.UTC(d[0], d[1] - 1, d[2]) - startEpoch()) / 60000; }
 
 /* time passes; at every noon at sea the day's allowance is issued */
+/* time passes; the weather changes at every change of the watch, and at noon at sea the day's allowance is issued and the day's run entered */
 function advance(mins){
   const end = state.minutes + Math.max(0, mins);
-  let noon = Math.floor((state.minutes - 720) / 1440) * 1440 + 2160;
-  while (noon <= end){
-    state.minutes = noon;
-    if (state.flags.at_sea && state.stores) dailyIssue();
-    noon += 1440;
+  let t = Math.floor(state.minutes / 240) * 240 + 240;
+  while (t <= end){
+    state.minutes = t;
+    if (state.weather) weatherStep();
+    if (((t % 1440) + 1440) % 1440 === 720 && state.flags.at_sea && state.stores){ dailyIssue(); noonLog(); }
+    t += 240;
   }
   state.minutes = end;
+}
+
+/* ============================================================
+   WIND AND WEATHER
+   ============================================================ */
+function randInt(a, b){ return a + Math.floor(rand(state.rng) * (b - a + 1)); }
+function pickWeighted(list){
+  const total = list.reduce((n, x) => n + x.w, 0); if (total <= 0) return null;
+  let r = rand(state.rng) * total;
+  for (const x of list){ r -= x.w; if (r < 0) return x.id; }
+  return list[list.length - 1].id;
+}
+function initWeather(){
+  const first = (content.settings['first weather'] || '').toLowerCase();
+  state.weather = { spell: 0 };
+  enterWeather(content.weather[first] ? first : Object.keys(content.weather)[0]);
+}
+function enterWeather(id){
+  const d = content.weather[id], w = state.weather;
+  w.sys = id;
+  w.left = Math.max(1, Math.round((d.lasts[0] + rand(state.rng) * (d.lasts[1] - d.lasts[0])) * 6));
+  w.off = randInt(0, d.span);
+  w.dir = (d.from + w.off) % 32;
+  w.force = randInt(d.force[0], d.force[1]);
+  w.spell = (w.spell || 0) + 1;
+  w.next = pickWeighted(d.follows.filter(f => content.weather[f.id])) || id;
+}
+function weatherStep(){
+  const w = state.weather; if (!w || !content.weather[w.sys]) return;
+  w.left--;
+  if (w.left <= 0) enterWeather(w.next);
+  else {
+    const d = content.weather[w.sys];
+    if (rand(state.rng) < 0.3) w.off = Math.max(0, Math.min(d.span, w.off + (rand(state.rng) < 0.5 ? -1 : 1)));
+    w.dir = (d.from + w.off) % 32;
+    if (rand(state.rng) < 0.35) w.force = Math.max(d.force[0], Math.min(d.force[1], w.force + (rand(state.rng) < 0.5 ? -1 : 1)));
+  }
+  if (w.force < 7) delete state.flags.hove_to;
+  if (w.force >= 3) delete state.flags.sweeps;
+}
+function windProse(){
+  const w = state.weather; if (!w) return '';
+  return w.force === 0 ? 'a flat calm' : `${FORCE_PROSE[w.force]} from the ${pointWords(w.dir)}`;
+}
+function forecast(){
+  const w = state.weather, cur = content.weather[w.sys], nxt = content.weather[w.next] || cur;
+  const right = rand(state.rng) * 100 < 45 + 10 * getVar('master_skill');
+  const changing = w.left <= 3 && w.next !== w.sys;
+  const saysChange = right ? changing : !changing;
+  if (!saysChange){ state.forecastText = `He looks for ${cur.called} to hold for the next three watches at the least.`; return; }
+  let said = nxt, inWatches = w.left;
+  if (!right){
+    const others = Object.keys(content.weather).filter(k => k !== w.sys);
+    said = content.weather[others[Math.floor(rand(state.rng) * others.length)]] || nxt;
+    inWatches = randInt(1, 3);
+  }
+  const when = watchOf(Math.floor(state.minutes / 240) * 240 + inWatches * 240).name.toLowerCase();
+  state.forecastText = `He does not like the look of it: ${said.signs}. He looks for ${said.called} by the ${when}.`;
+}
+function noonLog(){
+  const w = state.weather; if (!w) return;
+  const d = content.weather[w.sys];
+  let text = w.force === 0 ? 'Calm' : `${FORCE_LOG[w.force]} ${POINTS[w.dir]}`;
+  if (d.log) text += `, ${d.log}`;
+  text += '.';
+  if (state.flags.hove_to) text += ' Lying to.';
+  if (state.dayRun >= 1) text += ` Made ${Math.round(state.dayRun)} miles.`;
+  if (state.dayMissed) text += ` Missed stays ${state.dayMissed === 1 ? 'once' : state.dayMissed === 2 ? 'twice' : state.dayMissed + ' times'}.`;
+  state.log.push({ t: state.minutes, text });
+  state.dayRun = 0; state.dayMissed = 0;
+}
+
+/* ---------- sailing: the polar table, beating, missing stays ---------- */
+function sailNum(key, dflt){ const v = parseFloat(content.sailing[key]); return isNaN(v) ? dflt : v; }
+function sailList(key){ return String(content.sailing[key] || '').split(',').map(x => parseFloat(x)).filter(x => !isNaN(x)); }
+function polarSpeed(a){
+  const pts = String(content.sailing.speed || '').split(',').map(x => x.trim().match(/^(\d+)\s*points?\s+(\d+(?:\.\d+)?)$/i)).filter(Boolean).map(m => [+m[1], +m[2]]);
+  if (!pts.length || a < pts[0][0]) return 0;
+  for (let i = 1; i < pts.length; i++){
+    if (a <= pts[i][0]){ const [a0, v0] = pts[i - 1], [a1, v1] = pts[i]; return v0 + (v1 - v0) * (a - a0) / (a1 - a0); }
+  }
+  return pts[pts.length - 1][1];
+}
+function closest(){ return sailNum('closest', 6); }
+function speedAt(a){
+  const w = state.weather, f = sailList('wind')[w.force] || 0;
+  let v = polarSpeed(a) * f;
+  if (state.flags.press_of_sail) v *= sailNum('press of sail', 1.12);
+  else if (state.flags.snug) v *= sailNum('snug', 0.85);
+  if (a <= closest() + 1 && w.force >= 7) v *= Math.max(0.2, 1 - sailNum('close-hauled in a blow', 12) / 100 * (w.force - 6));
+  v *= 0.8 + 0.2 * Math.min(100, getVar('sails')) / 100;
+  if (state.flags.fore_sprung || state.flags.main_sprung) v *= 0.85;
+  return v;
+}
+function missChance(){
+  const base = sailList('missing stays')[state.weather.force] || 0;
+  let p = base * (1.3 - 0.1 * getVar('seamanship'));
+  if (getVar('running_rigging') < 60) p *= 1.3;
+  if (state.flags.press_of_sail) p *= 0.85;
+  return Math.max(0, Math.min(90, p));
+}
+/* one watch's sailing: returns nothing, moves the ship along her leg */
+function sailOneWatch(){
+  const v = state.voyage, w = state.weather;
+  delete state.flags.beating; delete state.flags.lying_course;
+  state.lastSpeed = 0;
+  if (!w) return;
+  if (state.flags.hove_to) return;
+  if (!v || v.dist == null){ state.lastSpeed = w.force <= 1 ? 0 : speedAt(10) * 0.6; return; }
+  let speed, made;
+  if (w.force <= 1 && state.flags.sweeps){ speed = sailNum('sweeps', 1.5); made = speed * 4; }
+  else {
+    const a = pointsApart(v.bearing, w.dir);
+    if (a >= closest()){ state.flags.lying_course = true; speed = speedAt(a); made = speed * 4; }
+    else {
+      state.flags.beating = true;
+      speed = speedAt(closest());
+      made = speed * Math.cos((closest() - a) * Math.PI / 16) * 4;
+      if (state.flags.wear_ship) made *= 0.85;
+      else if (rand(state.rng) * 100 < missChance()){
+        made *= 0.55; state.dayMissed = (state.dayMissed || 0) + 1;
+        if (w.force >= 6) state.flags.missed_stays = true;
+      }
+    }
+  }
+  if (v.cap){ speed = Math.min(speed, v.cap); made = Math.min(made, v.cap * 4); }
+  state.lastSpeed = speed;
+  v.dist -= made; state.dayRun = (state.dayRun || 0) + made;
+  if (v.dist <= 0){ state.flags[v.name + '_done'] = true; state.voyage = null; delete state.flags.beating; delete state.flags.lying_course; }
 }
 
 function initShip(){
@@ -3073,10 +3717,16 @@ function survey(){
   state.surveyText = found.length ? `The survey finds ${listJoin(found)}, against the purser’s books.` : 'The survey finds the purser’s books right, to within what a slate and a lantern can tell.';
 }
 function startVoyage(name, watches){
-  const o = state.orders && content.orders[state.orders];
-  const key = name === 'outward' ? 'passage' : name === 'homeward' ? 'return' : name;
-  const w = watches != null ? watches : (o && o[key] != null ? o[key] : 0);
-  for (const k of ['outward_done', 'station_done', 'homeward_done']) if (k === name + '_done') delete state.flags[k];
+  const o = (state.orders && content.orders[state.orders]) || {};
+  delete state.flags[name + '_done'];
+  const prev = state.voyage;
+  if (name === 'outward' || name === 'homeward'){
+    let leg = name === 'outward' ? o.passage : o.return;
+    if (name === 'homeward' && !leg && o.passage) leg = { dist: o.passage.dist, bearing: (o.passage.bearing + 16) % 32, to: 'Mahon' };
+    if (name === 'homeward' && prev && prev.name === 'outward' && o.passage) leg = { dist: Math.max(5, o.passage.dist - prev.dist), bearing: (o.passage.bearing + 16) % 32, to: (o.return && o.return.to) || 'Mahon' };
+    if (leg){ state.voyage = { name, dist: leg.dist, bearing: leg.bearing, to: leg.to, cap: name === 'outward' ? (o.cap || 0) : 0 }; return; }
+  }
+  const w = watches != null ? watches : (o[name] != null ? o[name] : 0);
   if (w <= 0){ state.voyage = null; state.flags[name + '_done'] = true; return; }
   state.voyage = { name, left: Math.round(w) };
 }
@@ -3084,12 +3734,18 @@ function startVoyage(name, watches){
 function sailWatches(n){
   const chance = parseFloat(content.settings['sea event chance'] || '0');
   for (let i = 0; i < n; i++){
+    sailOneWatch();
     advance(240);
-    if (state.voyage){
+    if (state.voyage && state.voyage.left != null){
       state.voyage.left--;
       if (state.voyage.left <= 0){ state.flags[state.voyage.name + '_done'] = true; state.voyage = null; }
     }
     const urgent = pickFrom('sea', 'urgent'); if (urgent) return urgent;
+    for (const id of content.order){
+      const ev = content.events[id];
+      if (ev.watchChance == null || !ev.tags.includes('sea') || ev.hub || !eligible(ev)) continue;
+      if (rand(state.rng) * 100 < modded(ev.watchChance, ev.watchMods)) return id;
+    }
     if (rand(state.rng) * 100 < chance){ const ev = pickFrom('sea', 'ordinary'); if (ev) return ev; }
   }
   return hubFor('sea') || hubFor(state.place) || '__nowhere__';
@@ -3118,6 +3774,14 @@ function normalise(s){
   if (!Array.isArray(s.accounts)) s.accounts = [{ t: s.minutes, acct: 'money', amt: s.money, what: 'Balance brought forward', open: true }];
   if (!s.stores) s.needShip = true;
   if (!('voyage' in s)) s.voyage = null;
+  if (!s.weather) s.needWeather = true;
+  s.spellSeen = s.spellSeen || {};
+  /* passages in builds before 4 were counted in watches; turn the watches left into miles */
+  if (s.voyage && s.voyage.dist == null && (s.voyage.name === 'outward' || s.voyage.name === 'homeward')){
+    const o = (s.orders && content.orders[s.orders]) || {};
+    const leg = s.voyage.name === 'outward' ? o.passage : (o.return || (o.passage && { dist: o.passage.dist, bearing: (o.passage.bearing + 16) % 32, to: 'Mahon' }));
+    s.voyage = { name: s.voyage.name, dist: s.voyage.left * 20, bearing: leg ? leg.bearing : 0, to: leg ? leg.to : 'Mahon', cap: s.voyage.name === 'outward' ? (o.cap || 0) : 0 };
+  }
   /* a commission saved at the end of build 2 stands out to sea */
   if (s.eventId === 'ending_build2'){ s.ended = false; s.pending = null; s.continueAt = 'stand_out'; }
   /* a commission saved at the end of build 1 carries on into the second day */
@@ -3131,6 +3795,7 @@ function normalise(s){
 function adopt(s){
   state = normalise(s);
   if (state.needShip){ delete state.needShip; initShip(); }
+  if (state.needWeather){ delete state.needWeather; initWeather(); }
   if (state.continueAt){ const id = state.continueAt; delete state.continueAt; enterEvent(id); }
   persist();
 }
@@ -3213,8 +3878,21 @@ function stripHtml(){
     <span>${esc(fmtDate(state.minutes, true))}</span>
     <span>${esc(w.name)}, ${esc(w.bell)}</span>
     <span>${esc(placeName(state.place))}</span>
+    ${windHtml()}
     <span class="purse" title="Your own purse">Purse ${esc(fmtMoney(state.money))}</span>
   </div>`;
+}
+function windHtml(){
+  const w = state.weather; if (!w) return '';
+  const atSea = state.place === 'sea';
+  const deg = w.dir * 11.25;
+  const arrow = w.force === 0 ? '<circle r="2.2" fill="var(--accent)"/>' :
+    `<g transform="rotate(${deg})"><line x1="0" y1="-9" x2="0" y2="7" stroke="var(--accent)" stroke-width="1.6"/><path d="M0,9 L-3.2,3.5 L3.2,3.5 Z" fill="var(--accent)"/></g>`;
+  const head = atSea && state.voyage && state.voyage.bearing != null ? `<g transform="rotate(${state.voyage.bearing * 11.25})"><line x1="0" y1="0" x2="0" y2="-8" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="1.5 1.5"/></g>` : '';
+  const label = w.force === 0 ? 'Calm' : `${eightPoint(w.dir)}, ${FORCE_LOG[w.force].toLowerCase()}`;
+  const knots = atSea ? `<span>${state.flags.hove_to ? 'Lying to' : Math.round(state.lastSpeed || 0) + ' knots'}</span>` : '';
+  return `<span class="wind" title="${esc(w.force === 0 ? 'Calm' : 'Wind from the ' + pointWords(w.dir) + ', ' + FORCE_LOG[w.force].toLowerCase())}">
+    <svg viewBox="-11 -11 22 22" width="22" height="22" aria-hidden="true"><circle r="10" fill="none" stroke="var(--rule)"/><text y="-5.5" text-anchor="middle" font-size="5" fill="var(--ink-2)" font-family="Georgia,serif">N</text>${head}${arrow}</svg>${esc(label)}</span>${knots}`;
 }
 
 function render(){
@@ -3530,7 +4208,8 @@ function writerHtml(){
     <h3>Flags</h3><p>${flags.length ? flags.map(esc).join(', ') : '<span class="note">None set yet.</span>'}</p>
     <h3>Timers</h3>${timers.length ? `<dl class="kv num">${timers.map(k => `<dt>${esc(k)}</dt><dd>started ${esc(fmtSpan(state.minutes - state.timers[k]))} ago</dd>`).join('')}</dl>` : '<p class="note">None running.</p>'}
     ${state.stores ? `<h3>Stores: books and hold</h3><div class="scroll-x"><table class="log"><thead><tr><th>Store</th><th class="amt">Books</th><th class="amt">In the hold</th></tr></thead><tbody>${content.storeOrder.filter(id => state.stores[id]).map(id => `<tr><td>${esc(id)}</td><td class="amt">${esc(fmtBal(content.stores[id], state.stores[id].book))}</td><td class="amt">${esc(fmtBal(content.stores[id], realQty(id)))}</td></tr>`).join('')}</tbody></table></div>` : ''}
-    <h3>Voyage</h3><p>${state.voyage ? esc(state.voyage.name + ', ' + state.voyage.left + ' watches to run') : 'none'}</p>
+    <h3>Voyage</h3><p>${state.voyage ? esc(state.voyage.name + ', ' + (state.voyage.dist != null ? Math.round(state.voyage.dist) + ' miles to ' + state.voyage.to + ' bearing ' + POINTS[state.voyage.bearing] : state.voyage.left + ' watches to run')) : 'none'}</p>
+    ${state.weather ? `<h3>Weather</h3><dl class="kv num"><dt>System</dt><dd>${esc(state.weather.sys)}, ${state.weather.left} watches more, then ${esc(state.weather.next)}</dd><dt>Wind</dt><dd>${esc(POINTS[state.weather.dir])}, force ${state.weather.force}</dd><dt>Speed</dt><dd>${(state.lastSpeed || 0).toFixed(1)} knots</dd></dl>` : ''}
     <h3>Events seen</h3><p>${seen.map(esc).join(', ')}</p>
     <h3>Jump to an event</h3>
     <div class="row"><select id="jump" aria-label="Event to jump to" style="font:inherit;padding:.35rem;background:var(--paper-2);color:var(--ink);border:1px solid var(--rule);max-width:100%">${opts}</select>
@@ -3703,6 +4382,7 @@ window.SloopTest = {
   get state(){ return clone(state); },
   get content(){ return content; },
   real: id => realQty(id),
+  speedAt: a => speedAt(a),
   parseMoney, fmtMoney, watchOf: m => watchOf(m)
 };
 

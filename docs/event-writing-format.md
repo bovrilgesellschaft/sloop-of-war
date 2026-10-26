@@ -129,13 +129,16 @@ You are hereby required and directed ...
 
 A line starting with `>` is set to the right, like a signature. `{issued}` is the date the orders were given.
 
-Orders also say how long each leg of the voyage takes, until the chart arrives:
+Orders also give the legs of the voyage, until the chart arrives: the distance and bearing of the passage, the time on station, and the way home. The convoy line is optional.
 
 ```
-Passage: 8 watches
+Passage: 130 miles NNW to Cape San Sebastián
 Station: 42 days
-Return: 8 watches
+Return: 130 miles SSE to Mahon
+Convoy speed: 5 knots
 ```
+
+Bearings are points of the compass: N, NbE, NNE, NEbN, NE and so on round to NbW.
 
 ## At sea
 
@@ -143,6 +146,44 @@ Return: 8 watches
 - `voyage outward`, `voyage station`, `voyage homeward` start a leg, with its length taken from the orders. `voyage station 10 days` sets the length yourself. When a leg runs out, the flag `outward_done`, `station_done` or `homeward_done` is set, so an `Urgent` event can pick it up.
 - Conditions: `voyage station`, `not voyage homeward`.
 - Stores are issued at noon each day while the flag `at_sea` is set.
+
+## Wind and weather
+
+Each kind of weather is a `WEATHER` block. One kind follows another, chosen by the weights in `Follows`, and lasts its own time. Within a spell the wind shifts a point or two and freshens or eases.
+
+```
+WEATHER: mistral
+Called: the Mistral
+Wind: NW to N
+Force: 6 to 9
+Lasts: 1 to 3 days
+Sky: hard and clear, and bitter cold
+Log: with a hard clear sky and a heavy sea
+Signs: a long swell getting up from the north-west under a sky scoured hard and clear
+Follows: settled 4, tramontana 1, westerly 1
+```
+
+- `Wind:` a range of points, clockwise, or `any`.
+- `Force:` from 0 (calm) to 11 (storm). The player only ever sees it as words: light airs, fresh breezes, a strong gale.
+- `Called:` how the master names it in a sentence. `Sky:` and `Log:` describe it in prose and in the noon entry. `Signs:` are what the master reads when he forecasts it.
+- `first weather: settled` in Settings says what the commission starts with.
+
+The `SAILING` block holds the ship's speeds: knots at each angle off the wind, how close she will lie, what each force does to her, and the chance of missing stays.
+
+Conditions:
+
+- `weather mistral`, `not weather calm`
+- `wind from SE` (within two points of it), `not wind from SE`
+- `force 7 or more`
+- `beating` and `lying_course` are flags the game sets each watch at sea
+- Flags the player sets through sail orders: `press_of_sail`, `snug`, `hove_to`, `sweeps`, `wear_ship`. The game clears `hove_to` when the wind drops below a gale and `sweeps` when a breeze comes.
+
+Events:
+
+- `Once per spell`: the event happens at most once in each spell of weather, so a gale event can come again with the next gale.
+- `Watch chance: 10, +12 if press_of_sail`: at sea, the event has its own chance in 100 each watch, whenever its Requires are met. Use it for things the weather does to the ship.
+- `forecast` (an effect) has the master read the weather; `{forecast}` gives his opinion, right or wrong according to his skill.
+- `{wind}` ("a fresh breeze from the north-west"), `{sky}`, `{sea}`, `{weather}`, `{destination}` and `{distance}` ("some 20 leagues") are filled in.
 
 ## The ship and her stores
 
