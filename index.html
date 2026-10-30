@@ -120,6 +120,26 @@ textarea{min-height:7rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-
 .strip .wind{display:inline-flex;align-items:center;gap:.3rem}
 .strip .wind svg{flex:none}
 
+/* combat sandbox */
+.sandbox .chart line,.sandbox .chart polyline,.sandbox .chart path,.sandbox .chart circle{vector-effect:non-scaling-stroke}
+.sandbox .chart{width:100%;max-width:34rem;aspect-ratio:1;height:auto;display:block;margin:.8rem 0;background:var(--paper-2);border:1px solid var(--rule)}
+.sbh{font-size:1.05rem;color:var(--ink-2);margin:1.2rem 0 .45rem}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem}
+.chip{border:1px solid var(--rule);background:none;padding:.28rem .55rem;font-family:var(--display-sc);letter-spacing:.03em;color:var(--accent);border-radius:2px;cursor:pointer;font-size:.92rem;line-height:1.3}
+.chip:hover:not(:disabled){background:var(--paper-2)}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+.chip:disabled{opacity:.45;cursor:not-allowed}
+.sborders{border-top:3px double var(--rule);margin-top:1rem;padding-top:.4rem}
+.ogroup{display:grid;grid-template-columns:5.6rem minmax(0,1fr);gap:.4rem .6rem;align-items:baseline;margin:.55rem 0}
+.olabel{font-family:var(--display-sc);letter-spacing:.03em;color:var(--ink-2);font-size:.95rem}
+.seen p{margin:0 0 .55rem}
+.seen .guns{font-size:.92rem;color:var(--ink-2)}
+ol.alog{list-style:none;margin:.6rem 0;padding:0;border-top:1px solid var(--rule);font-size:.93rem}
+ol.alog li{display:grid;grid-template-columns:3.4rem minmax(0,1fr);gap:.5rem;padding:.3rem 0;border-bottom:1px solid var(--rule)}
+ol.alog .h{color:var(--ink-2);font-variant-numeric:tabular-nums}
+.brief p{font-style:italic;color:var(--ink-2)}
+@media (max-width: 420px){ .ogroup{grid-template-columns:minmax(0,1fr)} .olabel{margin-bottom:-.2rem} }
+
 /* ship's books */
 .tabs{display:flex;flex-wrap:wrap;gap:.2rem;margin:0 0 1rem;border-bottom:1px solid var(--rule)}
 .tabs button{background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:.35rem .6rem;cursor:pointer;font-family:var(--display-sc);letter-spacing:.03em;color:var(--ink-2)}
@@ -157,6 +177,7 @@ money values: debt, cash
 default name: John Hartley
 sea event chance: 8
 first weather: settled
+sandbox ship: wryneck
 purser dishonest: 50
 purser skim: 12
 place.mahon: Port Mahon
@@ -485,6 +506,114 @@ Sky: glassy and still
 Log: with a long oily swell
 Signs: an oily swell and not a breath stirring
 Follows: settled 3, sirocco 1, levanter 1
+</script>
+
+<script type="text/plain" class="content" data-name="Combat">
+# ------------------------------------------------------------
+# Ships, gunnery and single actions for the combat sandbox.
+# Distances are in cables (a tenth of a sea mile).
+# ------------------------------------------------------------
+
+GUNNERY
+# range bands, in cables: point-blank, close, long, extreme
+bands: 1, 3, 6, 10
+# chance that a gun hits, at each band
+long guns: 0.7, 0.45, 0.22, 0.07
+carronades: 0.75, 0.45, 0.1, 0.02
+# half-minute turns to reload a broadside
+reload: crack 3, average 4, slack 5
+# damage to hull and men when raking
+raking: 3
+double shot: 1.6
+# men killed or wounded for each six pounds of shot that strikes home
+men per hit: 0.4
+# the same for grape, at close range or nearer
+grape: 0.9
+rigging damage: 0.35
+
+VESSEL: wryneck
+Name: His Majesty's sloop Wryneck
+Called: the Wryneck
+Armament: 16 long six-pounders or 16 eighteen-pounder carronades
+Crew: 92
+Hull: 400
+Rigging: 100
+Speed: 1
+Closest: 6
+Turning: 2
+Powder: 3000
+
+VESSEL: privateer_brig
+Name: a French privateer brig
+Called: the brig
+Colours: French
+Armament: 14 long six-pounders
+Crew: 110
+Hull: 340
+Rigging: 90
+Speed: 1.05
+Closest: 6
+Turning: 2.2
+Gunnery: average
+Temperament: bold
+Aims at: rigging
+Strikes at: 30
+
+VESSEL: corvette
+Name: a French corvette
+Called: the corvette
+Colours: French
+Armament: 20 long eight-pounders
+Crew: 165
+Hull: 520
+Rigging: 120
+Speed: 1
+Closest: 6
+Turning: 1.8
+Gunnery: average
+Temperament: cunning
+Aims at: rigging
+Strikes at: 35
+
+VESSEL: polacre
+Name: a Spanish letter of marque
+Called: the polacre
+Colours: Spanish
+Armament: 12 long four-pounders
+Crew: 70
+Hull: 300
+Rigging: 85
+Speed: 0.9
+Closest: 6
+Turning: 2
+Gunnery: slack
+Temperament: cautious
+Aims at: hull
+Strikes at: 20
+
+ACTION: privateer
+Title: A privateer brig
+Enemy: privateer_brig
+Captain: bold
+Range: 26
+
+A brig under French colours, fourteen ports and a deck crowded with men: a privateer out of Marseille, as near your own size as makes no difference. Privateers fight for prizes, not for glory, and she will try to cripple you aloft and carry you by boarding. Her captain has the reputation of a bold one.
+
+ACTION: corvette
+Title: A corvette from Toulon
+Enemy: corvette
+Captain: cunning
+Range: 28
+
+A ship-corvette of the French navy, twenty eight-pounders and half as many men again as you, out on a cruise of her own. She outweighs you in metal and in men, and her captain knows it, and knows his trade: he will fight at the range that suits his guns, not yours. There is no disgrace in declining an action with her, and a great deal of credit in winning one.
+
+ACTION: letter_of_marque
+Title: A Spanish letter of marque
+Enemy: polacre
+Captain: cautious
+Range: 16
+
+A polacre-ship under Spanish colours, armed and commissioned as a letter of marque, deep with wine and oil for Barcelona. She has a dozen small guns, and every reason to avoid a fight. She is quick, and her master knows these waters. The trick is to catch her.
 </script>
 
 <script type="text/plain" class="content" data-name="Events: The opening">
@@ -2474,6 +2603,36 @@ two bells | four bells | eight bells: Time aboard is struck on the ship's bell e
 first watch: The watch from eight in the evening until midnight.
 watch: One of the divisions of the ship's day, mostly of four hours: the first watch (8 p.m. to midnight), middle, morning, forenoon, afternoon, and the two short dog watches between 4 and 8 p.m.
 fortnight: Two weeks.
+weather gauge: The position to windward of an enemy. The ship that holds it can choose when and whether to engage; the one to leeward must take the fight as it comes, or run.
+broadside | broadsides: All the guns on one side of a ship, fired together; or the side itself.
+larboard: The left-hand side of the ship, looking forward. (Later called port.)
+starboard: The right-hand side of the ship, looking forward.
+rake | raked | raking: To fire into an enemy along her length, across her bows or stern, where she cannot answer and every shot runs the length of her deck.
+point-blank | point-blank range: So close that a gun laid level hits without allowing for the fall of the shot: a cable or less.
+close range: Within two or three cables, where shot from any gun does real harm.
+long range | long gunshot: Five or six cables, where long guns can still hit and carronades seldom do.
+extreme range: As far as a gun will carry, where a hit is luck.
+out of gunshot: Beyond the reach of any gun.
+double-shotted: With two round shot rammed down on one charge: more damage at point-blank, wild beyond it, and slower to load.
+cleared for action | clear for action: With the bulkheads struck, the decks sanded, the boats towed or hoisted out, and every man at his station.
+fighting sail: Topsails and jib, with the courses brailed up, so that the ship answers quickly and needs few men aloft.
+crowd sail | crowding sail: To set every sail she will carry, to chase or escape.
+back the main-topsail | aback: To brace the main-topsail round so that the wind presses it backwards, stopping the ship.
+luff: To bring the ship's head closer to the wind.
+bear away: To turn the ship's head away from the wind.
+in stays: Head to wind, in the middle of tacking, with the sails shivering and no way on her.
+strike | struck | strike your colours | hauls down her colours: To haul down the flag in surrender.
+colours: A ship's national flag. A ship might sail under false colours, but must hoist her true ones before firing.
+corvette: A French name for a sloop or small ship of war, of about twenty guns: in British terms, a post ship or a large sloop.
+letter of marque: A private merchant ship commissioned by her government to take enemy prizes in passing: armed, but not built for fighting.
+polacre-ship: A Mediterranean merchant vessel with pole masts in one piece, quick and handy.
+privateer brig: A privately owned two-masted ship of war, commissioned to take enemy merchant ships for profit.
+well: The lowest part of the hold, round the pump shafts, where the water collects and is sounded.
+shot-holes | shot-plugs: Holes made by shot. Below the waterline the carpenter stops them with tapered wooden plugs, kept ready by the hundred.
+yardarm to yardarm: So close that the ends of the ships' yards overlap.
+by the board | goes by the board: Of a mast: broken off and fallen over the side.
+hull down: So far off that only her masts and sails show above the horizon.
+glass: A telescope.
 Mistral: The cold north-westerly wind that pours down the Rhône valley into the Gulf of Lion, often for days together, raising a short, steep, dangerous sea.
 Tramontana: A cold northerly wind off the mountains, "from beyond the mountains".
 Levanter: An easterly wind, damp and hazy, bringing poor visibility and rain.
@@ -2566,7 +2725,7 @@ sprung: Of a mast or yard: cracked, but still standing.
 (function(){
 'use strict';
 
-const BUILD = 'Build 4: wind and weather';
+const BUILD = 'Build 5: combat sandbox';
 const SAVE_KEY = 'sloop.autosave.v1';
 const PREF_KEY = 'sloop.prefs.v1';
 const GAME_ID = 'sloop-of-war';
@@ -2850,7 +3009,7 @@ function parseNext(v, where, prob){
 }
 
 function parseContent(blocks){
-  const P = { settings: {}, events: {}, order: [], orders: {}, ship: {}, stores: {}, storeOrder: [], weather: {}, sailing: {}, glossary: [], problems: [], stats: { words: 0 } };
+  const P = { settings: {}, events: {}, order: [], orders: {}, ship: {}, stores: {}, storeOrder: [], weather: {}, sailing: {}, vessels: {}, actions: {}, gunnery: {}, glossary: [], problems: [], stats: { words: 0 } };
   const prob = (sev, where, msg) => P.problems.push({ sev, where, msg });
 
   /* money values must be known before anything is parsed */
@@ -2862,7 +3021,7 @@ function parseContent(blocks){
 
   for (const blk of blocks){
     const lines = blk.text.replace(/\r/g, '').split('\n');
-    let section = null, ev = null, ch = null, target = null, lastKey = null, ord = null, sto = null, wx = null;
+    let section = null, ev = null, ch = null, target = null, lastKey = null, ord = null, sto = null, wx = null, kv = null;
     let para = [], paraLine = 0;
     const where = i => `${blk.name}, line ${i + 1}`;
     const flushPara = () => {
@@ -2879,36 +3038,44 @@ function parseContent(blocks){
     lines.forEach((raw, i) => {
       const t = raw.trim(); let m;
       if (t.startsWith('#')) return;
-      if (t === ''){ flushPara(); if (lastKey !== 'gloss') lastKey = null; return; }
+      if (t === ''){ flushPara(); if (lastKey !== 'gloss') lastKey = null; if (kv) kv.lines.push(''); return; }
 
-      if (/^settings$/i.test(t)){ flushPara(); section = 'settings'; ev = ch = ord = null; return; }
-      if (/^SHIP$/.test(t)){ flushPara(); section = 'ship'; ev = ch = ord = null; return; }
-      if (/^SAILING$/.test(t)){ flushPara(); section = 'sailing'; ev = ch = ord = null; return; }
+      if (/^settings$/i.test(t)){ flushPara(); section = 'settings'; ev = ch = ord = kv = null; return; }
+      if (/^SHIP$/.test(t)){ flushPara(); section = 'ship'; ev = ch = ord = kv = null; return; }
+      if (/^SAILING$/.test(t)){ flushPara(); section = 'sailing'; ev = ch = ord = kv = null; return; }
+      if (/^GUNNERY$/.test(t)){ flushPara(); section = 'gunnery'; ev = ch = ord = kv = null; return; }
+      if ((m = t.match(/^(VESSEL|ACTION)\s*:\s*(.*)$/))){
+        flushPara(); section = m[1].toLowerCase(); ev = ch = ord = null;
+        const id = m[2].trim().toLowerCase(), store = section === 'vessel' ? P.vessels : P.actions;
+        if (store[id]) prob('error', where(i), `There are two ${section}s called "${id}".`);
+        kv = store[id] = { id, f: {}, lines: [], where: where(i) };
+        return;
+      }
       if ((m = t.match(/^WEATHER\s*:\s*(.*)$/))){
-        flushPara(); section = 'weather'; ev = ch = ord = null;
+        flushPara(); section = 'weather'; ev = ch = ord = kv = null;
         const id = m[1].trim().toLowerCase();
         if (P.weather[id]) prob('error', where(i), `There are two kinds of weather called "${id}".`);
         wx = P.weather[id] = { id, called: id, from: 0, span: 31, force: [2, 4], lasts: [1, 2], sky: '', signs: '', log: '', follows: [], where: where(i) };
         return;
       }
       if ((m = t.match(/^STORE\s*:\s*(.*)$/))){
-        flushPara(); section = 'store'; ev = ch = ord = null;
+        flushPara(); section = 'store'; ev = ch = ord = kv = null;
         const id = m[1].trim().toLowerCase();
         if (!/^[a-z0-9_]+$/.test(id)) prob('error', where(i), `The store name "${id}" should use only letters, numbers and underscores.`);
         if (P.stores[id]) prob('error', where(i), `There are two stores called "${id}".`);
         sto = P.stores[id] = { id, name: id, unit: ['cask', 'casks'], dim: 'n', size: 1, ration: null, officer: 'purser', capacity: 0, keeps: 0, bad: 0, badWord: 'bad', short: 0, pieces: 0, instead: null, only: null, bought: false, logOpen: false, stock: [], where: where(i), rationRaw: null };
         P.storeOrder.push(id); return;
       }
-      if (/^glossary$/i.test(t)){ flushPara(); section = 'glossary'; ev = ch = ord = null; lastKey = null; return; }
+      if (/^glossary$/i.test(t)){ flushPara(); section = 'glossary'; ev = ch = ord = kv = null; lastKey = null; return; }
       if ((m = t.match(/^ORDERS\s*:\s*(.*)$/))){
-        flushPara(); section = 'orders'; ev = ch = null;
+        flushPara(); section = 'orders'; ev = ch = kv = null;
         const id = m[1].trim().toLowerCase();
         if (P.orders[id]) prob('error', where(i), `There are two sets of orders called "${id}".`);
         ord = P.orders[id] = { id, heading: '', paras: [], where: where(i) };
         return;
       }
       if ((m = t.match(/^event\s*:\s*(.*)$/i))){
-        flushPara(); section = 'event'; ch = null; ord = null; target = null; lastKey = null;
+        flushPara(); section = 'event'; ch = null; ord = null; kv = null; target = null; lastKey = null;
         const id = m[1].trim();
         if (!/^[a-z0-9_]+$/i.test(id)) prob('error', where(i), `The event name "${id}" should use only letters, numbers and underscores.`);
         if (P.events[id]) prob('error', where(i), `There are two events called "${id}".`);
@@ -2926,6 +3093,20 @@ function parseContent(blocks){
           const terms = m[1].split('|').map(s => s.trim()).filter(Boolean);
           P.glossary.push({ terms, def: m[2].trim(), where: where(i) }); lastKey = 'gloss';
         } else prob('warn', where(i), 'Glossary lines should look like "term | other form: definition".');
+        return;
+      }
+      if (section === 'gunnery'){
+        if ((m = t.match(/^([a-z -]+?)\s*:\s*(.*)$/i))) P.gunnery[m[1].toLowerCase()] = m[2].trim();
+        else prob('warn', where(i), 'Gunnery lines should look like "raking: 3".');
+        return;
+      }
+      if (section === 'vessel' || section === 'action'){
+        const keys = section === 'vessel'
+          ? ['name', 'called', 'colours', 'armament', 'crew', 'hull', 'rigging', 'speed', 'closest', 'turning', 'gunnery', 'temperament', 'aims at', 'strikes at', 'powder']
+          : ['title', 'enemy', 'captain', 'range'];
+        if ((m = t.match(/^([a-z ]+?)\s*:\s*(.*)$/i)) && keys.includes(m[1].toLowerCase())){ kv.f[m[1].toLowerCase()] = m[2].trim(); return; }
+        if (section === 'action'){ kv.lines.push(t); return; }
+        prob('warn', where(i), `"${short(t)}" is not something a vessel has.`);
         return;
       }
       if (section === 'sailing'){
@@ -3093,6 +3274,17 @@ function parseContent(blocks){
     if (!d.size) prob('error', d.where, `The store "${id}" has no "Holds:" line.`);
     if (d.instead && !P.stores[d.instead]) prob('error', d.where, `"Instead of: ${d.instead}" names a store that does not exist.`);
   }
+  for (const v of Object.values(P.vessels)){
+    v.arm = parseArmament(v.f.armament || '');
+    if (!v.f.armament || v.arm.some(a => !a)){ prob('error', v.where, `I could not read the armament "${v.f.armament || ''}". Write it like "14 long six-pounders" or "16 eighteen-pounder carronades", with "or" between choices.`); v.arm = [{ n: 10, w: 6, carr: false, label: '10 long six-pounders' }]; }
+  }
+  for (const a of Object.values(P.actions)){
+    a.brief = a.lines.join('\n').split(/\n\s*\n/).map(x => x.replace(/\n/g, ' ').trim()).filter(Boolean);
+    if (!P.vessels[(a.f.enemy || '').toLowerCase()]) prob('error', a.where, `"Enemy: ${a.f.enemy || ''}" names a vessel that is not described.`);
+    else a.f.enemy = a.f.enemy.toLowerCase();
+    if (!a.f.title) prob('warn', a.where, `The action "${a.id}" has no Title.`);
+  }
+  if (Object.keys(P.actions).length && !P.vessels[(P.settings['sandbox ship'] || '').toLowerCase()]) prob('error', 'Settings', `"sandbox ship" should name the vessel you command in the combat sandbox.`);
   validate(P, prob);
   return P;
 }
@@ -3898,6 +4090,7 @@ function windHtml(){
 function render(){
   hideTip();
   const app = $('#app');
+  if (view === 'sandbox'){ renderSandbox(app); return; }
   if (!state){ renderTitle(app); return; }
   if (state.ended){ renderEnding(app); return; }
   if (state.eventId === '__nowhere__' || !content.events[state.eventId]){ renderNowhere(app); return; }
@@ -3962,6 +4155,7 @@ function renderTitle(app){
       <small>The same seed and the same choices always give the same commission.</small></div>
     <div class="row"><button type="button" class="btn ${saved ? 'quiet' : ''}" data-act="begin" id="begin">Take up the commission</button></div>
     <div class="foot"><span>${esc(BUILD)}</span>
+      <button type="button" class="link" data-act="sandbox">Combat sandbox</button>
       <button type="button" class="link" data-act="glossary">Glossary</button>
       <button type="button" class="link" data-act="check">Content check${errs ? ` <span class="badge">(${errs})</span>` : ''}</button></div>
   </section>`;
@@ -4278,6 +4472,724 @@ function applyPrefs(){ document.documentElement.style.setProperty('--scale', pre
 function savePrefs(){ lsSet(PREF_KEY, JSON.stringify(prefs)); }
 
 /* ============================================================
+   COMBAT SANDBOX
+   A single action between two ships, fought on its own and not
+   yet part of the campaign. Distances are in cables, headings in
+   points of the compass, time in minutes from ten o'clock.
+   ============================================================ */
+let view = 'game';
+let sb = null;
+const sbSet = { action: '', arm: 0, drill: 'average', weather: 'random', start: 'random', seed: '' };
+const DRILL_WORDS = { slack: 'Slack', average: 'Ordinary', crack: 'Crack' };
+const SIDE_WORDS = { L: 'larboard', S: 'starboard' };
+const BAND_WORDS = ['point-blank', 'close range', 'long range', 'extreme range', 'out of gunshot'];
+const NUM_WORDS = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
+function numWord(n){ return NUM_WORDS[n] || String(n); }
+function capFirst(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+
+function gnum(k, d){ const v = parseFloat((content.gunnery || {})[k]); return isNaN(v) ? d : v; }
+function glist(k, d){ const l = String((content.gunnery || {})[k] || '').split(',').map(x => parseFloat(x)).filter(x => !isNaN(x)); return l.length ? l : d; }
+function reloadBase(drill){
+  const m = String((content.gunnery || {}).reload || '').match(new RegExp(drill + '\\s+(\\d+(?:\\.\\d+)?)', 'i'));
+  return m ? +m[1] : ({ crack: 3, average: 4, slack: 5 }[drill] || 4);
+}
+function bands(){ return glist('bands', [1, 3, 6, 10]); }
+function bandOf(r){ const b = bands(); for (let i = 0; i < b.length; i++) if (r <= b[i]) return i; return b.length; }
+function sr(){ return rand(sb.rng); }
+function binom(n, p){ let k = 0; for (let i = 0; i < n; i++) if (sr() < p) k++; return k; }
+function poisson(l){
+  if (l <= 0) return 0;
+  if (l > 30) return Math.max(0, Math.round(l + Math.sqrt(l) * (sr() * 2 - 1)));
+  const L = Math.exp(-l); let k = 0, p = 1;
+  do { k++; p *= sr(); } while (p > L);
+  return k - 1;
+}
+function wrap32(a){ return ((a % 32) + 32) % 32; }
+function wrap16(a){ a = wrap32(a); return a > 16 ? a - 32 : a; }
+/* angle off the wind, signed: below zero the wind is on the starboard side (starboard tack) */
+function sOf(h){ return wrap16(h - sb.wind.dir); }
+function bearingTo(a, b){ return wrap32(Math.atan2(b.x - a.x, b.y - a.y) * 16 / Math.PI); }
+function dist(a, b){ return Math.hypot(b.x - a.x, b.y - a.y); }
+function relOf(s, t){ return wrap32(bearingTo(s, t) - s.h); }
+function bearsSide(s, t){ const r = relOf(s, t); if (r >= 5 && r <= 11) return 'S'; if (r >= 21 && r <= 27) return 'L'; return null; }
+function rakes(a, t){
+  if (!bearsSide(a, t) || dist(a, t) > bands()[3]) return null;
+  const r = relOf(t, a);
+  if (r <= 2.5 || r >= 29.5) return 'bow';
+  if (r >= 13.5 && r <= 18.5) return 'stern';
+  return null;
+}
+function facingSide(t, a){ return relOf(t, a) < 16 ? 'S' : 'L'; }
+function windward(a, b){ const w = sb.wind.dir * Math.PI / 16; return (a.x - b.x) * Math.sin(w) + (a.y - b.y) * Math.cos(w) > 0; }
+
+/* ---------- the ships ---------- */
+function parseArmament(str){
+  const words = { four: 4, six: 6, eight: 8, nine: 9, twelve: 12, eighteen: 18, 'twenty-four': 24, 'thirty-two': 32 };
+  return String(str).split(/\s+or\s+/i).map(part => {
+    const m = part.trim().match(/^(\d+)\s+(long\s+)?([a-z-]+)-pounders?(\s+carronades?)?$/i);
+    if (!m || !words[m[3].toLowerCase()]) return null;
+    return { n: +m[1], w: words[m[3].toLowerCase()], carr: !!m[4], label: part.trim() };
+  });
+}
+function sbVessel(v, armIdx, drill){
+  const f = v.f, arm = v.arm[Math.min(armIdx, v.arm.length - 1)];
+  const crew = parseInt(f.crew, 10) || 90;
+  const n = (k, d) => { const x = parseFloat(f[k]); return isNaN(x) ? d : x; };
+  return {
+    vid: v.id, name: f.name || v.id, called: f.called || 'the enemy', colours: f.colours || '',
+    arm, gunsSide: { L: Math.ceil(arm.n / 2), S: Math.floor(arm.n / 2) },
+    crew0: crew, crew, killed: 0, wounded: 0,
+    hull0: n('hull', 400), hull: n('hull', 400), leak: 1, water: 6, holesAbove: 0, holesBelow: 0,
+    rig0: n('rigging', 100), rig: n('rigging', 100), rigStage: 0, topmast: '', dismasted: false,
+    speedMul: n('speed', 1), closest: n('closest', 6), turnRate: n('turning', 2),
+    drill: (drill || f.gunnery || 'average').toLowerCase(),
+    temper: (f.temperament || 'bold').toLowerCase(), aimsAt: (f['aims at'] || 'hull').toLowerCase(),
+    strikeAt: n('strikes at', 30) / 100,
+    x: 0, y: 0, h: 0, speed: 0, turn: null, sail: 'plain', helm: 'steady',
+    reload: { L: 0, S: 0 }, loadedWith: { L: 'round', S: 'round' }, charge: 'round', aim: 'hull', openAt: 1,
+    powder: n('powder', 3000), broadsides: 0, slowTurns: 0, struck: false, track: [], mode: 'engage'
+  };
+}
+
+function sbTargetSpeed(s){
+  const a = Math.abs(sOf(s.h));
+  if (a < s.closest - 0.01) return 0;
+  const f = sailList('wind')[sb.wind.force] || 0;
+  let v = polarSpeed(Math.max(a, 6)) * (a < 6 ? 0.85 : 1) * f * s.speedMul;
+  v *= { fighting: 0.75, plain: 1, crowd: 1.12, backed: 0.1 }[s.sail] || 1;
+  v *= 0.35 + 0.65 * Math.max(0, s.rig) / s.rig0;
+  if (s.topmast) v *= 0.8;
+  if (s.dismasted) v *= 0.2;
+  if (s.water > 36) v *= 0.85;
+  return v;
+}
+function maxTurn(s){
+  return s.turnRate * Math.max(0.25, Math.min(1.2, s.speed / 4)) * (0.4 + 0.6 * Math.max(0, s.rig) / s.rig0) * (s.dismasted ? 0.4 : 1);
+}
+function sbMissChance(s){
+  const base = sailList('missing stays')[sb.wind.force] || 0;
+  let p = base * ({ crack: 0.6, average: 1, slack: 1.5 }[s.drill] || 1) + 3;
+  if (s.speed < 3) p *= 1.6;
+  if (s.rig / s.rig0 < 0.6) p *= 1.4;
+  return Math.min(85, p);
+}
+/* how: 'auto' wears if it must cross the wind, 'tack' goes through the wind, 'wear' goes round by the stern, 'ai' picks the shorter */
+function sbSetCourse(s, target, how){
+  const sc = sOf(s.h) || -0.001;
+  let st = sOf(target);
+  if (how === 'wear' && Math.sign(st) === Math.sign(sc)) st = -st;
+  if (Math.abs(st) < s.closest) st = (how === 'tack' ? -Math.sign(sc) : (how === 'ai' && st !== 0 ? Math.sign(st) : Math.sign(sc))) * s.closest;
+  if (how === 'tack' && Math.sign(st) === Math.sign(sc)) st = -Math.sign(sc) * s.closest;
+  let d, amt, tack = false, wear = false;
+  if (Math.sign(st) === Math.sign(sc)){ const delta = st - sc; d = Math.sign(delta) || 1; amt = Math.abs(delta); }
+  else {
+    const tackAmt = Math.abs(sc) + Math.abs(st), wearAmt = (16 - Math.abs(sc)) + (16 - Math.abs(st));
+    if (how === 'tack' || (how === 'ai' && tackAmt < wearAmt * 0.6)){ d = -Math.sign(sc); amt = tackAmt; tack = true; }
+    else { d = Math.sign(sc); amt = wearAmt; wear = true; }
+  }
+  if (amt < 0.05){ s.turn = null; return; }
+  const miss = tack && !sb.sim ? sr() * 100 < sbMissChance(s) : false;
+  s.turn = { d, left: amt, tack, wear, miss, s0: Math.sign(sc) };
+}
+function sbMove(s){
+  if (s.turn){
+    const amt = Math.min(s.turn.left, maxTurn(s));
+    s.h = wrap32(s.h + s.turn.d * amt); s.turn.left -= amt;
+    if (s.turn.tack && s.turn.miss && Math.abs(sOf(s.h)) < 1){
+      const cur = Math.abs(sOf(s.h)), wrong = Math.sign(sOf(s.h)) !== s.turn.s0;
+      s.turn = { d: -s.turn.d, left: s.closest + 0.5 + (wrong ? cur : -cur), tack: false, wear: false, miss: false, s0: s.turn.s0 };
+      s.missedNow = true;
+    }
+    if (s.turn && s.turn.left <= 1e-6){ s.turn = null; if (s.helm !== 'chase') s.helm = 'steady'; }
+  }
+  s.speed += (sbTargetSpeed(s) - s.speed) * 0.25;
+  s.x += Math.sin(s.h * Math.PI / 16) * s.speed / 12;
+  s.y += Math.cos(s.h * Math.PI / 16) * s.speed / 12;
+}
+
+/* ---------- gunnery ---------- */
+function reloadTurns(s, charge){
+  let n = reloadBase(s.drill);
+  const frac = s.crew / s.crew0;
+  if (frac < 0.7) n += 1;
+  if (frac < 0.5) n += 1;
+  if (charge === 'double') n += 1;
+  if (s.slowTurns > 0) n += 1;
+  return n;
+}
+function sbFire(a, t, side){
+  const n0 = a.gunsSide[side];
+  if (n0 <= 0 || a.reload[side] > 0 || a.struck) return null;
+  const band = bandOf(dist(a, t));
+  const manned = Math.max(1, Math.round(n0 * Math.min(1, (a.crew / a.crew0) / 0.7)));
+  const charge = a.loadedWith[side];
+  let p = (a.arm.carr ? glist('carronades', [0.75, 0.45, 0.1, 0.02]) : glist('long guns', [0.7, 0.45, 0.22, 0.07]))[band] || 0;
+  p *= { crack: 1.2, average: 1, slack: 0.75 }[a.drill] || 1;
+  if (sb.wind.force >= 6) p *= Math.max(0.4, 1 - 0.08 * (sb.wind.force - 5));
+  if (charge === 'double' && band > 0) p *= 0.5;
+  if (charge === 'grape' && band > 1) p *= 0.3;
+  const hits = binom(manned, Math.min(0.95, p));
+  const rk = rakes(a, t), R = rk ? gnum('raking', 3) : 1, W = a.arm.w;
+  const res = { side, hits, manned, band, rake: rk, charge, aim: a.aim, cas: 0, dismount: 0, below: 0, rig: 0, hull: 0 };
+  if (charge === 'grape'){
+    res.cas = poisson(hits * W / 6 * gnum('grape', 0.9) * (band <= 1 ? 1 : 0.3) * (rk ? 1.5 : 1));
+    res.rig = hits * W * 0.05;
+  } else if (a.aim === 'rigging'){
+    res.rig = hits * W * gnum('rigging damage', 0.35) * (rk ? 1.5 : 1) * (charge === 'double' ? 1.3 : 1);
+    res.cas = poisson(hits * W / 6 * 0.12);
+    res.hull = hits * W * 0.2;
+  } else {
+    const dbl = charge === 'double' ? gnum('double shot', 1.6) : 1;
+    res.hull = hits * W * dbl * R;
+    res.cas = poisson(hits * W / 6 * gnum('men per hit', 0.4) * dbl * (rk ? R * 0.8 : 1));
+    for (let i = 0; i < hits; i++){ if (sr() < 0.05 * (rk ? 2 : 1)) res.dismount++; if (sr() < 0.18) res.below++; }
+    res.rig = hits * W * 0.08;
+  }
+  a.powder = Math.max(0, a.powder - (a.arm.carr ? W / 12 : W / 3) * manned);
+  a.loadedWith[side] = a.charge;
+  a.reload[side] = reloadTurns(a, a.charge);
+  a.broadsides++;
+  sb.sinceFire = 0;
+  return res;
+}
+function sbApply(t, res, a){
+  const fs = facingSide(t, a);
+  t.hull -= res.hull;
+  t.holesBelow += res.below;
+  t.holesAbove += Math.max(0, (res.charge === 'grape' ? 0 : res.hits) - res.below);
+  t.leak += res.below * a.arm.w / 6;
+  const dm = Math.min(res.dismount, t.gunsSide[fs]);
+  t.gunsSide[fs] -= dm;
+  const c = Math.min(res.cas, t.crew);
+  let k = 0; for (let i = 0; i < c; i++) if (sr() < 0.33) k++;
+  t.crew -= c; t.killed += k; t.wounded += c - k;
+  t.rig = Math.max(0, t.rig - res.rig);
+  return { c, dm, fs };
+}
+function sbRigStage(t){
+  const f = t.rig / t.rig0; let msg = null;
+  if (t.rigStage < 1 && f < 0.75){ t.rigStage = 1; msg = 'cut'; }
+  if (t.rigStage < 2 && f < 0.5){ t.rigStage = 2; t.topmast = sr() < 0.5 ? 'fore' : 'main'; msg = 'topmast'; }
+  if (t.rigStage < 3 && f < 0.22){ t.rigStage = 3; t.dismasted = true; t.turn = null; msg = 'mast'; }
+  return msg;
+}
+
+/* ---------- the enemy captain ---------- */
+function sbStrength(s){ return s.arm.w * (s.gunsSide.L + s.gunsSide.S) * (s.crew / s.crew0) * (0.5 + 0.5 * s.rig / s.rig0); }
+function sbClone(s){ const c = Object.assign({}, s); c.turn = s.turn ? Object.assign({}, s.turn) : null; c.track = null; c.reload = Object.assign({}, s.reload); c.gunsSide = Object.assign({}, s.gunsSide); return c; }
+function sbScore(c, mode, pref){
+  const e = sbClone(sb.enemy), p = sbClone(sb.player);
+  sb.sim = true;
+  if (c.how !== 'keep') sbSetCourse(e, c.h, c.how);
+  const n = sb.mode === 'firing' ? 6 : 10;
+  let best = 0, worst = 0;
+  for (let i = 0; i < n; i++){
+    sbMove(e); sbMove(p);
+    if (mode === 'flee'){ if (rakes(p, e)) worst = -4; continue; }
+    const side = bearsSide(e, p), band = bandOf(dist(e, p));
+    let b = 0;
+    if (side && e.gunsSide[side] > 0 && band <= (e.arm.carr ? 1 : 2)) b += 2 + (e.reload[side] <= i + 1 ? 1.5 : 0);
+    if (rakes(e, p)) b += e.temper === 'bold' ? 7 : 5;
+    best = Math.max(best, b * (1 - i * 0.04));
+    if (rakes(p, e)) worst = Math.min(worst, -6);
+  }
+  sb.sim = false;
+  const d = dist(e, p);
+  if (mode === 'flee') return d + 0.3 * e.speed + worst - (c.how === 'tack' ? 1 : 0);
+  let sc = -Math.abs(d - pref) * (d > pref ? 1 : 1.5) + best + worst;
+  if (e.temper !== 'bold' && windward(e, p)) sc += 1;
+  return sc + 0.15 * e.speed;
+}
+function sbAIPlan(force){
+  const e = sb.enemy, p = sb.player;
+  if (e.struck || e.dismasted) return;
+  const cas = 1 - e.crew / e.crew0, ratio = sbStrength(e) / Math.max(1, sbStrength(p));
+  let mode = 'engage';
+  if (e.temper === 'cautious' && ratio < 1.1) mode = 'flee';
+  if (e.temper !== 'bold' && cas > e.strikeAt * 0.6) mode = 'flee';
+  if (e.temper === 'bold' && cas > e.strikeAt * 0.85 && ratio < 0.8) mode = 'flee';
+  if (mode === 'flee' && e.mode !== 'flee' && sb.t > 0) sbLog(`${capFirst(e.called)} bears up and crowds sail. She is trying to get away.`, true);
+  e.mode = mode;
+  const r = dist(e, p);
+  e.sail = mode === 'flee' ? 'crowd' : (r < 9 ? 'fighting' : 'plain');
+  if (e.turn && !force) return;
+  if (sb.aiWait > 0 && !force){ sb.aiWait--; return; }
+  const pref = e.arm.carr ? 1 : e.temper === 'cunning' ? (p.arm.carr ? 4.5 : 2) : e.temper === 'bold' ? 2 : 3.5;
+  const sc = sOf(e.h);
+  const cands = [];
+  for (let k = -8; k <= 8; k++) if (k) cands.push({ h: wrap32(e.h + k), how: 'auto' });
+  if (Math.abs(sc) <= e.closest + 4) cands.push({ h: wrap32(sb.wind.dir - Math.sign(sc || 1) * e.closest), how: 'tack' });
+  cands.push({ h: wrap32(sb.wind.dir - sc), how: 'wear' });
+  let best = null;
+  for (const c of cands){ const v = sbScore(c, mode, pref); if (!best || v > best.v) best = Object.assign({ v }, c); }
+  const keep = sbScore({ h: e.h, how: 'keep' }, mode, pref);
+  if (best && best.v > keep + 0.4){
+    sbSetCourse(e, best.h, best.how);
+    if (e.turn && e.turn.tack) sbLog(`${capFirst(e.called)} is going about.`, true);
+    else if (e.turn && e.turn.wear) sbLog(`${capFirst(e.called)} wears round.`, true);
+  }
+  sb.aiWait = sb.mode === 'firing' ? 2 : 0;
+}
+function sbAIFire(){
+  const e = sb.enemy, p = sb.player;
+  if (e.struck) return null;
+  const side = bearsSide(e, p);
+  if (!side || e.reload[side] > 0 || e.gunsSide[side] <= 0) return null;
+  const band = bandOf(dist(e, p));
+  if (band > (e.arm.carr ? 1 : 2)) return null;
+  e.aim = e.aimsAt === 'rigging' && band >= 2 ? 'rigging' : 'hull';
+  e.charge = band === 0 && e.temper === 'bold' ? (e.crew > p.crew * 1.2 ? 'grape' : 'double') : 'round';
+  return side;
+}
+
+/* ---------- what is seen and reported ---------- */
+function cablesWord(r){ const n = r < 3 ? Math.round(r * 2) / 2 : Math.round(r); return n <= 0.5 ? 'half a cable' : `${n} ${n === 1 ? 'cable' : 'cables'}`; }
+function sbClock(t){
+  const total = 600 + t, h = Math.floor(total / 60), m = Math.floor(total % 60), half = (t % 1) >= 0.5;
+  return `${h}.${String(m).padStart(2, '0')}${half ? '½' : ''}`;
+}
+function sbLog(text, notable){ sb.log.push({ t: sb.t, text }); if (notable) sb.notable = true; }
+function menWords(c){ return c <= 0 ? '' : c === 1 ? 'A man is carried below.' : c <= 4 ? 'Several men are carried below.' : c <= 10 ? 'A good many men are carried below.' : 'Men are falling all along the deck.'; }
+function sbReportFire(a, t, res, mine, applied){
+  const rk = res.rake ? ` She is raked ${res.rake === 'stern' ? 'from astern' : 'from ahead'}!` : '';
+  const what = res.charge === 'double' ? ', double-shotted' : res.charge === 'grape' ? ', with grape' : '';
+  if (mine){
+    let seen = res.hits === 0 ? 'It goes wide.' : res.charge === 'grape' || res.aim !== 'rigging'
+      ? (res.hits >= res.manned * 0.5 ? 'Most of it goes home.' : 'Some of it goes home.')
+      : 'Her sails are cut about.';
+    sbLog(`Your ${SIDE_WORDS[res.side]} broadside: ${numWord(res.manned)} guns${what} at ${BAND_WORDS[res.band]}. ${seen}${rk}`, !!res.rake);
+  } else {
+    const parts = [`${capFirst(a.called)} fires her ${SIDE_WORDS[res.side]} broadside, ${numWord(res.manned)} guns${what}.`];
+    if (res.rake) parts.push(`You are raked ${res.rake === 'stern' ? 'from astern' : 'from ahead'}!`);
+    if (res.hits === 0) parts.push('It goes over you.');
+    else if (res.aim === 'rigging' && res.charge !== 'grape') parts.push('Her shot goes through your rigging.');
+    else parts.push('Shot strikes home along your side.');
+    if (applied.c) parts.push(menWords(applied.c));
+    if (applied.dm) parts.push(`${capFirst(numWord(applied.dm))} of your ${SIDE_WORDS[applied.fs]} guns ${applied.dm === 1 ? 'is' : 'are'} dismounted.`);
+    sbLog(parts.join(' '), !!res.rake || applied.dm > 0);
+  }
+}
+function sbRigNote(s, mine, stage){
+  if (!stage) return;
+  const her = capFirst(s.called);
+  const text = mine
+    ? { cut: 'Your sails and rigging are much cut about.', topmast: `Your ${s.topmast}-topmast is shot away, and comes down in a tangle of wreckage.`, mast: 'The mainmast goes by the board. She lies a wreck, and will hardly steer.' }[stage]
+    : { cut: `${her}'s sails are much cut about.`, topmast: `${her}'s ${s.topmast}-topmast goes over the side!`, mast: `${her}'s mainmast goes by the board! She lies helpless.` }[stage];
+  sbLog(text, true);
+}
+function sbReports(which, early){
+  const p = sb.player;
+  const lead = early ? 'Sent for: ' : '';
+  if (!which || which === 'carpenter'){
+    const pumps = p.leak > 6 ? (p.water > 30 ? 'the water is gaining on the pumps' : 'the pumps are losing ground') : 'the pumps are keeping her free';
+    sbLog(`${lead}The carpenter reports ${Math.round(p.water)} inches of water in the well, and she makes ${Math.round(p.leak)} inches an hour; ${numWord(p.holesBelow)} shot-holes below the waterline, plugged, and ${numWord(p.holesAbove)} above. ${capFirst(pumps)}.`, true);
+  }
+  if (!which || which === 'surgeon'){
+    const lt = p.ltDown ? ' Mr Treharne is among the wounded.' : '';
+    sbLog(`${lead}The surgeon's return: ${numWord(p.killed)} killed and ${numWord(p.wounded)} wounded.${lt}`, true);
+  }
+  if (!which || which === 'gunner'){
+    const per = (p.arm.carr ? p.arm.w / 12 : p.arm.w / 3) * Math.max(1, (p.gunsSide.L + p.gunsSide.S) / 2);
+    const left = Math.floor(p.powder / per), down = p.arm.n - p.gunsSide.L - p.gunsSide.S;
+    sbLog(`${lead}The gunner reports powder for some ${left} broadsides more${down ? `, and ${numWord(down)} ${down === 1 ? 'gun' : 'guns'} dismounted` : ''}.`, true);
+  }
+}
+function sbOpinion(){
+  const e = sb.enemy;
+  if (sb.player.ltDown){ sbLog('Mr Treharne is below with the surgeon. There is no one else whose eye you would trust.'); return; }
+  const cas = 1 - e.crew / e.crew0 + (sr() - 0.5) * 0.16;
+  const rig = e.rig / e.rig0 + (sr() - 0.5) * 0.2;
+  const said = cas < 0.08 ? 'She has hardly been touched, sir.' : cas < 0.2 ? 'She is hurt, sir, but not badly.' : cas < 0.35 ? 'She is suffering, sir. Her fire is not what it was.' : 'She is very near done, sir. I doubt she can stand much more.';
+  const aloft = rig > 0.8 ? 'Her rigging is in good order.' : rig > 0.55 ? 'She is cut about aloft.' : 'She is in a bad way aloft.';
+  sbLog(`Mr Treharne studies her through his glass. '${said} ${aloft}'`);
+}
+function pointOfSail(s){
+  const a = Math.abs(sOf(s.h)), tack = sOf(s.h) < 0 ? 'the starboard tack' : 'the larboard tack';
+  if (a < s.closest - 0.01) return 'in stays, her head in the wind';
+  if (a <= s.closest + 1.5) return `close-hauled on ${tack}`;
+  if (a <= 9.5) return `with the wind abeam, on ${tack}`;
+  if (a <= 13.5) return `with the wind on her quarter, on ${tack}`;
+  return 'running before the wind';
+}
+const SAIL_WORDS = { fighting: 'under fighting sail', plain: 'under plain sail', crowd: 'crowding sail', backed: 'with her main-topsail aback' };
+function rigWords(s, mine){
+  if (s.dismasted) return mine ? 'She is dismasted.' : 'She is dismasted.';
+  if (s.topmast) return `Her ${s.topmast}-topmast is gone.`;
+  if (s.rigStage >= 1) return 'Her sails are much cut about.';
+  return '';
+}
+function sbEnemySeen(){
+  const e = sb.enemy, p = sb.player;
+  if (e.struck) return `${capFirst(e.called)} has struck her colours.`;
+  const r = relOf(e, p);
+  const aspect = (r <= 2.5 || r >= 29.5) ? 'She is bows-on to you' : (r >= 13.5 && r <= 18.5) ? 'She shows you her stern' : `She shows you her ${r < 16 ? 'starboard' : 'larboard'} side`;
+  const parts = [`${aspect}, heading ${POINTS[Math.round(e.h) % 32]}, ${pointOfSail(e)}, ${SAIL_WORDS[e.sail]}.`];
+  const rw = rigWords(e); if (rw) parts.push(rw);
+  if (e.water > 30) parts.push('She is low in the water, and lists.');
+  if (e.broadsides && e.crew / e.crew0 < 0.4) parts.push('You can see men leaving her guns.');
+  else if (e.broadsides && e.crew / e.crew0 < 0.6) parts.push('Her fire has slackened.');
+  return parts.join(' ');
+}
+function sbOwnSeen(){
+  const p = sb.player;
+  const parts = [`You are heading ${POINTS[Math.round(p.h) % 32]}, ${pointOfSail(p).replace('her head', 'your head')}, ${SAIL_WORDS[p.sail].replace('her ', 'your ')}, at about ${Math.round(p.speed)} knots.`];
+  const rw = rigWords(p, true); if (rw) parts.push(rw.replace('Her ', 'Your '));
+  const cas = p.crew0 - p.crew;
+  if (cas) parts.push(cas <= 3 ? 'A few men have been carried below.' : cas <= 10 ? 'Several men have been carried below.' : cas <= 25 ? 'A good many men have been carried below.' : 'A great many men have been carried below.');
+  return parts.join(' ');
+}
+function gunState(side){
+  const p = sb.player, e = sb.enemy, n = p.gunsSide[side], full = side === 'L' ? Math.ceil(p.arm.n / 2) : Math.floor(p.arm.n / 2);
+  if (n <= 0) return 'all dismounted';
+  const dm = full - n ? `, ${numWord(full - n)} dismounted` : '';
+  const loaded = p.reload[side] <= 0;
+  const bears = bearsSide(p, e) === side && bandOf(dist(p, e)) <= 3;
+  const charge = { round: 'round shot', double: 'double-shotted', grape: 'grape' }[p.loadedWith[side]];
+  return (loaded ? `loaded with ${charge}${bears ? ', and bearing' : ''}` : 'reloading') + dm;
+}
+
+/* ---------- the clock ---------- */
+function sbHalfMinute(allowFire){
+  const p = sb.player, e = sb.enemy;
+  let fired = false;
+  if (allowFire){
+    const band0 = bandOf(dist(p, e));
+    let ps = sb.fireNow || null; sb.fireNow = null;
+    if (!ps && p.openAt >= 0){ const side = bearsSide(p, e); if (side && p.reload[side] <= 0 && p.gunsSide[side] > 0 && band0 <= p.openAt) ps = side; }
+    const es = sbAIFire();
+    const pr = ps ? sbFire(p, e, ps) : null;
+    const er = es ? sbFire(e, p, es) : null;
+    if ((pr || er) && sb.firstGun == null) sb.firstGun = sb.t;
+    if (pr){ fired = true; sbApply(e, pr, p); sbReportFire(p, e, pr, true); }
+    if (er){ fired = true; const ap = sbApply(p, er, e); sbReportFire(e, p, er, false, ap); if (ap.c && !p.ltDown && sr() < 0.012 * ap.c){ p.ltDown = true; sbLog('Mr Treharne is struck down beside you, and carried below.', true); } }
+  }
+  sbMove(p); sbMove(e);
+  if (p.missedNow){ p.missedNow = false; sbLog('She hangs in stays, the sails shivering, and falls off again on the old tack. She has missed stays.', true); }
+  if (e.missedNow){ e.missedNow = false; sbLog(`${capFirst(e.called)} misses stays, and falls off on her old tack.`, true); }
+  const d = dist(p, e);
+  if (d < 0.3){
+    const ux = (e.x - p.x) / (d || 1), uy = (e.y - p.y) / (d || 1);
+    e.x = p.x + ux * 0.35; e.y = p.y + uy * 0.35; p.speed *= 0.3; e.speed *= 0.3;
+    if (!sb.fouled) sbLog('The two ships fall foul of one another, yardarm to yardarm, and grind together for a few minutes before they drift clear.', true);
+    sb.fouled = true;
+  } else if (d > 1) sb.fouled = false;
+  for (const s of [p, e]){
+    const both = s.reload.L > 0 && s.reload.S > 0;
+    for (const k of ['L', 'S']) if (s.reload[k] > 0) s.reload[k] = Math.max(0, s.reload[k] - (both ? 0.5 : 1));
+    if (s.slowTurns > 0) s.slowTurns--;
+    s.water = Math.max(4, s.water + (s.leak - 6) / 120);
+    if (s.track){ s.track.push([s.x, s.y]); if (s.track.length > 240) s.track.shift(); }
+  }
+  sb.t += 0.5;
+  return fired;
+}
+function sbAfterTurn(){
+  const p = sb.player, e = sb.enemy;
+  sbRigNote(p, true, sbRigStage(p));
+  sbRigNote(e, false, sbRigStage(e));
+  const rp = !!rakes(p, e), re = !!rakes(e, p);
+  if (rp && !sb.rakeP) sbLog(`You have her raked ${rakes(p, e) === 'stern' ? 'from astern' : 'across her bows'}.`, true);
+  if (re && !sb.rakeE) sbLog(`She has you raked ${rakes(e, p) === 'stern' ? 'from astern' : 'across your bows'}.`, true);
+  sb.rakeP = rp; sb.rakeE = re;
+  const band = bandOf(dist(p, e));
+  if (band !== sb.band){ if (band < sb.band && band <= 3) sbLog(`She is within ${BAND_WORDS[band]}.`, true); sb.band = band; }
+  const cas = 1 - e.crew / e.crew0;
+  if (!e.struck && (sb.everFired || e.mode === 'flee') && (e.hull <= 0 || e.water > 60 ||
+      (cas >= e.strikeAt && sr() < 0.35) || (e.dismasted && cas >= e.strikeAt * 0.5 && sr() < 0.2) ||
+      (cas >= e.strikeAt * 0.6 && rakes(p, e) && sr() < 0.25) ||
+      (e.mode === 'flee' && sbStrength(e) < sbStrength(p) * 0.6 && dist(p, e) <= bands()[1] && bearsSide(p, e) && sr() < 0.15))){
+    e.struck = true; sbLog(`${capFirst(e.called)} hauls down her colours. She has struck!`, true); sb.over = 'won'; return;
+  }
+  if (e.water > 72){ sb.over = 'sank'; sbLog(`${capFirst(e.called)} is going down.`, true); return; }
+  if (p.water > 72){ sb.over = 'sinking'; return; }
+  if (p.crew < p.crew0 * 0.25){ sb.over = 'carried'; return; }
+  if (dist(p, e) > Math.max(24, sb.startRange + 5)){ sb.over = e.mode === 'flee' ? 'escaped' : 'parted'; return; }
+  if (sb.t >= 480){ sb.over = 'dusk'; }
+}
+function sbTurn(){
+  if (!sb || sb.over) return;
+  sb.notable = false;
+  if (sb.mode === 'firing'){
+    sbAIPlan(false);
+    const fired = sbHalfMinute(true);
+    sb.firingTurns++;
+    if (fired) sb.everFired = true;
+    if (!fired) sb.sinceFire++;
+    if (sb.firingTurns % 60 === 0) sbReports(null, false);
+    if (sb.sinceFire >= 10){ sb.mode = 'manoeuvre'; sbLog('No gun has been fired for five minutes, and the action lapses for the present.', true); }
+  } else {
+    sbAIPlan(true);
+    for (let i = 0; i < 10; i++){
+      const b0 = bandOf(dist(sb.player, sb.enemy));
+      const fired = sbHalfMinute(true);
+      if (fired){
+        if (!sb.everFired) sbLog('The first gun is fired. From now each turn is half a minute.', true);
+        sb.everFired = true; sb.mode = 'firing'; sb.sinceFire = 0; sb.firingTurns++; break;
+      }
+      const b1 = bandOf(dist(sb.player, sb.enemy));
+      if (b1 < b0 && b1 <= 2) break;
+    }
+  }
+  sbAfterTurn();
+}
+function sbCarryOn(n){ for (let i = 0; i < n && !sb.over; i++){ sbTurn(); if (sb.notable) break; } }
+
+/* ---------- beginning an action ---------- */
+function sbBegin(){
+  const ids = Object.keys(content.actions);
+  if (!content.actions[sbSet.action]) sbSet.action = ids[0];
+  const act = content.actions[sbSet.action];
+  const pv = content.vessels[(content.settings['sandbox ship'] || '').toLowerCase()] || content.vessels[Object.keys(content.vessels)[0]];
+  const ev = content.vessels[act.f.enemy];
+  const seed = (sbSet.seed || makeSeed()).trim().toUpperCase();
+  sbSet.seed = seed;
+  sb = { rng: seedRng('ACTION ' + seed), seed, act: act.id, mode: 'manoeuvre', t: 0, firingTurns: 0, sinceFire: 0, log: [], over: null,
+         notable: false, aiWait: 0, band: 9, everFired: false, sim: false, confirmStrike: false };
+  const wxIds = Object.keys(content.weather).filter(k => content.weather[k].force[1] >= 3);
+  const sys = sbSet.weather !== 'random' && content.weather[sbSet.weather] ? sbSet.weather : wxIds[Math.floor(sr() * wxIds.length)];
+  const wd = content.weather[sys];
+  const force = Math.max(3, Math.min(7, wd.force[0] + Math.floor(sr() * (wd.force[1] - wd.force[0] + 1))));
+  sb.wind = { sys, dir: (wd.from + Math.floor(sr() * (wd.span + 1))) % 32, force };
+  const p = sb.player = sbVessel(pv, sbSet.arm, sbSet.drill);
+  const e = sb.enemy = sbVessel(ev, 0, null);
+  if (act.f.captain) e.temper = act.f.captain.toLowerCase();
+  p.called = pv.f.called || 'the sloop';
+  const start = sbSet.start === 'random' ? (sr() < 0.5 ? 'windward' : 'leeward') : sbSet.start;
+  const R = parseFloat(act.f.range) || 25;
+  sb.startRange = R;
+  const brg = start === 'windward' ? wrap32(sb.wind.dir + 16 + (sr() * 8 - 4)) : wrap32(sb.wind.dir + (sr() * 8 - 4));
+  e.x = Math.sin(brg * Math.PI / 16) * R; e.y = Math.cos(brg * Math.PI / 16) * R;
+  const lay = (s, target) => { let st = sOf(target); if (Math.abs(st) < s.closest) st = (st < 0 ? -1 : 1) * s.closest; s.h = wrap32(sb.wind.dir + st); };
+  lay(p, brg);
+  lay(e, e.temper === 'cautious' ? brg : wrap32(brg + 16));
+  p.speed = sbTargetSpeed(p); e.speed = sbTargetSpeed(e);
+  p.track = [[p.x, p.y]]; e.track = [[e.x, e.y]];
+  sb.band = bandOf(R);
+  sbLog(`Cleared for action. ${capFirst(e.name)} bears ${POINTS[Math.round(brg) % 32]}, distant ${Math.round(R / 10 * 3) / 3 >= 1 ? 'some ' + Math.round(R / 10 * 10) / 10 + ' miles' : R + ' cables'}. The wind is ${FORCE_PROSE[force]} from the ${pointWords(sb.wind.dir)}; ${start === 'windward' ? 'you have the weather gauge' : 'she has the weather gauge'}.`);
+}
+function sbHelm(cmd){
+  const p = sb.player, e = sb.enemy, sc = sOf(p.h) || -0.001;
+  p.helm = cmd;
+  if (cmd === 'luff') sbSetCourse(p, sb.wind.dir + Math.sign(sc) * Math.max(p.closest, Math.abs(sc) - 2), 'auto');
+  else if (cmd === 'bear') sbSetCourse(p, sb.wind.dir + Math.sign(sc) * Math.min(16, Math.abs(sc) + 2), 'auto');
+  else if (cmd === 'for') sbSetCourse(p, bearingTo(p, e), 'auto');
+  else if (cmd === 'stern') sbSetCourse(p, bearingTo(p, { x: e.x - Math.sin(e.h * Math.PI / 16) * 1.5, y: e.y - Math.cos(e.h * Math.PI / 16) * 1.5 }), 'auto');
+  else if (cmd === 'away') sbSetCourse(p, bearingTo(e, p), 'auto');
+  else if (cmd === 'tack') sbSetCourse(p, sb.wind.dir - Math.sign(sc) * p.closest, 'tack');
+  else if (cmd === 'wear') sbSetCourse(p, sb.wind.dir - sc, 'wear');
+  else { p.turn = null; p.helm = 'steady'; }
+  if (!p.turn) p.helm = 'steady';
+}
+
+/* ---------- screens ---------- */
+function sbSvg(){
+  const p = sb.player, e = sb.enemy;
+  const cx = (p.x + e.x) / 2, cy = (p.y + e.y) / 2;
+  const ext = Math.min(60, Math.max(10, dist(p, e) * 1.5 + 4));
+  const x0 = cx - ext / 2, y0 = -(cy + ext / 2);
+  const g = ext <= 14 ? 1 : ext <= 32 ? 2 : 5;
+  const f = v => v.toFixed(3);
+  let grid = '';
+  for (let x = Math.ceil(x0 / g) * g; x <= x0 + ext; x += g) grid += `<line x1="${f(x)}" y1="${f(y0)}" x2="${f(x)}" y2="${f(y0 + ext)}"/>`;
+  for (let y = Math.ceil(y0 / g) * g; y <= y0 + ext; y += g) grid += `<line x1="${f(x0)}" y1="${f(y)}" x2="${f(x0 + ext)}" y2="${f(y)}"/>`;
+  const k = ext / 30;
+  const wake = s => s.track && s.track.length > 1 ? `<polyline points="${s.track.map(q => `${f(q[0])},${f(-q[1])}`).join(' ')}"/>` : '';
+  const glyph = (s, col) => `<g transform="translate(${f(s.x)} ${f(-s.y)}) rotate(${(s.h * 11.25).toFixed(1)}) scale(${f(k)})"><path d="M0,-1.1 C0.45,-0.5 0.42,0.3 0.32,0.85 L-0.32,0.85 C-0.42,0.3 -0.45,-0.5 0,-1.1 Z" fill="${col}"/></g>`;
+  const R = bands()[2];
+  const arc = (side) => {
+    const [r1, r2] = side === 'S' ? [5, 11] : [21, 27];
+    const pt = rel => { const a = (p.h + rel) * Math.PI / 16; return `${f(p.x + Math.sin(a) * R)},${f(-(p.y + Math.cos(a) * R))}`; };
+    const ready = p.reload[side] <= 0 && p.gunsSide[side] > 0;
+    return `<path d="M${f(p.x)},${f(-p.y)} L${pt(r1)} A${R},${R} 0 0 1 ${pt(r2)} Z" fill="var(--accent)" fill-opacity="${ready ? 0.13 : 0}" stroke="var(--accent)" stroke-opacity="${ready ? 0.35 : 0.25}" ${ready ? '' : 'stroke-dasharray="3 3"'} vector-effect="non-scaling-stroke"/>`;
+  };
+  const mx = (p.x + e.x) / 2, my = -(p.y + e.y) / 2, fs = ext / 30;
+  const wx = x0 + ext * 0.09, wy = y0 + ext * 0.1, wl = ext * 0.055;
+  const range = dist(p, e);
+  const enemyCol = e.struck ? 'var(--ink-2)' : 'var(--warn)';
+  return `<svg class="chart" viewBox="${f(x0)} ${f(y0)} ${f(ext)} ${f(ext)}" role="img" aria-label="Plan of the action: ${esc(range < 3 ? Math.round(range * 2) / 2 : Math.round(range))} cables between the ships.">
+    <g stroke="var(--rule)" stroke-width="1" vector-effect="non-scaling-stroke" opacity="0.7">${grid}</g>
+    ${arc('L')}${arc('S')}
+    <g fill="none" stroke-width="1.2" vector-effect="non-scaling-stroke" stroke-dasharray="2 3">
+      <g stroke="var(--accent)" opacity="0.6">${wake(p)}</g><g stroke="${enemyCol}" opacity="0.6">${wake(e)}</g></g>
+    <line x1="${f(p.x)}" y1="${f(-p.y)}" x2="${f(e.x)}" y2="${f(-e.y)}" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="1 4" vector-effect="non-scaling-stroke"/>
+    <text x="${f(mx)}" y="${f(my - fs * 0.6)}" font-size="${f(fs)}" text-anchor="middle" fill="var(--ink-2)" font-family="Georgia,serif">${cablesWord(range)}</text>
+    ${glyph(e, enemyCol)}${glyph(p, 'var(--accent)')}
+    <g transform="translate(${f(wx)} ${f(wy)})"><circle r="${f(wl * 1.25)}" fill="var(--paper)" stroke="var(--rule)" stroke-width="1" vector-effect="non-scaling-stroke"/>
+      <g transform="rotate(${((sb.wind.dir + 16) * 11.25).toFixed(1)})"><line x1="0" y1="${f(wl * 0.8)}" x2="0" y2="${f(-wl * 0.55)}" stroke="var(--accent)" stroke-width="1.6" vector-effect="non-scaling-stroke"/><path d="M0,${f(-wl * 0.95)} L${f(wl * 0.3)},${f(-wl * 0.4)} L${f(-wl * 0.3)},${f(-wl * 0.4)} Z" fill="var(--accent)"/></g></g>
+    <text x="${f(wx)}" y="${f(wy + wl * 1.25 + fs * 1.1)}" font-size="${f(fs * 0.8)}" text-anchor="middle" fill="var(--ink-2)" font-family="Georgia,serif">wind</text>
+    <text x="${f(x0 + ext - fs * 0.4)}" y="${f(y0 + ext - fs * 0.5)}" font-size="${f(fs * 0.8)}" text-anchor="end" fill="var(--ink-2)" font-family="Georgia,serif">squares of ${g} ${g === 1 ? 'cable' : 'cables'}</text>
+  </svg>`;
+}
+function chips(act, current, opts, extra){
+  return `<div class="chips">${opts.map(([v, label, dis]) => `<button type="button" class="chip" data-act="${act}" data-v="${esc(v)}" aria-pressed="${String(v) === String(current)}"${dis ? ' disabled' : ''}${extra || ''}>${esc(label)}</button>`).join('')}</div>`;
+}
+function renderSandboxSetup(app){
+  const ids = Object.keys(content.actions);
+  if (!content.actions[sbSet.action]) sbSet.action = ids[0] || '';
+  const pv = content.vessels[(content.settings['sandbox ship'] || '').toLowerCase()];
+  const act = content.actions[sbSet.action];
+  const wx = Object.keys(content.weather).filter(k => content.weather[k].force[1] >= 3);
+  app.innerHTML = `<div class="top"><div class="ship">Combat Sandbox</div>
+      <nav class="nav"><button type="button" data-act="glossary">Glossary</button><button type="button" data-act="sb-title">Title</button></nav></div>
+    <section class="scene sandbox">
+    <h2 tabindex="-1" id="scene-title">A Single Action</h2>
+    <div class="prose"><p>One ship against one, fought on its own, outside the commission. The clock runs in turns of five minutes until a gun is fired, then in turns of half a minute.</p></div>
+    <h3 class="sc sbh">The enemy</h3>
+    ${chips('sb-pick-action', sbSet.action, ids.map(id => [id, content.actions[id].f.title || id]))}
+    ${act ? `<div class="prose brief">${act.brief.map(t => `<p>${inline(t)}</p>`).join('')}</div>` : ''}
+    <h3 class="sc sbh">Your guns</h3>
+    ${pv ? chips('sb-pick-arm', sbSet.arm, pv.arm.map((a, i) => [i, capFirst(a.label)])) : ''}
+    <h3 class="sc sbh">Your gun crews</h3>
+    ${chips('sb-pick-drill', sbSet.drill, ['slack', 'average', 'crack'].map(d => [d, DRILL_WORDS[d]]))}
+    <h3 class="sc sbh">The weather</h3>
+    ${chips('sb-pick-weather', sbSet.weather, [['random', 'Any']].concat(wx.map(k => [k, capFirst(content.weather[k].called.replace(/^the |^an? /, ''))])))}
+    <h3 class="sc sbh">The weather gauge</h3>
+    ${chips('sb-pick-start', sbSet.start, [['random', 'Chance'], ['windward', 'Yours'], ['leeward', 'Hers']])}
+    <div class="field" style="margin-top:1rem"><label for="sb-seed">Seed</label><input id="sb-seed" class="num" autocomplete="off" value="${esc(sbSet.seed || makeSeed())}">
+      <small>The same seed and the same orders fight the same action.</small></div>
+    <div class="row"><button type="button" class="btn" data-act="sb-begin" id="sb-begin">Clear for action</button></div>
+    </section>`;
+  glossify($('.brief', app));
+  focusTop();
+}
+function renderSandbox(app){
+  if (!sb){ renderSandboxSetup(app); return; }
+  const p = sb.player, e = sb.enemy;
+  const range = dist(p, e), band = bandOf(range);
+  const rangeWords = `${cablesWord(range)}, ${BAND_WORDS[band]}`;
+  const clockWords = sb.mode === 'firing' ? 'half-minute turns' : 'five-minute turns';
+  const gauge = windward(p, e) ? 'You have the weather gauge.' : 'She has the weather gauge.';
+  const recent = sb.log.slice(-7);
+  const logHtml = `<ol class="alog">${recent.map(l => `<li><span class="h">${sbClock(l.t)}</span><span>${inline(l.text)}</span></li>`).join('')}</ol>
+    ${sb.log.length > 7 ? `<details class="ledger"><summary>The whole action</summary><ol class="alog">${sb.log.map(l => `<li><span class="h">${sbClock(l.t)}</span><span>${inline(l.text)}</span></li>`).join('')}</ol></details>` : ''}`;
+  let lower;
+  if (sb.over) lower = sbOutcomeHtml();
+  else {
+    const fireBtns = ['L', 'S'].filter(s => p.reload[s] <= 0 && p.gunsSide[s] > 0 && bearsSide(p, e) === s && band <= 3)
+      .map(s => `<button type="button" class="btn" data-act="sb-fire" data-v="${s}">Fire the ${SIDE_WORDS[s]} broadside</button>`).join('');
+    lower = `<div class="sborders">
+      ${fireBtns ? `<div class="row" style="margin:.6rem 0">${fireBtns}</div>` : ''}
+      <div class="row" style="margin:.6rem 0 .4rem">
+        <button type="button" class="btn" data-act="sb-turn" id="sb-turn">${sb.mode === 'firing' ? 'Carry on: half a minute' : 'Carry on: five minutes'}</button>
+        ${sb.mode === 'firing' ? '<button type="button" class="btn quiet" data-act="sb-five">Five minutes</button>' : '<button type="button" class="btn quiet" data-act="sb-half">Half an hour</button>'}</div>
+      <p class="note" style="margin:0 0 .4rem">Longer spells stop early if anything happens.</p>
+      <div class="ogroup"><span class="olabel">Helm</span>${chips('sb-helm', p.helm, [['luff', 'Luff'], ['bear', 'Bear away'], ['for', 'Steer for her'], ['stern', 'Cross her stern'], ['away', 'Steer away'], ['tack', 'Tack'], ['wear', 'Wear'], ['steady', 'Steady']])}</div>
+      <div class="ogroup"><span class="olabel">Sail</span>${chips('sb-sail', p.sail, [['fighting', 'Fighting sail'], ['plain', 'Plain sail'], ['crowd', 'Crowd sail'], ['backed', 'Back the main-topsail']])}</div>
+      <div class="ogroup"><span class="olabel">Aim</span>${chips('sb-aim', p.aim, [['hull', 'At her hull'], ['rigging', 'At her rigging']])}</div>
+      <div class="ogroup"><span class="olabel">Load</span>${chips('sb-charge', p.charge, [['round', 'Round shot'], ['double', 'Double-shotted'], ['grape', 'Grape']])}</div>
+      <div class="ogroup"><span class="olabel">Open fire</span>${chips('sb-open', p.openAt, [[2, 'At long range'], [1, 'At close range'], [0, 'At point-blank'], [-1, 'Hold your fire']])}</div>
+      <div class="ogroup"><span class="olabel">Reports</span>${chips('sb-report', '', [['carpenter', 'The carpenter'], ['surgeon', 'The surgeon'], ['gunner', 'The gunner'], ['opinion', 'Mr Treharne’s opinion']])}</div>
+      <div class="row" style="margin-top:.8rem"><button type="button" class="btn quiet" data-act="sb-strike">Strike your colours</button></div>
+      ${sb.confirmStrike ? `<div class="confirm"><p style="margin:0 0 .5rem">Haul down the colours, and give up the ship?</p><div class="row"><button type="button" class="btn" data-act="sb-strike-yes">Strike</button><button type="button" class="btn quiet" data-act="sb-strike-no">Fight on</button></div></div>` : ''}
+      <p class="note">Orders stand until you change them. Early reports cost something: a midshipman sent below leaves his guns, and the carpenter called up leaves his shot-plugs.</p>
+    </div>`;
+  }
+  app.innerHTML = `<div class="top"><div class="ship">His Majesty’s Sloop <em>${esc(content.settings.ship || '')}</em>, in action</div>
+      <nav class="nav"><button type="button" data-act="glossary">Glossary</button><button type="button" data-act="sb-setup">Leave the action</button></nav></div>
+    <div class="strip num" role="status"><span>${sbClock(sb.t)}</span><span>${clockWords}</span>${sbWindHtml()}<span>${esc(rangeWords)}</span></div>
+    <section class="scene sandbox">
+      ${sbSvg()}
+      <div class="prose seen"><p><b class="sc">${esc(capFirst(e.name))}.</b> ${inline(sbEnemySeen())}</p><p><b class="sc">The <em>${esc(content.settings.ship || '')}</em>.</b> ${inline(sbOwnSeen())} ${esc(gauge)}</p>
+        <p class="guns">Larboard guns: ${esc(gunState('L'))}. Starboard guns: ${esc(gunState('S'))}.</p></div>
+      ${logHtml}
+      ${lower}
+    </section>`;
+  glossify($('.seen', app));
+  glossify($('.alog', app));
+  const t = $('#sb-turn') || $('#scene-title'); if (t && sb.focus) t.focus({ preventScroll: true });
+}
+function sbWindHtml(){
+  const w = sb.wind, deg = w.dir * 11.25;
+  return `<span class="wind"><svg viewBox="-11 -11 22 22" width="22" height="22" aria-hidden="true"><circle r="10" fill="none" stroke="var(--rule)"/><text y="-5.5" text-anchor="middle" font-size="5" fill="var(--ink-2)" font-family="Georgia,serif">N</text><g transform="rotate(${deg})"><line x1="0" y1="-9" x2="0" y2="7" stroke="var(--accent)" stroke-width="1.6"/><path d="M0,9 L-3.2,3.5 L3.2,3.5 Z" fill="var(--accent)"/></g></svg>${esc(eightPoint(w.dir))}, ${esc(FORCE_LOG[w.force].toLowerCase())}</span>`;
+}
+function sbOutcomeHtml(){
+  const p = sb.player, e = sb.enemy;
+  const titles = { won: 'She Has Struck', sank: 'She Founders', escaped: 'She Gets Away', parted: 'The Action Broken Off', struck: 'You Strike', carried: 'Carried', sinking: 'Foundering', dusk: 'Night Falls' };
+  const lines = {
+    won: `${capFirst(e.called)} has struck to the *${content.settings.ship}*.`,
+    sank: `${capFirst(e.called)} goes down by the head, and you lower every boat you have to pick up her people.`,
+    escaped: `${capFirst(e.called)} draws away out of gunshot, and by evening she is hull down.`,
+    parted: 'You have drawn off out of gunshot, and the action is at an end.',
+    struck: 'You give the order. The colours come down, and the firing stops.',
+    carried: 'There are too few men left standing to fight the guns. The enemy runs alongside, and the ship is carried.',
+    sinking: 'The water is gaining on the pumps faster than any men can pump. The ship is sinking under you, and you strike to save the people.',
+    dusk: 'Darkness falls, and the two ships lose sight of one another in the night.'
+  };
+  const minutes = sb.firstGun != null ? Math.round(sb.t - sb.firstGun) : 0;
+  const own = `The *${content.settings.ship}* had ${numWord(p.killed)} killed and ${numWord(p.wounded)} wounded, of ${numWord(p.crew0) === String(p.crew0) ? p.crew0 : numWord(p.crew0)} at quarters, and fired ${p.broadsides} broadsides.`;
+  const theirs = (sb.over === 'won' || sb.over === 'sank')
+    ? `On taking possession, she was found to have had ${numWord(e.killed)} killed and ${numWord(e.wounded)} wounded, of ${e.crew0} men; ${numWord(e.arm.n - e.gunsSide.L - e.gunsSide.S)} of her ${e.arm.n} guns dismounted; ${numWord(e.holesBelow)} shot-holes below her waterline. She had fired ${e.broadsides} broadsides.`
+    : 'What she suffered you will not know.';
+  return `<div class="outcome"><h3 class="sc sbh">${titles[sb.over] || 'The Action Ends'}</h3>
+    <div class="prose"><p>${inline(lines[sb.over] || '')}</p>${minutes ? `<p>The action lasted ${minutes} minutes from the first gun.</p>` : ''}<p>${inline(own)}</p><p>${inline(theirs)}</p></div>
+    <div class="row cont"><button type="button" class="btn" data-act="sb-again">Fight it again</button><button type="button" class="btn quiet" data-act="sb-setup">Another action</button><button type="button" class="btn quiet" data-act="sb-title">Title</button></div></div>`;
+}
+function sandboxAct(a){
+  const v = a.dataset.v;
+  switch (a.dataset.act){
+    case 'sandbox': view = 'sandbox'; sb = null; break;
+    case 'sb-title': view = 'game'; sb = null; break;
+    case 'sb-setup': sb = null; break;
+    case 'sb-pick-action': sbSet.action = v; break;
+    case 'sb-pick-arm': sbSet.arm = +v; break;
+    case 'sb-pick-drill': sbSet.drill = v; break;
+    case 'sb-pick-weather': sbSet.weather = v; break;
+    case 'sb-pick-start': sbSet.start = v; break;
+    case 'sb-begin': sbSet.seed = ($('#sb-seed') && $('#sb-seed').value) || ''; sbBegin(); break;
+    case 'sb-again': sbBegin(); break;
+    case 'sb-helm': sbHelm(v); break;
+    case 'sb-sail': sb.player.sail = v; break;
+    case 'sb-aim': sb.player.aim = v; break;
+    case 'sb-charge': sb.player.charge = v; break;
+    case 'sb-open': sb.player.openAt = +v; break;
+    case 'sb-report':
+      if (v === 'opinion') sbOpinion();
+      else {
+        sbReports(v, true);
+        if (v === 'carpenter') sb.player.leak += 1;
+        else sb.player.slowTurns = 6;
+      }
+      break;
+    case 'sb-fire':
+      sb.fireNow = v;
+      if (sb.mode !== 'firing'){ if (!sb.everFired) sbLog('The first gun is fired. From now each turn is half a minute.', true); sb.mode = 'firing'; sb.sinceFire = 0; }
+      sbTurn(); break;
+    case 'sb-turn': sbTurn(); break;
+    case 'sb-five': sbCarryOn(10); break;
+    case 'sb-half': sbCarryOn(6); break;
+    case 'sb-strike': sb.confirmStrike = true; break;
+    case 'sb-strike-no': sb.confirmStrike = false; break;
+    case 'sb-strike-yes': sb.confirmStrike = false; sb.over = 'struck'; sbLog('You strike your colours.', true); break;
+  }
+  if (sb) sb.focus = /^sb-(turn|five|half|fire|again|begin)$/.test(a.dataset.act);
+  render();
+  if (sb && !sb.focus && /^sb-(helm|sail|aim|charge|open|report|strike)/.test(a.dataset.act)){
+    const again = document.querySelector(`[data-act="${a.dataset.act}"][data-v="${CSS.escape(v || '')}"]`) || document.querySelector(`[data-act="${a.dataset.act}"]`);
+    if (again) again.focus({ preventScroll: true });
+  }
+}
+/* runs a whole action with a fixed policy, for the automated tests */
+function sandboxRun(cfg){
+  Object.assign(sbSet, { action: cfg.action, arm: cfg.arm || 0, drill: cfg.drill || 'average', weather: cfg.weather || 'random', start: cfg.start || 'random', seed: cfg.seed });
+  sbBegin();
+  const p = sb.player;
+  p.sail = cfg.sail || 'fighting'; p.openAt = cfg.open == null ? 1 : cfg.open; p.aim = cfg.aim || 'hull';
+  let n = 0;
+  while (!sb.over && n < 3000){
+    n++;
+    if (!p.turn && cfg.policy){
+      const want = sOf(bearingTo(p, sb.enemy)), cur = sOf(p.h);
+      if (Math.abs(want) < p.closest && Math.abs(want) >= 2.5 && Math.sign(want) !== Math.sign(cur) && Math.abs(cur) <= p.closest + 2) sbHelm('tack');
+      else sbHelm(cfg.policy);
+    }
+    if (cfg.sail === 'auto') p.sail = dist(p, sb.enemy) > bands()[Math.max(0, p.openAt)] + 0.5 ? 'crowd' : 'fighting';
+    sbTurn();
+  }
+  return { over: sb.over, minutes: Math.round(sb.t - (sb.firstGun || 0)), pCas: p.crew0 - p.crew, eCas: e2c(sb.enemy), pb: p.broadsides, eb: sb.enemy.broadsides, turns: n, log: sb.log.length };
+}
+function e2c(e){ return e.crew0 - e.crew; }
+
+/* ============================================================
    INPUT
    ============================================================ */
 document.addEventListener('click', e => {
@@ -4289,6 +5201,7 @@ document.addEventListener('click', e => {
   if (c && !c.disabled){ if (choose(+c.dataset.choice)) render(); return; }
 
   const a = e.target.closest('[data-act]'); if (!a) return;
+  if (a.dataset.act === 'sandbox' || a.dataset.act.startsWith('sb-')){ if (!a.disabled) sandboxAct(a); return; }
   switch (a.dataset.act){
     case 'continue': carryOn(); render(); break;
     case 'begin': newGame($('#cmdr-name').value, $('#seed').value); render(); break;
@@ -4383,6 +5296,8 @@ window.SloopTest = {
   get content(){ return content; },
   real: id => realQty(id),
   speedAt: a => speedAt(a),
+  sandboxRun: cfg => sandboxRun(cfg),
+  get sb(){ return sb; },
   parseMoney, fmtMoney, watchOf: m => watchOf(m)
 };
 

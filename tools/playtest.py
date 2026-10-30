@@ -8,7 +8,8 @@ Opens index.html in headless Chromium and checks:
      back early) all reach an Ending, never strand the player
      ("The Log Runs Out") and never leave a screen with no open choice;
   3. lists any event no random playthrough reached (a caution, not a failure);
-  4. the same seed and the same choices give exactly the same state.
+  4. the same seed and the same choices give exactly the same state;
+  5. every combat sandbox action ends, and replays the same.
 
 Exits non-zero if any check fails.
 """
@@ -114,6 +115,22 @@ with sync_playwright() as p:
     print(f"Replay is deterministic: {same}")
     if not same:
         failures.append('replay is not deterministic')
+
+    # the combat sandbox: every action ends, and the same seed and orders fight the same action
+    actions = pg.evaluate("Object.keys(SloopTest.content.actions)")
+    outcomes = {}
+    for act in actions:
+        for k in range(6):
+            cfg = {'action': act, 'arm': k % 2, 'policy': ['for', 'stern'][k // 3 % 2], 'seed': f'SB-{k}', 'sail': 'auto'}
+            r1 = pg.evaluate("c => SloopTest.sandboxRun(c)", cfg)
+            r2 = pg.evaluate("c => SloopTest.sandboxRun(c)", cfg)
+            if r1 != r2:
+                failures.append(f'sandbox {act} seed SB-{k} is not deterministic')
+            if not r1['over']:
+                failures.append(f'sandbox {act} seed SB-{k} never ended')
+            outcomes.setdefault(act, {}).setdefault(r1['over'], 0)
+            outcomes[act][r1['over']] += 1
+    print(f"Combat sandbox outcomes: {outcomes}")
 
     if page_errors:
         failures.extend(f'page error: {e}' for e in page_errors)

@@ -185,6 +185,46 @@ Events:
 - `forecast` (an effect) has the master read the weather; `{forecast}` gives his opinion, right or wrong according to his skill.
 - `{wind}` ("a fresh breeze from the north-west"), `{sky}`, `{sea}`, `{weather}`, `{destination}` and `{distance}` ("some 20 leagues") are filled in.
 
+## Ships and actions for combat
+
+Ships that fight are `VESSEL` blocks:
+
+```
+VESSEL: privateer_brig
+Name: a French privateer brig
+Called: the brig
+Colours: French
+Armament: 14 long six-pounders
+Crew: 110
+Hull: 340
+Rigging: 90
+Speed: 1.05
+Closest: 6
+Turning: 2.2
+Gunnery: average
+Temperament: bold
+Aims at: rigging
+Strikes at: 30
+```
+
+- `Armament:` a number and a gun: `long four-pounders`, `long six-pounders`, `long eight-pounders`, `long twelve-pounders`, `twelve-pounder carronades`, `eighteen-pounder carronades` and so on. Join choices with `or`: `16 long six-pounders or 16 eighteen-pounder carronades`.
+- `Speed:` compared with the sloop (1 is the same). `Closest:` points off the wind. `Turning:` points in half a minute at full speed.
+- `Gunnery:` slack, average or crack. `Temperament:` bold, cautious or cunning. `Aims at:` hull or rigging (at long range; every captain fires into the hull close in). `Strikes at:` the share of her people, in hundredths, she will lose before she strikes.
+
+A single action in the sandbox is an `ACTION` block. The lines without a label are the brief the player reads:
+
+```
+ACTION: privateer
+Title: A privateer brig
+Enemy: privateer_brig
+Captain: bold
+Range: 26
+
+A brig under French colours, fourteen ports and a deck crowded with men...
+```
+
+`Range:` is the starting distance in cables. The `GUNNERY` block holds the numbers that decide a fight: range bands, the chance of a hit at each, reloading, raking, double shot, and casualties per hit. Change them there to tune.
+
 ## The ship and her stores
 
 The `SHIP` block gives the ship's starting numbers. They behave like any other number (`leak +3`, `hull 80 or more`):
