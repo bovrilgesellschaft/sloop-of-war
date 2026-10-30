@@ -121,13 +121,23 @@ textarea{min-height:7rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-
 .strip .wind svg{flex:none}
 
 /* combat sandbox */
-.sandbox .chart line,.sandbox .chart polyline,.sandbox .chart path,.sandbox .chart circle{vector-effect:non-scaling-stroke}
-.sandbox .chart{width:100%;max-width:34rem;aspect-ratio:1;height:auto;display:block;margin:.8rem 0;background:var(--paper-2);border:1px solid var(--rule)}
+.sandbox .chart{width:min(100%, 46vh);aspect-ratio:1;height:auto;display:block;margin:.4rem auto 0;box-shadow:0 1px 6px rgba(60,40,15,.28)}
+.sb-chartcol{position:sticky;top:env(safe-area-inset-top, 0px);z-index:5;background:var(--paper)}
+.sb-sticky{padding-block:.2rem .6rem;border-bottom:3px double var(--rule)}
+.sb-sticky .strip{border-bottom:1px solid var(--rule)}
+.sb-textcol{min-width:0;padding-top:.6rem}
+@media (min-width: 900px){
+  #app.wide{max-width:76rem}
+  .sb-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:2.2rem;align-items:start}
+  .sb-sticky{border-bottom:0;padding-top:.6rem}
+  .sandbox .chart{width:min(100%, calc(100vh - 7rem))}
+  .sb-textcol{padding-top:1rem}
+}
 .sbh{font-size:1.05rem;color:var(--ink-2);margin:1.2rem 0 .45rem}
 .chips{display:flex;flex-wrap:wrap;gap:.35rem}
 .chip{border:1px solid var(--rule);background:none;padding:.28rem .55rem;font-family:var(--display-sc);letter-spacing:.03em;color:var(--accent);border-radius:2px;cursor:pointer;font-size:.92rem;line-height:1.3}
 .chip:hover:not(:disabled){background:var(--paper-2)}
-.chip[aria-pressed="true"]{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+.chip[aria-pressed="true"],.chip[aria-pressed="true"]:hover{background:var(--accent);color:var(--paper);border-color:var(--accent)}
 .chip:disabled{opacity:.45;cursor:not-allowed}
 .sborders{border-top:3px double var(--rule);margin-top:1rem;padding-top:.4rem}
 .ogroup{display:grid;grid-template-columns:5.6rem minmax(0,1fr);gap:.4rem .6rem;align-items:baseline;margin:.55rem 0}
@@ -2603,6 +2613,7 @@ two bells | four bells | eight bells: Time aboard is struck on the ship's bell e
 first watch: The watch from eight in the evening until midnight.
 watch: One of the divisions of the ship's day, mostly of four hours: the first watch (8 p.m. to midnight), middle, morning, forenoon, afternoon, and the two short dog watches between 4 and 8 p.m.
 fortnight: Two weeks.
+port: The left-hand side of the ship, looking forward. In this period "larboard" was the usual word, but "port" was already used in helm orders, because "larboard" was too easily misheard as "starboard" in a gale.
 weather gauge: The position to windward of an enemy. The ship that holds it can choose when and whether to engage; the one to leeward must take the fight as it comes, or run.
 broadside | broadsides: All the guns on one side of a ship, fired together; or the side itself.
 larboard: The left-hand side of the ship, looking forward. (Later called port.)
@@ -4090,6 +4101,7 @@ function windHtml(){
 function render(){
   hideTip();
   const app = $('#app');
+  app.classList.toggle('wide', view === 'sandbox' && !!sb);
   if (view === 'sandbox'){ renderSandbox(app); return; }
   if (!state){ renderTitle(app); return; }
   if (state.ended){ renderEnding(app); return; }
@@ -4743,7 +4755,12 @@ function sbAIFire(){
 }
 
 /* ---------- what is seen and reported ---------- */
-function cablesWord(r){ const n = r < 3 ? Math.round(r * 2) / 2 : Math.round(r); return n <= 0.5 ? 'half a cable' : `${n} ${n === 1 ? 'cable' : 'cables'}`; }
+function cablesWord(r){
+  const n = r < 3 ? Math.round(r * 2) / 2 : Math.round(r);
+  if (n <= 0.5) return 'half a cable';
+  const w = `${Math.floor(n)}${n % 1 ? '½' : ''}`;
+  return `${w} ${n === 1 ? 'cable' : 'cables'}`;
+}
 function sbClock(t){
   const total = 600 + t, h = Math.floor(total / 60), m = Math.floor(total % 60), half = (t % 1) >= 0.5;
   return `${h}.${String(m).padStart(2, '0')}${half ? '½' : ''}`;
@@ -4970,7 +4987,16 @@ function sbBegin(){
 function sbHelm(cmd){
   const p = sb.player, e = sb.enemy, sc = sOf(p.h) || -0.001;
   p.helm = cmd;
-  if (cmd === 'luff') sbSetCourse(p, sb.wind.dir + Math.sign(sc) * Math.max(p.closest, Math.abs(sc) - 2), 'auto');
+  const m = cmd.match(/^(port|stbd)(\d+)$/);
+  if (m){
+    const target = wrap32(p.h + (m[1] === 'port' ? -1 : 1) * +m[2]), st = sOf(target);
+    const intoWind = Math.abs(st) < p.closest || (Math.sign(st) !== Math.sign(sc) && Math.abs(sc) < 8);
+    if (intoWind){
+      sbSetCourse(p, sb.wind.dir + Math.sign(sc) * p.closest, 'auto');
+      sbLog(`She will lie no closer than ${numWord(p.closest)} points to the wind. To go about, tack.`);
+    } else sbSetCourse(p, target, 'auto');
+  }
+  else if (cmd === 'luff') sbSetCourse(p, sb.wind.dir + Math.sign(sc) * Math.max(p.closest, Math.abs(sc) - 2), 'auto');
   else if (cmd === 'bear') sbSetCourse(p, sb.wind.dir + Math.sign(sc) * Math.min(16, Math.abs(sc) + 2), 'auto');
   else if (cmd === 'for') sbSetCourse(p, bearingTo(p, e), 'auto');
   else if (cmd === 'stern') sbSetCourse(p, bearingTo(p, { x: e.x - Math.sin(e.h * Math.PI / 16) * 1.5, y: e.y - Math.cos(e.h * Math.PI / 16) * 1.5 }), 'auto');
@@ -4984,40 +5010,99 @@ function sbHelm(cmd){
 /* ---------- screens ---------- */
 function sbSvg(){
   const p = sb.player, e = sb.enemy;
-  const cx = (p.x + e.x) / 2, cy = (p.y + e.y) / 2;
-  const ext = Math.min(60, Math.max(10, dist(p, e) * 1.5 + 4));
-  const x0 = cx - ext / 2, y0 = -(cy + ext / 2);
-  const g = ext <= 14 ? 1 : ext <= 32 ? 2 : 5;
-  const f = v => v.toFixed(3);
-  let grid = '';
-  for (let x = Math.ceil(x0 / g) * g; x <= x0 + ext; x += g) grid += `<line x1="${f(x)}" y1="${f(y0)}" x2="${f(x)}" y2="${f(y0 + ext)}"/>`;
-  for (let y = Math.ceil(y0 / g) * g; y <= y0 + ext; y += g) grid += `<line x1="${f(x0)}" y1="${f(y)}" x2="${f(x0 + ext)}" y2="${f(y)}"/>`;
-  const k = ext / 30;
-  const wake = s => s.track && s.track.length > 1 ? `<polyline points="${s.track.map(q => `${f(q[0])},${f(-q[1])}`).join(' ')}"/>` : '';
-  const glyph = (s, col) => `<g transform="translate(${f(s.x)} ${f(-s.y)}) rotate(${(s.h * 11.25).toFixed(1)}) scale(${f(k)})"><path d="M0,-1.1 C0.45,-0.5 0.42,0.3 0.32,0.85 L-0.32,0.85 C-0.42,0.3 -0.45,-0.5 0,-1.1 Z" fill="${col}"/></g>`;
-  const R = bands()[2];
-  const arc = (side) => {
+  const W = 400, cx = (p.x + e.x) / 2, cy = (p.y + e.y) / 2;
+  const ext = Math.min(60, Math.max(10, dist(p, e) * 1.5 + 4)), S = W / ext;
+  const X = x => (x - (cx - ext / 2)) * S, Y = y => ((cy + ext / 2) - y) * S;
+  const f = v => v.toFixed(1);
+  const INK = '#3a2d1f', FAINT = 'rgba(58,45,31,0.22)', RED = '#8f2f22', OWN = '#26303f', PAPER = '#e9dbb4';
+  const FONT = `font-family="'IM Fell English',Georgia,serif"`;
+  /* the rose, and the rhumb lines from it */
+  const rx = 64, ry = 76, rr = 36;
+  let rhumbs = '';
+  for (let i = 0; i < 32; i++){
+    const a = i * Math.PI / 16, w = i % 8 === 0 ? 0.7 : i % 4 === 0 ? 0.5 : 0.35, o = i % 4 === 0 ? 0.42 : 0.24;
+    rhumbs += `<line x1="${rx}" y1="${ry}" x2="${f(rx + Math.sin(a) * 700)}" y2="${f(ry - Math.cos(a) * 700)}" stroke="${INK}" stroke-opacity="${o}" stroke-width="${w}"/>`;
+  }
+  let rose = `<circle cx="${rx}" cy="${ry}" r="${rr}" fill="${PAPER}" stroke="${INK}" stroke-width="0.8"/><circle cx="${rx}" cy="${ry}" r="${rr * 0.84}" fill="none" stroke="${INK}" stroke-width="0.4"/>`;
+  for (let i = 0; i < 32; i++){
+    const a = i * Math.PI / 16, r1 = rr * (i % 2 ? 0.92 : 0.86);
+    rose += `<line x1="${f(rx + Math.sin(a) * r1)}" y1="${f(ry - Math.cos(a) * r1)}" x2="${f(rx + Math.sin(a) * rr)}" y2="${f(ry - Math.cos(a) * rr)}" stroke="${INK}" stroke-width="0.5"/>`;
+  }
+  for (let i = 0; i < 8; i++){
+    const a = i * Math.PI / 4, len = rr * (i % 2 ? 0.62 : 0.98), wd = rr * (i % 2 ? 0.1 : 0.14);
+    const tip = [rx + Math.sin(a) * len, ry - Math.cos(a) * len];
+    const l = [rx + Math.sin(a - Math.PI / 2) * wd, ry - Math.cos(a - Math.PI / 2) * wd], r = [rx + Math.sin(a + Math.PI / 2) * wd, ry - Math.cos(a + Math.PI / 2) * wd];
+    rose += `<path d="M${rx},${ry} L${f(l[0])},${f(l[1])} L${f(tip[0])},${f(tip[1])} Z" fill="${INK}"/><path d="M${rx},${ry} L${f(r[0])},${f(r[1])} L${f(tip[0])},${f(tip[1])} Z" fill="${PAPER}" stroke="${INK}" stroke-width="0.5"/>`;
+  }
+  rose += `<circle cx="${rx}" cy="${ry}" r="2.2" fill="${INK}"/><text x="${rx}" y="${f(ry - rr - 5)}" text-anchor="middle" font-size="12" fill="${INK}" ${FONT}>N</text>`;
+  /* the wind, as a fletched arrow */
+  const wx = 338, wy = 78, wl = 26;
+  const wind = `<g transform="translate(${wx} ${wy}) rotate(${((sb.wind.dir + 16) * 11.25).toFixed(1)})" stroke="${INK}" fill="none" stroke-width="1.1" stroke-linecap="round">
+      <line x1="0" y1="${wl}" x2="0" y2="${-wl}"/><path d="M0,${-wl - 2} L-4.5,${-wl + 8} L4.5,${-wl + 8} Z" fill="${INK}"/>
+      <path d="M0,${wl - 2} L-5,${wl + 4} M0,${wl - 7} L-5,${wl - 1} M0,${wl - 12} L-5,${wl - 6} M0,${wl - 2} L5,${wl + 4} M0,${wl - 7} L5,${wl - 1} M0,${wl - 12} L5,${wl - 6}" stroke-width="0.8"/></g>
+    <text x="${wx}" y="${wy + wl + 20}" text-anchor="middle" font-size="11" font-style="italic" fill="${INK}" ${FONT}>The Wind</text>`;
+  /* firing arcs, hatched when the guns are loaded */
+  const R = bands()[2] * S;
+  const arc = side => {
     const [r1, r2] = side === 'S' ? [5, 11] : [21, 27];
-    const pt = rel => { const a = (p.h + rel) * Math.PI / 16; return `${f(p.x + Math.sin(a) * R)},${f(-(p.y + Math.cos(a) * R))}`; };
+    const pt = rel => { const a = (p.h + rel) * Math.PI / 16; return `${f(X(p.x) + Math.sin(a) * R)},${f(Y(p.y) - Math.cos(a) * R)}`; };
     const ready = p.reload[side] <= 0 && p.gunsSide[side] > 0;
-    return `<path d="M${f(p.x)},${f(-p.y)} L${pt(r1)} A${R},${R} 0 0 1 ${pt(r2)} Z" fill="var(--accent)" fill-opacity="${ready ? 0.13 : 0}" stroke="var(--accent)" stroke-opacity="${ready ? 0.35 : 0.25}" ${ready ? '' : 'stroke-dasharray="3 3"'} vector-effect="non-scaling-stroke"/>`;
+    return `<path d="M${f(X(p.x))},${f(Y(p.y))} L${pt(r1)} A${f(R)},${f(R)} 0 0 1 ${pt(r2)} Z" fill="${ready ? 'url(#sb-hatch)' : 'none'}" stroke="${OWN}" stroke-opacity="${ready ? 0.5 : 0.35}" stroke-width="0.8" ${ready ? '' : 'stroke-dasharray="3 3"'}/>`;
   };
-  const mx = (p.x + e.x) / 2, my = -(p.y + e.y) / 2, fs = ext / 30;
-  const wx = x0 + ext * 0.09, wy = y0 + ext * 0.1, wl = ext * 0.055;
-  const range = dist(p, e);
-  const enemyCol = e.struck ? 'var(--ink-2)' : 'var(--warn)';
-  return `<svg class="chart" viewBox="${f(x0)} ${f(y0)} ${f(ext)} ${f(ext)}" role="img" aria-label="Plan of the action: ${esc(range < 3 ? Math.round(range * 2) / 2 : Math.round(range))} cables between the ships.">
-    <g stroke="var(--rule)" stroke-width="1" vector-effect="non-scaling-stroke" opacity="0.7">${grid}</g>
-    ${arc('L')}${arc('S')}
-    <g fill="none" stroke-width="1.2" vector-effect="non-scaling-stroke" stroke-dasharray="2 3">
-      <g stroke="var(--accent)" opacity="0.6">${wake(p)}</g><g stroke="${enemyCol}" opacity="0.6">${wake(e)}</g></g>
-    <line x1="${f(p.x)}" y1="${f(-p.y)}" x2="${f(e.x)}" y2="${f(-e.y)}" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="1 4" vector-effect="non-scaling-stroke"/>
-    <text x="${f(mx)}" y="${f(my - fs * 0.6)}" font-size="${f(fs)}" text-anchor="middle" fill="var(--ink-2)" font-family="Georgia,serif">${cablesWord(range)}</text>
-    ${glyph(e, enemyCol)}${glyph(p, 'var(--accent)')}
-    <g transform="translate(${f(wx)} ${f(wy)})"><circle r="${f(wl * 1.25)}" fill="var(--paper)" stroke="var(--rule)" stroke-width="1" vector-effect="non-scaling-stroke"/>
-      <g transform="rotate(${((sb.wind.dir + 16) * 11.25).toFixed(1)})"><line x1="0" y1="${f(wl * 0.8)}" x2="0" y2="${f(-wl * 0.55)}" stroke="var(--accent)" stroke-width="1.6" vector-effect="non-scaling-stroke"/><path d="M0,${f(-wl * 0.95)} L${f(wl * 0.3)},${f(-wl * 0.4)} L${f(-wl * 0.3)},${f(-wl * 0.4)} Z" fill="var(--accent)"/></g></g>
-    <text x="${f(wx)}" y="${f(wy + wl * 1.25 + fs * 1.1)}" font-size="${f(fs * 0.8)}" text-anchor="middle" fill="var(--ink-2)" font-family="Georgia,serif">wind</text>
-    <text x="${f(x0 + ext - fs * 0.4)}" y="${f(y0 + ext - fs * 0.5)}" font-size="${f(fs * 0.8)}" text-anchor="end" fill="var(--ink-2)" font-family="Georgia,serif">squares of ${g} ${g === 1 ? 'cable' : 'cables'}</text>
+  const wake = (s, col) => s.track && s.track.length > 1 ? `<polyline points="${s.track.map(q => `${f(X(q[0]))},${f(Y(q[1]))}`).join(' ')}" fill="none" stroke="${col}" stroke-opacity="0.55" stroke-width="1.1" stroke-dasharray="0.1 4" stroke-linecap="round"/>` : '';
+  /* ships drawn as on a plan: hull, and the yards across her */
+  const ship = (s, col, name, struck) => {
+    const hx = X(s.x), hy = Y(s.y), rot = (s.h * 11.25).toFixed(1);
+    const o = s === p ? e : p, ox = hx - X(o.x), oy = hy - Y(o.y), ol = Math.hypot(ox, oy) || 1;
+    const lx = hx + ox / ol * 20, ly = hy + oy / ol * 18;
+    return `<g transform="translate(${f(hx)} ${f(hy)}) rotate(${rot})">
+        <path d="M0,-9 C3.4,-4.5 3.4,3 2.6,7.5 L-2.6,7.5 C-3.4,3 -3.4,-4.5 0,-9 Z" fill="${struck ? PAPER : col}" stroke="${col}" stroke-width="0.9"/>
+        <g stroke="${INK}" stroke-width="0.9" stroke-linecap="round"><line x1="-5.5" y1="-4" x2="5.5" y2="-4"/><line x1="-6.5" y1="0.5" x2="6.5" y2="0.5"/>${s.dismasted ? '' : '<line x1="-4.5" y1="4.5" x2="4.5" y2="4.5"/>'}</g></g>
+      <text x="${f(lx)}" y="${f(ly + 3)}" text-anchor="middle" font-size="11" font-style="italic" fill="${col}" ${FONT}>${esc(name)}</text>`;
+  };
+  /* the scale of cables */
+  const g = [0.5, 1, 2, 5, 10].find(v => v * S >= 22) || 10, seg = g * S;
+  let scale = '';
+  for (let i = 0; i < 4; i++) scale += `<rect x="${f(W - 26 - seg * (4 - i))}" y="${W - 34}" width="${f(seg)}" height="4" fill="${i % 2 ? PAPER : INK}" stroke="${INK}" stroke-width="0.6"/>`;
+  scale += `<text x="${f(W - 26 - seg * 2)}" y="${W - 40}" text-anchor="middle" font-size="10" font-style="italic" fill="${INK}" ${FONT}>Scale of cables</text>`;
+  for (let i = 0; i <= 4; i++) scale += `<text x="${f(W - 26 - seg * (4 - i))}" y="${W - 20}" text-anchor="middle" font-size="9" fill="${INK}" ${FONT}>${String(i * g).replace('.5', '½').replace(/^0½/, '½')}</text>`;
+  /* the graduated border */
+  let border = '';
+  for (let x = 12; x < W - 12; x += 16) border += `<rect x="${x}" y="8" width="8" height="3" fill="${INK}"/><rect x="${x}" y="${W - 11}" width="8" height="3" fill="${INK}"/>`;
+  for (let y = 12; y < W - 12; y += 16) border += `<rect x="8" y="${y}" width="3" height="8" fill="${INK}"/><rect x="${W - 11}" y="${y}" width="3" height="8" fill="${INK}"/>`;
+  const range = dist(p, e), dl = Math.hypot(X(e.x) - X(p.x), Y(e.y) - Y(p.y)) || 1;
+  const nx = -(Y(e.y) - Y(p.y)) / dl, ny = (X(e.x) - X(p.x)) / dl, off = dl < 60 ? 22 : 10;
+  const mx = (X(p.x) + X(e.x)) / 2 + nx * off, my = (Y(p.y) + Y(e.y)) / 2 + ny * off + 4;
+  const enemyCol = e.struck ? INK : RED;
+  return `<svg class="chart" viewBox="0 0 ${W} ${W}" role="img" aria-label="Plan of the action: ${esc(cablesWord(range))} between the ships.">
+    <defs>
+      <filter id="sb-grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="11"/><feColorMatrix type="matrix" values="0 0 0 0 0.36  0 0 0 0 0.26  0 0 0 0 0.12  0 0 0 0.22 -0.02"/></filter>
+      <filter id="sb-mottle" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="4"/><feColorMatrix type="matrix" values="0 0 0 0 0.45  0 0 0 0 0.32  0 0 0 0 0.12  0 0 0 0.5 -0.18"/></filter>
+      <radialGradient id="sb-age" cx="50%" cy="48%" r="72%"><stop offset="55%" stop-color="#7a5528" stop-opacity="0"/><stop offset="100%" stop-color="#7a5528" stop-opacity="0.42"/></radialGradient>
+      <radialGradient id="sb-fox"><stop offset="0" stop-color="#8a5a24" stop-opacity="0.35"/><stop offset="1" stop-color="#8a5a24" stop-opacity="0"/></radialGradient>
+      <pattern id="sb-hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><line x1="0" y1="0" x2="0" y2="5" stroke="${OWN}" stroke-opacity="0.45" stroke-width="0.7"/></pattern>
+      <clipPath id="sb-clip"><rect x="13" y="13" width="${W - 26}" height="${W - 26}"/></clipPath>
+    </defs>
+    <rect width="${W}" height="${W}" fill="${PAPER}"/>
+    <rect width="${W}" height="${W}" filter="url(#sb-mottle)"/>
+    <rect width="${W}" height="${W}" filter="url(#sb-grain)"/>
+    <circle cx="308" cy="300" r="22" fill="url(#sb-fox)"/><circle cx="92" cy="338" r="13" fill="url(#sb-fox)"/><circle cx="250" cy="44" r="9" fill="url(#sb-fox)"/>
+    <rect width="${W}" height="${W}" fill="url(#sb-age)"/>
+    <g clip-path="url(#sb-clip)">${rhumbs}
+      ${arc('L')}${arc('S')}
+      ${wake(p, OWN)}${wake(e, enemyCol)}
+      <line x1="${f(X(p.x))}" y1="${f(Y(p.y))}" x2="${f(X(e.x))}" y2="${f(Y(e.y))}" stroke="${INK}" stroke-opacity="0.6" stroke-width="0.8" stroke-dasharray="0.1 3.5" stroke-linecap="round"/>
+      <text x="${f(mx)}" y="${f(my)}" text-anchor="middle" font-size="11" font-style="italic" fill="${INK}" ${FONT}>${esc(cablesWord(range))}</text>
+      ${ship(e, enemyCol, capFirst(e.called.replace(/^the /, '')), e.struck)}${ship(p, OWN, content.settings.ship || 'Sloop', false)}
+    </g>
+    ${rose}${wind}
+    <g transform="translate(200 34)"><rect x="-74" y="-15" width="148" height="34" fill="${PAPER}" stroke="${INK}" stroke-width="0.8"/><rect x="-71" y="-12" width="142" height="28" fill="none" stroke="${INK}" stroke-width="0.4"/>
+      <text y="0" text-anchor="middle" font-size="12.5" fill="${INK}" ${FONT}>Plan of the Action</text>
+      <text y="12" text-anchor="middle" font-size="9.5" font-style="italic" fill="${INK}" ${FONT}>at ${esc(sbClock(sb.t))} o’clock</text></g>
+    ${scale}
+    <rect x="6" y="6" width="${W - 12}" height="${W - 12}" fill="none" stroke="${INK}" stroke-width="1.3"/>
+    <rect x="12.5" y="12.5" width="${W - 25}" height="${W - 25}" fill="none" stroke="${INK}" stroke-width="0.6"/>
+    ${border}
   </svg>`;
 }
 function chips(act, current, opts, extra){
@@ -5073,7 +5158,8 @@ function renderSandbox(app){
         <button type="button" class="btn" data-act="sb-turn" id="sb-turn">${sb.mode === 'firing' ? 'Carry on: half a minute' : 'Carry on: five minutes'}</button>
         ${sb.mode === 'firing' ? '<button type="button" class="btn quiet" data-act="sb-five">Five minutes</button>' : '<button type="button" class="btn quiet" data-act="sb-half">Half an hour</button>'}</div>
       <p class="note" style="margin:0 0 .4rem">Longer spells stop early if anything happens.</p>
-      <div class="ogroup"><span class="olabel">Helm</span>${chips('sb-helm', p.helm, [['luff', 'Luff'], ['bear', 'Bear away'], ['for', 'Steer for her'], ['stern', 'Cross her stern'], ['away', 'Steer away'], ['tack', 'Tack'], ['wear', 'Wear'], ['steady', 'Steady']])}</div>
+      <div class="ogroup"><span class="olabel">Helm</span>${chips('sb-helm', p.helm, [['port2', 'Slight port'], ['stbd2', 'Slight starboard'], ['port8', 'Full port'], ['stbd8', 'Full starboard'], ['tack', 'Tack'], ['wear', 'Wear']])}</div>
+      <div class="ogroup"><span class="olabel">Steer</span>${chips('sb-helm', p.helm, [['for', 'For her'], ['stern', 'To cross her stern'], ['away', 'Away from her'], ['steady', 'Steady as she goes']])}</div>
       <div class="ogroup"><span class="olabel">Sail</span>${chips('sb-sail', p.sail, [['fighting', 'Fighting sail'], ['plain', 'Plain sail'], ['crowd', 'Crowd sail'], ['backed', 'Back the main-topsail']])}</div>
       <div class="ogroup"><span class="olabel">Aim</span>${chips('sb-aim', p.aim, [['hull', 'At her hull'], ['rigging', 'At her rigging']])}</div>
       <div class="ogroup"><span class="olabel">Load</span>${chips('sb-charge', p.charge, [['round', 'Round shot'], ['double', 'Double-shotted'], ['grape', 'Grape']])}</div>
@@ -5086,13 +5172,17 @@ function renderSandbox(app){
   }
   app.innerHTML = `<div class="top"><div class="ship">His Majesty’s Sloop <em>${esc(content.settings.ship || '')}</em>, in action</div>
       <nav class="nav"><button type="button" data-act="glossary">Glossary</button><button type="button" data-act="sb-setup">Leave the action</button></nav></div>
-    <div class="strip num" role="status"><span>${sbClock(sb.t)}</span><span>${clockWords}</span>${sbWindHtml()}<span>${esc(rangeWords)}</span></div>
-    <section class="scene sandbox">
-      ${sbSvg()}
+    <section class="scene sandbox sb-layout">
+      <div class="sb-chartcol"><div class="sb-sticky">
+        <div class="strip num" role="status"><span>${sbClock(sb.t)}</span><span>${clockWords}</span>${sbWindHtml()}<span>${esc(rangeWords)}</span></div>
+        ${sbSvg()}
+      </div></div>
+      <div class="sb-textcol">
       <div class="prose seen"><p><b class="sc">${esc(capFirst(e.name))}.</b> ${inline(sbEnemySeen())}</p><p><b class="sc">The <em>${esc(content.settings.ship || '')}</em>.</b> ${inline(sbOwnSeen())} ${esc(gauge)}</p>
         <p class="guns">Larboard guns: ${esc(gunState('L'))}. Starboard guns: ${esc(gunState('S'))}.</p></div>
       ${logHtml}
       ${lower}
+      </div>
     </section>`;
   glossify($('.seen', app));
   glossify($('.alog', app));
