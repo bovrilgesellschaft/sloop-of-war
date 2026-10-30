@@ -22,7 +22,7 @@ Built in thirteen playable steps (see "Build sequence" in the design document).
 - [x] 3. Ship, stores and time
 - [x] 4. Wind and weather
 - [x] 5. Combat sandbox
-- [ ] 6. Chart and navigation
+- [x] 6. Chart and navigation
 - [ ] 7. Crew and officers
 - [ ] 8. Encounters and chases
 - [ ] 9. Full combat

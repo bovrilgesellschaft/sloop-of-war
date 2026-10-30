@@ -129,16 +129,14 @@ You are hereby required and directed ...
 
 A line starting with `>` is set to the right, like a signature. `{issued}` is the date the orders were given.
 
-Orders also give the legs of the voyage, until the chart arrives: the distance and bearing of the passage, the time on station, and the way home. The convoy line is optional.
+Orders also say where the ship is to go, using places on the chart. `Cruise:` gives the two places the ship beats between while on station. The convoy line is optional. The way home is always to the chart's home port.
 
 ```
-Passage: 130 miles NNW to Cape San Sebastián
+Go to: cape_sebastian
+Cruise: cape_sebastian to cape_salou
 Station: 42 days
-Return: 130 miles SSE to Mahon
 Convoy speed: 5 knots
 ```
-
-Bearings are points of the compass: N, NbE, NNE, NEbN, NE and so on round to NbW.
 
 ## At sea
 
@@ -146,6 +144,68 @@ Bearings are points of the compass: N, NbE, NNE, NEbN, NE and so on round to NbW
 - `voyage outward`, `voyage station`, `voyage homeward` start a leg, with its length taken from the orders. `voyage station 10 days` sets the length yourself. When a leg runs out, the flag `outward_done`, `station_done` or `homeward_done` is set, so an `Urgent` event can pick it up.
 - Conditions: `voyage station`, `not voyage homeward`.
 - Stores are issued at noon each day while the flag `at_sea` is set.
+
+## The chart
+
+The `CHART` block sets the edges of the chart, the home port and the decoration:
+
+```
+CHART
+Bounds: 38.4 -0.6 to 43.75 7.1
+Home: mahon
+Arrive: 6
+Rose: 40.55 5.55
+Cartouche: 39.38 5.25
+Title: A New Chart of the Western Mediterranean | from Cape St Martin to Cape Roux
+Shelf: 42.4 2.9 to 43.6 4.9
+Bottoms: fine grey sand; sand and broken shells; soft blue mud
+```
+
+Positions are latitude then longitude, in degrees, with east positive. `Arrive:` is how near (in miles) the ship must truly come to a place to have arrived. `Shelf:` marks shallow water that runs far out from the coast. `Bottoms:` are what the lead brings up.
+
+A coast or island is a `LAND` block: a name, then its outline as pairs of latitude and longitude, separated by commas, over as many lines as you like. The mainland is one outline that runs round the edges of the chart.
+
+```
+LAND: minorca
+Name: Minorca
+39.93 3.82, 40.00 3.79, 40.06 3.90, 40.09 4.09
+```
+
+A named place is a `PLACE` block:
+
+```
+PLACE: cape_salou
+Name: Cape Salou
+At: 41.05 1.17
+Off: 40.92 1.32
+Visible: 18
+Light: 15
+Kind: cape
+Label: S
+```
+
+- `At:` the place itself. `Off:` where a ship stands off it, the point she sails to and turns at.
+- `Visible:` how many miles off it can be seen by day in clear weather (high land further, a low delta hardly at all). `Light:` how far its light shows at night, if it has one.
+- `Kind:` cape, port or region (a name across the land, in capitals). `Label:` which side of the place its name goes: N, S, E, W, NE, NW, SE or SW. A one-word line `Minor` leaves it off the whole-station chart.
+
+A `DANGER` block is a rock, islet or bank: `At:`, `Radius:` in miles, `Kind:` (rock, island or bank). A one-word line `Uncharted` leaves it off the master's chart. He will not steer clear of it, and the player will not see it until it is too late.
+
+Currents are rules, tried in order:
+
+```
+CURRENTS
+north of 42.3: 0.5 knots setting SW
+west of 2.5: 0.3 knots setting SW
+elsewhere: 0.2 knots setting E
+```
+
+## Navigation in events
+
+- One-word line `Chart`: the event shows the close chart above its text. The sea hub uses it.
+- Conditions: `night`, `day`. Flags the game sets: `land_in_sight`, `landfall`, `closing_land` (closing the land at night, inside the master's circle of doubt), `breakers`, `aground`, `lee_shore`, `nothing_in_sight`, `off_port_night`, `no_bottom`, `shoal_water`.
+- Flags the player sets: `good_offing` (the master keeps well clear of the land; set by default on putting to sea), `lying_off` (waits for daylight or a fix), `lead_going` (slow, but warned in time), `standing_on` (no more asking tonight), `anchored`, `run_west`, `run_east` (running down the latitude).
+- Effects: `put to sea`, `sound` (heave the lead; `{soundings}` gives the result), `stand off` (steer away from the land for two watches), `refloat` (get her off the ground).
+- `{reckoning}` (the master's position and his doubt in words), `{position}`, `{circle}`, `{lee_distance}`, `{current}`, `{destination}` and `{distance}` are filled in.
 
 ## Wind and weather
 
@@ -165,6 +225,7 @@ Follows: settled 4, tramontana 1, westerly 1
 
 - `Wind:` a range of points, clockwise, or `any`.
 - `Force:` from 0 (calm) to 11 (storm). The player only ever sees it as words: light airs, fresh breezes, a strong gale.
+- `Seeing:` how far one can see, as a percentage of a clear day (a Levanter 30, a Mistral 130). `Noon sight:` the chance in 100 of a clear sky for the noon sight.
 - `Called:` how the master names it in a sentence. `Sky:` and `Log:` describe it in prose and in the noon entry. `Signs:` are what the master reads when he forecasts it.
 - `first weather: settled` in Settings says what the commission starts with.
 

@@ -120,6 +120,11 @@ textarea{min-height:7rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-
 .strip .wind{display:inline-flex;align-items:center;gap:.3rem}
 .strip .wind svg{flex:none}
 
+/* the sea chart */
+.seachart{width:100%;height:auto;display:block;box-shadow:0 1px 6px rgba(60,40,15,.28)}
+.scenechart{width:min(100%, 36vh);margin:.2rem auto .9rem}
+.panelchart{margin:.7rem 0}
+
 /* combat sandbox */
 .sandbox .chart{width:min(100%, 46vh);aspect-ratio:1;height:auto;display:block;margin:.4rem auto 0;box-shadow:0 1px 6px rgba(60,40,15,.28)}
 .sb-chartcol{position:sticky;top:env(safe-area-inset-top, 0px);z-index:5;background:var(--paper)}
@@ -455,6 +460,8 @@ Lasts: 1 to 3 days
 Sky: fair, with a few high clouds
 Log: and fine weather
 Signs: a clear sky at sunset and the wind falling light
+Seeing: 100
+Noon sight: 90
 Follows: mistral 3, tramontana 2, levanter 2, sirocco 2, westerly 2, calm 1
 
 WEATHER: mistral
@@ -465,6 +472,8 @@ Lasts: 1 to 3 days
 Sky: hard and clear, and bitter cold
 Log: with a hard clear sky and a heavy sea
 Signs: a long swell getting up from the north-west under a sky scoured hard and clear
+Seeing: 130
+Noon sight: 95
 Follows: settled 4, tramontana 1, westerly 1
 
 WEATHER: tramontana
@@ -475,6 +484,8 @@ Lasts: 1 to 2 days
 Sky: clear and cold
 Log: and clear cold weather
 Signs: cloud banking up over the mountains to the northward
+Seeing: 115
+Noon sight: 90
 Follows: settled 3, mistral 1, levanter 1
 
 WEATHER: levanter
@@ -485,6 +496,8 @@ Lasts: 1 to 3 days
 Sky: overcast and hazy, with rain at times
 Log: and hazy, with rain at times
 Signs: a damp haze, and a swell coming in from the eastward against the wind
+Seeing: 30
+Noon sight: 30
 Follows: settled 3, sirocco 1, calm 1
 
 WEATHER: sirocco
@@ -495,6 +508,8 @@ Lasts: 1 to 3 days
 Sky: hot, thick and hazy, with a red dust on everything
 Log: and thick hazy weather
 Signs: a hot, heavy air, and a yellow haze to the southward
+Seeing: 45
+Noon sight: 40
 Follows: settled 3, levanter 1, westerly 1
 
 WEATHER: westerly
@@ -505,6 +520,8 @@ Lasts: 1 to 2 days
 Sky: cloudy, with squalls of rain
 Log: and cloudy, with squalls of rain
 Signs: mares' tails high up, and the sky thickening in the west
+Seeing: 70
+Noon sight: 50
 Follows: settled 3, mistral 2
 
 WEATHER: calm
@@ -515,7 +532,356 @@ Lasts: 0.5 to 1.5 days
 Sky: glassy and still
 Log: with a long oily swell
 Signs: an oily swell and not a breath stirring
+Seeing: 80
+Noon sight: 85
 Follows: settled 3, sirocco 1, levanter 1
+</script>
+
+<script type="text/plain" class="content" data-name="The chart">
+# ------------------------------------------------------------
+# The station, from Cape St Martin to Cape Roux. Positions are
+# latitude and longitude in degrees (east positive). Coastlines
+# are simplified: true in shape, not in every cove.
+# ------------------------------------------------------------
+
+CHART
+Bounds: 38.4 -0.6 to 43.75 7.1
+Home: mahon
+Arrive: 6
+Rose: 40.55 5.55
+Cartouche: 39.38 5.25
+Title: A New Chart of the Western Mediterranean | from Cape St Martin to Cape Roux | with the Islands of Majorca, Minorca and Iviza | for the use of His Majesty's Sloop Wryneck
+Shelf: 42.4 2.9 to 43.6 4.9
+Shelf: 40.4 0.6 to 41.1 1.6
+Bottoms: fine grey sand; sand and broken shells; soft blue mud; coarse sand and small stones; ooze
+
+CURRENTS
+north of 42.3: 0.5 knots setting SW
+west of 2.5: 0.3 knots setting SW
+elsewhere: 0.2 knots setting E
+
+LAND: mainland
+Name: the main
+38.25 -0.70, 38.34 -0.48, 38.54 -0.13, 38.60 -0.05, 38.63 0.08, 38.68 0.14, 38.73 0.23, 38.79 0.19, 38.84 0.11
+38.92 -0.07, 38.99 -0.15, 39.18 -0.21, 39.33 -0.30, 39.45 -0.32, 39.66 -0.21, 39.86 -0.06, 39.97 0.02
+40.05 0.08, 40.09 0.15, 40.20 0.24, 40.25 0.29, 40.36 0.41, 40.41 0.43, 40.47 0.48, 40.55 0.56, 40.61 0.60
+40.62 0.66, 40.57 0.65, 40.56 0.78, 40.63 0.83, 40.72 0.88, 40.75 0.83, 40.79 0.76, 40.82 0.74, 40.81 0.71
+40.88 0.80, 40.99 0.92, 41.06 1.06, 41.05 1.17, 41.11 1.26, 41.14 1.40, 41.19 1.57, 41.21 1.73, 41.23 1.81
+41.25 1.90, 41.26 1.98, 41.30 2.13, 41.37 2.19, 41.44 2.25, 41.47 2.32, 41.53 2.44, 41.58 2.56, 41.64 2.75
+41.67 2.79, 41.69 2.85, 41.72 2.93, 41.78 3.03, 41.84 3.13, 41.89 3.20, 41.95 3.23, 42.00 3.20, 42.05 3.20
+42.12 3.14, 42.18 3.10, 42.26 3.18, 42.24 3.27, 42.28 3.29, 42.32 3.32, 42.34 3.21, 42.37 3.16, 42.44 3.17
+42.48 3.13, 42.52 3.11, 42.53 3.09, 42.56 3.04, 42.62 3.04, 42.70 3.04, 42.79 3.04, 42.91 3.05, 43.02 3.06
+43.10 3.11, 43.24 3.29, 43.28 3.51, 43.40 3.70, 43.44 3.78, 43.52 3.93, 43.54 3.98, 43.56 4.08, 43.53 4.14
+43.45 4.43, 43.36 4.58, 43.33 4.84, 43.40 4.92, 43.33 5.04, 43.33 5.15, 43.36 5.31, 43.30 5.36, 43.21 5.34
+43.21 5.45, 43.21 5.54, 43.17 5.61, 43.13 5.75, 43.05 5.86, 43.07 5.94, 43.10 5.97, 43.08 6.07, 43.06 6.10
+43.03 6.10, 43.03 6.16, 43.07 6.16, 43.10 6.20, 43.13 6.33, 43.08 6.36, 43.13 6.37, 43.17 6.53, 43.16 6.61
+43.20 6.68, 43.24 6.67, 43.27 6.64, 43.31 6.64, 43.42 6.77, 43.41 6.85, 43.45 6.93, 43.50 6.94, 43.55 7.01
+43.56 7.30, 43.95 7.30, 43.95 -0.80, 38.25 -0.80
+
+LAND: minorca
+Name: Minorca
+39.93 3.82, 40.00 3.79, 40.06 3.90, 40.09 4.09, 40.04 4.18, 39.99 4.27, 39.92 4.32, 39.86 4.31, 39.82 4.24
+39.88 4.10, 39.90 3.97
+
+LAND: majorca
+Name: Majorca
+39.96 3.21, 39.85 3.13, 39.83 3.17, 39.86 3.32, 39.78 3.40, 39.71 3.47, 39.55 3.35, 39.40 3.22, 39.26 3.05
+39.36 2.80, 39.52 2.73, 39.57 2.65, 39.47 2.52, 39.55 2.36, 39.66 2.40, 39.80 2.68, 39.87 2.85, 39.93 3.05
+
+LAND: iviza
+Name: Iviza
+39.08 1.22, 39.12 1.40, 39.08 1.55, 38.98 1.60, 38.91 1.45, 38.84 1.38, 38.90 1.25
+
+LAND: formentera
+Name: Formentera
+38.73 1.38, 38.74 1.47, 38.68 1.58, 38.64 1.45
+
+LAND: porquerolles
+Name: Porquerolles
+43.00 6.15, 43.01 6.20, 43.00 6.26, 42.98 6.24, 42.99 6.18
+
+LAND: port_cros
+Name: Port-Cros
+43.01 6.36, 43.01 6.42, 42.99 6.41, 42.99 6.37
+
+LAND: levant
+Name: the Isle of Levant
+43.03 6.43, 43.05 6.50, 43.03 6.51, 43.01 6.45
+
+PLACE: mahon
+Name: Port Mahon
+At: 39.88 4.30
+Off: 39.84 4.38
+Visible: 22
+Kind: port
+Label: S
+
+PLACE: cape_sebastian
+Name: Cape San Sebastián
+At: 41.89 3.20
+Off: 41.83 3.40
+Visible: 22
+Label: E
+
+PLACE: cape_salou
+Name: Cape Salou
+At: 41.05 1.17
+Off: 40.92 1.32
+Visible: 18
+Label: S
+
+PLACE: barcelona
+Name: Barcelona
+At: 41.37 2.18
+Off: 41.25 2.38
+Visible: 25
+Kind: port
+Label: SE
+
+PLACE: cape_creus
+Name: Cape Creus
+At: 42.32 3.32
+Off: 42.29 3.44
+Visible: 20
+Label: E
+
+PLACE: toulon
+Name: Toulon
+At: 43.11 5.93
+Off: 42.97 5.95
+Visible: 30
+Kind: port
+Label: N
+
+PLACE: cape_sicie
+Name: Cape Sicié
+At: 43.05 5.86
+Visible: 22
+Label: SW
+Minor
+
+PLACE: marseille
+Name: Marseille
+At: 43.30 5.37
+Visible: 20
+Kind: port
+Label: N
+
+PLACE: planier
+Name: the Planier light
+At: 43.20 5.23
+Visible: 8
+Light: 15
+Label: S
+
+PLACE: cette
+Name: Cette
+At: 43.40 3.70
+Visible: 14
+Kind: port
+Label: S
+Minor
+
+PLACE: rhone
+Name: the mouths of the Rhône
+At: 43.33 4.84
+Visible: 5
+Label: W
+
+PLACE: port_vendres
+Name: Port Vendres
+At: 42.52 3.11
+Visible: 18
+Kind: port
+Label: E
+Minor
+
+PLACE: ebro
+Name: the mouths of the Ebro
+At: 40.72 0.88
+Visible: 5
+Label: E
+
+PLACE: columbretes
+Name: the Columbretes
+At: 39.90 0.68
+Visible: 10
+Label: E
+
+PLACE: valencia
+Name: Valencia
+At: 39.45 -0.32
+Visible: 15
+Kind: port
+Label: E
+
+PLACE: cape_st_martin
+Name: Cape St Martin
+At: 38.75 0.23
+Visible: 25
+Label: E
+
+PLACE: palma
+Name: Palma
+At: 39.57 2.65
+Visible: 20
+Kind: port
+Label: N
+
+PLACE: formentor
+Name: Cape Formentor
+At: 39.96 3.21
+Visible: 25
+Label: N
+
+PLACE: dragonera
+Name: Dragonera
+At: 39.59 2.32
+Visible: 20
+Label: W
+Minor
+
+PLACE: iviza_town
+Name: Iviza
+At: 38.91 1.44
+Visible: 18
+Kind: port
+Label: E
+Minor
+
+PLACE: ciudadela
+Name: Ciudadela
+At: 40.00 3.84
+Visible: 15
+Kind: port
+Label: W
+Minor
+
+PLACE: hyeres
+Name: the Isles of Hyères
+At: 42.99 6.32
+Visible: 20
+Label: S
+
+PLACE: st_tropez
+Name: St Tropez
+At: 43.27 6.64
+Visible: 18
+Kind: port
+Label: E
+Minor
+
+PLACE: catalonia_name
+Name: Catalonia
+At: 41.85 1.95
+Kind: region
+
+PLACE: languedoc_name
+Name: Languedoc
+At: 43.62 3.55
+Kind: region
+
+PLACE: provence_name
+Name: Provence
+At: 43.62 5.85
+Kind: region
+
+PLACE: majorca_name
+Name: Majorca
+At: 39.62 2.98
+Kind: region
+
+PLACE: minorca_name
+Name: Minorca
+At: 39.98 4.05
+Kind: region
+
+PLACE: iviza_name
+Name: Iviza
+At: 39.00 1.42
+Kind: region
+
+PLACE: gulf_name
+Name: Gulf of Lion
+At: 42.75 4.10
+Kind: region
+
+DANGER: isla_aire
+Name: Isla del Aire
+At: 39.80 4.29
+Radius: 0.6
+Kind: island
+
+DANGER: dragonera
+Name: Dragonera
+At: 39.585 2.32
+Radius: 1.3
+Kind: island
+
+DANGER: columbretes
+Name: the Columbretes
+At: 39.90 0.68
+Radius: 1.0
+Kind: island
+
+DANGER: cabrera
+Name: Cabrera
+At: 39.15 2.95
+Radius: 2.2
+Kind: island
+
+DANGER: medes
+Name: the Medas
+At: 42.05 3.22
+Radius: 0.5
+Kind: island
+
+DANGER: hormigas
+Name: las Hormigas
+At: 41.86 3.19
+Radius: 0.4
+Kind: rock
+
+DANGER: ebro_bank
+Name: the Ebro bank
+At: 40.71 0.93
+Radius: 1.5
+Kind: bank
+
+DANGER: ebro_bank_further
+At: 40.68 1.02
+Radius: 1.8
+Kind: bank
+Uncharted
+
+DANGER: salou_rock
+At: 41.04 1.19
+Radius: 0.3
+Kind: rock
+Uncharted
+
+DANGER: camargue_shoals
+At: 43.38 4.50
+Radius: 3
+Kind: bank
+Uncharted
+
+DANGER: planier_rock
+At: 43.20 5.23
+Radius: 0.3
+Kind: island
+
+DANGER: deux_freres
+Name: les Deux Frères
+At: 43.04 5.87
+Radius: 0.2
+Kind: rock
+
+DANGER: fourmigues
+Name: les Fourmigues
+At: 43.04 6.07
+Radius: 0.2
+Kind: rock
 </script>
 
 <script type="text/plain" class="content" data-name="Combat">
@@ -1742,7 +2108,7 @@ Next: agent_hub
 EVENT: stand_out
 Title: Standing Out
 Place: sea
-Effects: set at_sea; voyage outward; pass 2 hours
+Effects: put to sea; set good_offing; voyage outward; pass 2 hours
 
 By the forenoon Mahon is a white smudge on the quarter, and the *{ship}* has {wind} and {sea}. The watches are set. The master lays off the course, and the purser's steward goes below to his casks.
 
@@ -1760,6 +2126,7 @@ EVENT: sea_hub
 Title: At Sea
 Place: sea
 Hub
+Chart
 
 [if voyage outward, orders_convoy_toulon] She keeps company with her three victuallers, shortening sail every hour for the slowest of them, which is always the *Three Brothers*.
 
@@ -1773,7 +2140,13 @@ Hub
 
 [if sweeps] The sweeps are out, and the people are toiling at them in the heat.
 
-[if voyage station] She is on her cruising ground, with {wind}. There is not a sail in sight from the masthead, nor has there been all day.
+[if voyage station] She is on her cruising ground, with {wind}, standing towards {destination}. There is not a sail in sight from the masthead, nor has there been all day.
+
+[if anchored] She lies at anchor.
+
+[if lying_off] She is lying off and on, waiting for daylight or a sight of the land.
+
+[if land_in_sight, not voyage station] The land is in sight.
 
 [if not voyage outward, not voyage homeward, not voyage station] She has {wind}, and {sea}.
 
@@ -1794,6 +2167,28 @@ Next: sail_orders
 
 CHOICE: Ask the master what he makes of the weather
 Next: master_forecast
+
+CHOICE: Cast the lead
+Next: sounding
+
+CHOICE: Keep a good offing from the land
+Requires: not good_offing
+Effects: set good_offing
+Text: The master is told to give every headland a wide berth, allowing for all the doubt in his reckoning. It will cost time. It will save the ship, one day.
+
+CHOICE: Stand in closer to the land
+Requires: good_offing
+Effects: clear good_offing
+Text: The master is told he may stand in as close as his chart allows.
+
+CHOICE: Weigh anchor
+Requires: anchored
+Effects: clear anchored; pass 1 hour
+Log: Weighed.
+
+CHOICE: Make sail again
+Requires: lying_off
+Effects: clear lying_off
 
 CHOICE: Exercise the great guns
 Needs: after 08:00, before 16:00, force 5 or less
@@ -2229,6 +2624,205 @@ CHOICE: Rig awnings and windsails
 Text: Awnings are spread over the quarterdeck and the waist, and windsails rigged to send a little air down into the berth-deck. It is not much. It is noticed.
 
 
+EVENT: sounding
+Title: The Lead
+Place: sea
+Effects: sound; pass 30 minutes
+
+The leadsman goes into the chains, the line is coiled down, and the lead goes over with its hollow armed with tallow, to bring up a sample of the bottom.
+
+{soundings}
+
+[if no_bottom] It tells you only that she is well off the land, which is something.
+
+[if not no_bottom] The master compares it with the soundings on his chart, and marks her position afresh. He seems a little easier.
+
+CHOICE: Very good
+
+
+EVENT: closing_land
+Title: Closing the Land in the Dark
+Place: sea
+Tags: sea
+Urgent
+Requires: closing_land, night
+
+It is dark, and by the master's reckoning the land lies close ahead of her. His reckoning may be out by {circle} either way, and he says so.
+
+[if weather levanter] The haze is so thick you cannot see the bowsprit end.
+
+[if land_in_sight] There is something darker than the dark to leeward, which may be land or may be cloud.
+
+CHOICE: Heave to, and lie off and on until daylight
+Effects: set lying_off; clear closing_land
+Log: Hauled off, and lay off and on till daylight.
+
+CHOICE: Stand on under easy sail, with the lead going
+Effects: set standing_on; set lead_going; clear closing_land
+Text: The leadsman takes his place in the chains, and the deep-sea lead is hove at every glass. She goes on slowly, feeling her way.
+
+CHOICE: Stand on as you are
+Effects: set standing_on; clear closing_land
+Text: You give the order. The master says nothing, which says a good deal.
+
+
+EVENT: breakers
+Title: Breakers Ahead
+Place: sea
+Tags: sea
+Urgent
+Requires: breakers, not aground
+
+'Breakers ahead!' The cry comes from the forecastle, high and sharp, and then you hear them yourself: the long roar and suck of the sea on rocks, somewhere close under the lee bow.
+
+CHOICE: Wear her round, and stand off
+Effects: clear breakers; stand off; clear standing_on
+Text: The helm goes up, the yards are braced round, and she pays off and comes round, heeling, with the noise of the surf going away astern. Nobody speaks for some time.
+Log: Breakers ahead. Wore, and stood off.
+
+CHOICE: Let go the anchor
+Effects: clear breakers; set anchored; sound; clear standing_on
+Text: The anchor goes down with a roar of cable, and brings her up all standing. {soundings}
+Log: Breakers ahead. Let go the best bower.
+
+
+EVENT: aground
+Title: She Strikes
+Place: sea
+Tags: sea
+Urgent
+Requires: aground
+
+There is a long, grinding shudder through the whole ship, a crash from forward as something carries away aloft, and she stops. She is aground. The carpenter is already on his way to the well.
+
+[if lee_shore] And the wind is driving her harder on with every sea.
+
+CHOICE: Carry out a kedge in the launch and heave her off
+Chance 50, +8 per seamanship, -25 if lee_shore, -15 if force 7 or more:
+Effects: refloat; pass 2 hours
+Text: The kedge is carried out astern, the hawser brought to the capstan, and the people heave until their hearts crack. Slowly, then all at once, she slides off into deep water.
+Log: Got the ship off, by carrying out a kedge.
+Otherwise:
+Effects: pass 2 hours
+Text: The kedge comes home through the bottom, twice. She will not move.
+Next: aground_hard
+
+CHOICE: Lighten her: start the water and heave guns overboard
+Chance 80, -25 if lee_shore, -15 if force 8 or more:
+Effects: store water -12 "Started overboard to lighten the ship"; guns -4; refloat; pass 3 hours
+Text: The water is started and pumped over the side, and four guns go after it, one by one, with the gunner watching every one. Lightened, she lifts on a sea and comes off.
+Log: Got the ship off, by starting the water and heaving four guns overboard.
+Otherwise:
+Effects: store water -12 "Started overboard to lighten the ship"; guns -4; pass 3 hours
+Text: The water goes, and four guns after it, and still she does not lift.
+Next: aground_hard
+
+
+EVENT: aground_hard
+Title: Hard and Fast
+Place: sea
+Effects: hull -10; leak +6
+
+She lies hard and fast, working on the bottom with every sea, and the carpenter reports {leak} inches of water an hour and rising.
+
+CHOICE: Try again with everything you have
+Chance 40, +8 per seamanship, -25 if lee_shore:
+Effects: refloat; pass 3 hours
+Text: With the kedge, the capstan, the boats towing ahead and every man on the bars, she comes off at last at the top of a sea, leaking badly but afloat.
+Log: Got the ship off with great difficulty, much damaged.
+Otherwise:
+Next: wrecked
+
+CHOICE: Get the people ashore while she holds together
+Next: wrecked
+
+
+EVENT: wrecked
+Title: The Loss of the Ship
+Place: sea
+Ending
+Effects: log "The ship was lost."
+
+The *{ship}* is gone. She broke her back on the second night, and what the sea left of her the people of the coast have had since.
+
+A court-martial will sit on the loss of the King's ship, as one always does. That is still to be built. Your log stands below, and the court will read every word of it.
+
+
+EVENT: lee_shore
+Title: A Lee Shore
+Place: sea
+Tags: sea
+Urgent
+Once per spell
+Requires: lee_shore, at_sea, not aground
+
+It is blowing hard, and the land is under her lee: {lee_distance} off, by the master's best guess, and every sea setting her nearer. She must claw off to windward, against the gale, or go ashore.
+
+CHOICE: Claw off under a press of sail
+Effects: set press_of_sail; clear snug; clear hove_to; stand off
+Text: Close-reefed topsails and courses are set, more than she ought to carry, and she lies over with her lee rail in the sea, clawing up to windward a cable at a time.
+
+CHOICE: Let go both anchors, and ride it out
+Effects: set anchored; clear hove_to; sound
+Text: Both bowers go down. {soundings} She brings up, snubbing at her cables, with the surf in plain hearing astern.
+
+CHOICE: Heave to, and trust to her drift
+Effects: set hove_to
+Text: She is hove to. She drifts to leeward, slowly, towards the land.
+
+
+EVENT: nothing_in_sight
+Title: Nothing in Sight
+Place: sea
+Tags: sea
+Urgent
+Requires: nothing_in_sight, not lying_off, not run_west, not run_east
+
+By the master's reckoning she should be up with {destination} by now. There is nothing in sight from the masthead but sea.
+
+The master's noon sight has given him his latitude, near enough; it is the longitude he cannot answer for. He believes the current hereabouts sets {current}.
+
+CHOICE: Run down the latitude to the westward
+Effects: set run_west; clear run_east; clear nothing_in_sight
+Text: She bears up and runs due west along the parallel, with a good lookout at every masthead. Sooner or later, if the latitude is right, the land must come up ahead.
+Log: Not having made the land, ran down the latitude to the westward.
+
+CHOICE: Run down the latitude to the eastward
+Effects: set run_east; clear run_west; clear nothing_in_sight
+Text: She bears away and runs due east along the parallel, with a good lookout at every masthead.
+Log: Not having made the land, ran down the latitude to the eastward.
+
+CHOICE: Lie off and on until you can make the land
+Effects: set lying_off; clear nothing_in_sight
+Log: Not having made the land, lay off and on.
+
+CHOICE: Cast the lead
+Effects: clear nothing_in_sight
+Next: sounding
+
+
+EVENT: off_mahon_night
+Title: Mahon in the Dark
+Place: sea
+Tags: sea
+Urgent
+Requires: off_port_night, night, not lying_off
+
+The *{ship}* is off Mahon, by the reckoning and by the loom of the land, but it is dark, and the entrance is narrow and has a rock in the middle of it.
+
+CHOICE: Lie off and on until daylight
+Effects: set lying_off; clear off_port_night
+Log: Off Port Mahon. Lay off and on till daylight.
+
+CHOICE: Run in by night
+Chance 50, +10 per master_skill:
+Effects: set homeward_done; clear off_port_night
+Text: The master takes her in himself, by the lead and the loom of the cliffs, and she comes to in the harbour with a foot to spare and nobody breathing.
+Otherwise:
+Effects: set aground; clear off_port_night; hull -10; leak +6
+Text: She touches on the ledge at the harbour mouth, hard, and sticks.
+
+
 EVENT: bad_cask
 Title: A Cask Found Bad
 Place: sea
@@ -2424,9 +3018,9 @@ The wind, the chart and the enemy are still to be built. Your log stands below, 
 
 ORDERS: cruise_catalan
 Heading: A cruise on the coast of Catalonia
-Passage: 130 miles NNW to Cape San Sebastián
+Go to: cape_sebastian
+Cruise: cape_sebastian to cape_salou
 Station: 42 days
-Return: 130 miles SSE to Mahon
 
 By Sir Robert Lessingham, Knight of the Most Honourable Order of the Bath, Vice-Admiral of the White, and Commander-in-Chief of His Majesty's Ships and Vessels employed and to be employed in the Mediterranean.
 
@@ -2447,10 +3041,9 @@ To {name} Esquire, Commander of His Majesty's Sloop *{ship}*.
 
 ORDERS: convoy_toulon
 Heading: Victuallers to the squadron off Toulon
-Passage: 205 miles NNE to the squadron off Toulon
+Go to: toulon
 Convoy speed: 5 knots
 Station: 0 days
-Return: 205 miles SSW to Mahon
 
 By Sir Robert Lessingham, Knight of the Most Honourable Order of the Bath, Vice-Admiral of the White, and Commander-in-Chief of His Majesty's Ships and Vessels employed and to be employed in the Mediterranean.
 
@@ -2473,9 +3066,9 @@ To {name} Esquire, Commander of His Majesty's Sloop *{ship}*.
 
 ORDERS: despatches_hebe
 Heading: Despatches for the Hebe off Barcelona
-Passage: 130 miles NW to Barcelona
+Go to: barcelona
+Cruise: barcelona to cape_salou
 Station: 14 days
-Return: 130 miles SE to Mahon
 
 By Sir Robert Lessingham, Knight of the Most Honourable Order of the Bath, Vice-Admiral of the White, and Commander-in-Chief of His Majesty's Ships and Vessels employed and to be employed in the Mediterranean.
 
@@ -2613,6 +3206,35 @@ two bells | four bells | eight bells: Time aboard is struck on the ship's bell e
 first watch: The watch from eight in the evening until midnight.
 watch: One of the divisions of the ship's day, mostly of four hours: the first watch (8 p.m. to midnight), middle, morning, forenoon, afternoon, and the two short dog watches between 4 and 8 p.m.
 fortnight: Two weeks.
+run down the latitude | parallel: Sailing due east or west along a known latitude until the land comes up. A navigator who could find his latitude by the sun but not his longitude would aim deliberately to one side of his landfall, so as to know which way to turn.
+fresh departure: A new starting point for the reckoning, taken from a known landmark.
+dead reckoning | reckoning: Working out the ship's position from her courses and the distances run by the log, without sight of land or sun. Errors from current, leeway and bad steering accumulate with every watch.
+noon sight | meridian altitude | observed latitude: The sun's height above the horizon at noon, measured with a quadrant or sextant, which gives the ship's latitude. It needs a clear sky and a clear horizon.
+latitude: Distance north of the equator, in degrees and minutes. A minute of latitude is a sea mile.
+longitude: Distance east of Greenwich, in degrees and minutes. At sea it could be found only by a chronometer or by laborious lunar observations; most sloops relied on dead reckoning for it.
+chronometer: A sea-going clock, keeping Greenwich time to find the longitude. Expensive, and seldom issued to a sloop; her captain might buy one.
+lead | deep-sea lead | leadsman | by the mark: A lead weight on a marked line, hove to find the depth of water. The hollow in its base, armed with tallow, brought up a sample of the bottom. "By the mark five" means five fathoms, read off a leather mark on the line.
+fathoms | fathom: Six feet. Soundings and line were measured in fathoms.
+chains: Small platforms outside the ship's side, where the leadsman stands to heave the lead.
+offing | good offing: Distance from the shore. A good offing is sea room enough to be safe.
+landfall | made the land | make the land: The first sight of land after a passage, and the moment of finding out how good the reckoning was.
+lee shore: A coast with the wind blowing onto it. In a gale, the most feared thing at sea: a ship that cannot claw off to windward is driven ashore.
+claw off | clawing off: To work to windward off a lee shore against a gale.
+lying off and on | lay off and on: Keeping a safe distance from the land, standing towards it and away by turns, waiting for daylight or clear weather.
+breakers: The surf of waves breaking on rocks or shoals: at night, the sound is often the only warning.
+aground | took the ground | hard and fast: Touching or stuck on the bottom.
+kedge: A small anchor, carried out by the boats, by which a ship can heave herself off the ground or along a channel.
+start the water | started: To empty the water casks, to lighten the ship.
+best bower | bowers: The two great anchors carried at the bows.
+loom of the land: The dark shape of land seen at night against the sky.
+Columbretes: A cluster of small volcanic islets off the coast of Valencia, a danger in the dark.
+Planier light: A lighthouse on a rock off Marseille, lit since 1774; one of the few lights on this coast.
+Cette: The port in Languedoc later called Sète.
+Ciudadela: The old capital of Minorca, at the western end of the island.
+Iviza: The island the Spaniards call Ibiza.
+Medas | the Medas: Rocky islets off the Catalan coast near Estartit.
+Hormigas | las Hormigas: Rocks off Cape San Sebastián, "the ants".
+Isla del Aire: The low island off the south-east point of Minorca, near the entrance to Mahon.
 port: The left-hand side of the ship, looking forward. In this period "larboard" was the usual word, but "port" was already used in helm orders, because "larboard" was too easily misheard as "starboard" in a gale.
 weather gauge: The position to windward of an enemy. The ship that holds it can choose when and whether to engage; the one to leeward must take the fight as it comes, or run.
 broadside | broadsides: All the guns on one side of a ship, fired together; or the side itself.
@@ -2643,7 +3265,7 @@ shot-holes | shot-plugs: Holes made by shot. Below the waterline the carpenter s
 yardarm to yardarm: So close that the ends of the ships' yards overlap.
 by the board | goes by the board: Of a mast: broken off and fallen over the side.
 hull down: So far off that only her masts and sails show above the horizon.
-glass: A telescope.
+glass: A telescope; or a sand-glass, by which the watch was timed and the lead hove and the log run.
 Mistral: The cold north-westerly wind that pours down the Rhône valley into the Gulf of Lion, often for days together, raising a short, steep, dangerous sea.
 Tramontana: A cold northerly wind off the mountains, "from beyond the mountains".
 Levanter: An easterly wind, damp and hazy, bringing poor visibility and rain.
@@ -2736,7 +3358,7 @@ sprung: Of a mast or yard: cracked, but still standing.
 (function(){
 'use strict';
 
-const BUILD = 'Build 5: combat sandbox';
+const BUILD = 'Build 6: chart and navigation';
 const SAVE_KEY = 'sloop.autosave.v1';
 const PREF_KEY = 'sloop.prefs.v1';
 const GAME_ID = 'sloop-of-war';
@@ -2931,7 +3553,8 @@ function parseConds(str, where, prob){
   const out = [];
   for (const part0 of splitOutsideQuotes(str.replace(/\band\b/gi, ','), /,/)){
     const part = part0.trim(); let m;
-    if ((m = part.match(/^(not\s+|no\s+)?weather\s+([a-z0-9_]+)$/i))) out.push({ type: 'weather', name: m[2].toLowerCase(), neg: !!m[1] });
+    if ((m = part.match(/^(not\s+)?(night|day)$/i))) out.push({ type: 'night', neg: (!!m[1]) !== (m[2].toLowerCase() === 'day') });
+    else if ((m = part.match(/^(not\s+|no\s+)?weather\s+([a-z0-9_]+)$/i))) out.push({ type: 'weather', name: m[2].toLowerCase(), neg: !!m[1] });
     else if ((m = part.match(/^(not\s+)?wind\s+from\s+(\S+)$/i))){
       const pt = parsePoint(m[2]);
       if (pt == null) prob('error', where, `"${m[2]}" is not a point of the compass.`);
@@ -2988,6 +3611,10 @@ function parseEffects(str, where, prob){
     else if (/^condemn$/i.test(part)) out.push({ op: 'condemn' });
     else if (/^survey$/i.test(part)) out.push({ op: 'survey' });
     else if (/^forecast$/i.test(part)) out.push({ op: 'forecast' });
+    else if (/^put to sea$/i.test(part)) out.push({ op: 'puttosea' });
+    else if (/^sound$/i.test(part)) out.push({ op: 'sound' });
+    else if (/^stand off$/i.test(part)) out.push({ op: 'standoff' });
+    else if (/^refloat$/i.test(part)) out.push({ op: 'refloat' });
     else if ((m = part.match(/^allowance\s+(short|full)$/i))) out.push({ op: 'allowance', short: m[1].toLowerCase() === 'short' });
     else if ((m = part.match(/^voyage\s+([a-z0-9_]+)(?:\s+(\d+(?:\.\d+)?)\s*(watch(?:es)?|days?|hours?))?$/i))) out.push({ op: 'voyage', name: m[1].toLowerCase(), watches: m[2] ? unitMins(+m[2], m[3]) / 240 : null });
     else if ((m = part.match(/^roll\s+([a-z0-9_]+)\s+(\d+(?:\.\d+)?)$/i))) out.push({ op: 'roll', name: m[1].toLowerCase(), chance: +m[2] });
@@ -3020,7 +3647,7 @@ function parseNext(v, where, prob){
 }
 
 function parseContent(blocks){
-  const P = { settings: {}, events: {}, order: [], orders: {}, ship: {}, stores: {}, storeOrder: [], weather: {}, sailing: {}, vessels: {}, actions: {}, gunnery: {}, glossary: [], problems: [], stats: { words: 0 } };
+  const P = { settings: {}, events: {}, order: [], orders: {}, ship: {}, stores: {}, storeOrder: [], weather: {}, sailing: {}, vessels: {}, actions: {}, gunnery: {}, chartRaw: {}, landRaw: [], placeRaw: [], dangerRaw: [], currentRaw: [], glossary: [], problems: [], stats: { words: 0 } };
   const prob = (sev, where, msg) => P.problems.push({ sev, where, msg });
 
   /* money values must be known before anything is parsed */
@@ -3032,7 +3659,7 @@ function parseContent(blocks){
 
   for (const blk of blocks){
     const lines = blk.text.replace(/\r/g, '').split('\n');
-    let section = null, ev = null, ch = null, target = null, lastKey = null, ord = null, sto = null, wx = null, kv = null;
+    let section = null, ev = null, ch = null, target = null, lastKey = null, ord = null, sto = null, wx = null, kv = null, geo = null;
     let para = [], paraLine = 0;
     const where = i => `${blk.name}, line ${i + 1}`;
     const flushPara = () => {
@@ -3055,6 +3682,37 @@ function parseContent(blocks){
       if (/^SHIP$/.test(t)){ flushPara(); section = 'ship'; ev = ch = ord = kv = null; return; }
       if (/^SAILING$/.test(t)){ flushPara(); section = 'sailing'; ev = ch = ord = kv = null; return; }
       if (/^GUNNERY$/.test(t)){ flushPara(); section = 'gunnery'; ev = ch = ord = kv = null; return; }
+      if (/^(CHART|CURRENTS)$/.test(t)){ flushPara(); section = t.toLowerCase(); ev = ch = ord = kv = null; return; }
+      if ((m = t.match(/^(LAND|PLACE|DANGER)\s*:\s*(.*)$/))){
+        flushPara(); section = m[1].toLowerCase(); ev = ch = ord = kv = null;
+        geo = { id: m[2].trim().toLowerCase(), f: {}, coords: [], flags: {}, where: where(i) };
+        P[section + 'Raw'].push(geo); return;
+      }
+      if (section === 'chart'){
+        if ((m = t.match(/^([a-z ]+?)\s*:\s*(.*)$/i))){ const k = m[1].toLowerCase(); if (k === 'shelf') (P.chartRaw.shelf = P.chartRaw.shelf || []).push(m[2].trim()); else P.chartRaw[k] = m[2].trim(); }
+        else prob('warn', where(i), 'Chart lines should look like "Home: mahon".');
+        return;
+      }
+      if (section === 'currents'){
+        if ((m = t.match(/^(north of|south of|east of|west of|elsewhere)\s*(-?\d+(?:\.\d+)?)?\s*:\s*(\d+(?:\.\d+)?)\s*knots?\s+setting\s+(\S+)$/i)) && parsePoint(m[4]) != null)
+          P.currentRaw.push({ cond: m[1].toLowerCase().split(' ')[0], v: m[2] != null ? +m[2] : 0, knots: +m[3], toward: parsePoint(m[4]) * 11.25 });
+        else prob('error', where(i), `I could not read the current "${short(t)}". Write it like "north of 42.3: 0.5 knots setting SW".`);
+        return;
+      }
+      if (section === 'land' || section === 'place' || section === 'danger'){
+        if (/^(minor|uncharted)$/i.test(t)){ geo.flags[t.toLowerCase()] = true; return; }
+        if ((m = t.match(/^([a-z ]+?)\s*:\s*(.*)$/i))){ geo.f[m[1].toLowerCase()] = m[2].trim(); return; }
+        if (section === 'land'){
+          for (const pair of t.split(',').map(x => x.trim()).filter(Boolean)){
+            const c = pair.split(/\s+/).map(Number);
+            if (c.length !== 2 || c.some(isNaN)) prob('error', where(i), `"${pair}" should be a latitude and a longitude, like "41.37 2.19".`);
+            else geo.coords.push(c);
+          }
+          return;
+        }
+        prob('warn', where(i), `"${short(t)}" is not something a ${section} has.`);
+        return;
+      }
       if ((m = t.match(/^(VESSEL|ACTION)\s*:\s*(.*)$/))){
         flushPara(); section = m[1].toLowerCase(); ev = ch = ord = null;
         const id = m[2].trim().toLowerCase(), store = section === 'vessel' ? P.vessels : P.actions;
@@ -3142,6 +3800,8 @@ function parseContent(blocks){
           if (r && k === 'force' && (+r[1] > 11 || (r[2] && +r[2] > 11))) prob('error', where(i), 'Force runs from 0 (calm) to 11 (storm).');
         }
         else if (k === 'sky') wx.sky = v;
+        else if (k === 'seeing') wx.seeing = parseFloat(v);
+        else if (k === 'noon sight') wx.sight = parseFloat(v);
         else if (k === 'signs') wx.signs = v;
         else if (k === 'log') wx.log = v;
         else if (k === 'follows'){
@@ -3194,6 +3854,8 @@ function parseContent(blocks){
           return;
         }
         if ((m = t.match(/^station\s*:\s*(\d+(?:\.\d+)?)\s*(watch(?:es)?|days?|hours?)$/i))){ ord.station = unitMins(+m[1], m[2]) / 240; return; }
+        if ((m = t.match(/^go to\s*:\s*([a-z0-9_]+)$/i))){ ord.goTo = m[1].toLowerCase(); ord.goWhere = where(i); return; }
+        if ((m = t.match(/^cruise\s*:\s*([a-z0-9_]+)\s+to\s+([a-z0-9_]+)$/i))){ ord.cruise = [m[1].toLowerCase(), m[2].toLowerCase()]; ord.cruiseWhere = where(i); return; }
         if ((m = t.match(/^convoy speed\s*:\s*(\d+(?:\.\d+)?)\s*knots?$/i))){ ord.cap = +m[1]; return; }
         if (t.startsWith('>')){ flushPara(); ord.paras.push({ text: t.replace(/^>\s*/, ''), sig: true }); return; }
         if (!para.length) paraLine = i + 1;
@@ -3239,7 +3901,7 @@ function parseContent(blocks){
       }
 
       if (/^once per (spell|weather)$/i.test(t)){ flushPara(); ev.oncePerSpell = true; return; }
-      if (/^(once|start|ending|hub|urgent)$/i.test(t)){ flushPara(); ev[t.toLowerCase()] = true; return; }
+      if (/^(once|start|ending|hub|urgent|chart)$/i.test(t)){ flushPara(); ev[t.toLowerCase()] = true; return; }
       if ((m = t.match(/^([a-z]+(?: chance)?)\s*:\s*(.*)$/i)) && EVENT_KEYS.has(m[1].toLowerCase())){
         flushPara();
         const k = m[1].toLowerCase(), v = m[2].trim();
@@ -3285,6 +3947,7 @@ function parseContent(blocks){
     if (!d.size) prob('error', d.where, `The store "${id}" has no "Holds:" line.`);
     if (d.instead && !P.stores[d.instead]) prob('error', d.where, `"Instead of: ${d.instead}" names a store that does not exist.`);
   }
+  compileChart(P, prob);
   for (const v of Object.values(P.vessels)){
     v.arm = parseArmament(v.f.armament || '');
     if (!v.f.armament || v.arm.some(a => !a)){ prob('error', v.where, `I could not read the armament "${v.f.armament || ''}". Write it like "14 long six-pounders" or "16 eighteen-pounder carronades", with "or" between choices.`); v.arm = [{ n: 10, w: 6, carr: false, label: '10 long six-pounders' }]; }
@@ -3380,6 +4043,36 @@ function validate(P, prob){
     seen[k] = true;
   }
 }
+function compileChart(P, prob){
+  const C = P.chartRaw, b = String(C.bounds || '').match(/^(-?[\d.]+)\s+(-?[\d.]+)\s+to\s+(-?[\d.]+)\s+(-?[\d.]+)$/);
+  P.chart = { lat0: 38, lon0: 0, lat1: 44, lon1: 7, home: (C.home || '').toLowerCase(), arrive: parseFloat(C.arrive) || 6, title: C.title || '', bottoms: String(C.bottoms || 'sand').split(';').map(x => x.trim()).filter(Boolean) };
+  if (b) Object.assign(P.chart, { lat0: +b[1], lon0: +b[2], lat1: +b[3], lon1: +b[4] });
+  else if (P.landRaw.length) prob('error', 'The chart', 'The chart needs "Bounds: south west to north east", like "Bounds: 38.4 -0.6 to 43.75 7.1".');
+  P.chart.midLat = (P.chart.lat0 + P.chart.lat1) / 2;
+  const K = 60 * Math.cos(P.chart.midLat * Math.PI / 180), xy = (lat, lon) => ({ x: (lon - P.chart.lon0) * K, y: (lat - P.chart.lat0) * 60 });
+  const pair = str => { const c = String(str || '').trim().split(/\s+/).map(Number); return c.length === 2 && !c.some(isNaN) ? c : null; };
+  P.chart.rose = pair(C.rose); P.chart.cartouche = pair(C.cartouche);
+  P.chart.shelf = (C.shelf || []).map(sh => { const m = sh.match(/^(-?[\d.]+)\s+(-?[\d.]+)\s+to\s+(-?[\d.]+)\s+(-?[\d.]+)$/); if (!m) return null; const a = xy(+m[1], +m[2]), c = xy(+m[3], +m[4]); return { x0: a.x, y0: a.y, x1: c.x, y1: c.y }; }).filter(Boolean);
+  P.currents = P.currentRaw;
+  P.lands = P.landRaw.map(L => {
+    if (L.coords.length < 3) prob('error', L.where, `The land "${L.id}" needs at least three points.`);
+    const pts = L.coords.map(c => xy(c[0], c[1]));
+    return { id: L.id, name: L.f.name || L.id, pts, minX: Math.min(...pts.map(q => q.x)), maxX: Math.max(...pts.map(q => q.x)), minY: Math.min(...pts.map(q => q.y)), maxY: Math.max(...pts.map(q => q.y)) };
+  });
+  P.places = {};
+  for (const G of P.placeRaw){
+    const at = pair(G.f.at), off = pair(G.f.off);
+    if (!at){ prob('error', G.where, `The place "${G.id}" needs "At:" with a latitude and longitude.`); continue; }
+    P.places[G.id] = { id: G.id, name: G.f.name || G.id, at: xy(at[0], at[1]), off: off ? xy(off[0], off[1]) : null, visible: parseFloat(G.f.visible) || 0, light: parseFloat(G.f.light) || 0,
+      kind: (G.f.kind || 'cape').toLowerCase(), label: (G.f.label || 'E').toUpperCase(), minor: !!G.flags.minor };
+  }
+  P.dangers = P.dangerRaw.map(G => { const at = pair(G.f.at) || [0, 0], q = xy(at[0], at[1]); if (!pair(G.f.at)) prob('error', G.where, `The danger "${G.id}" needs "At:".`); return { id: G.id, name: G.f.name || '', x: q.x, y: q.y, r: parseFloat(G.f.radius) || 0.3, kind: (G.f.kind || 'rock').toLowerCase(), charted: !G.flags.uncharted }; });
+  if (P.landRaw.length && !P.places[P.chart.home]) prob('error', 'The chart', `"Home: ${C.home || ''}" should name a place.`);
+  for (const o of Object.values(P.orders)){
+    if (o.goTo && !P.places[o.goTo]) prob('error', o.goWhere, `"Go to: ${o.goTo}" names a place that is not on the chart.`);
+    if (o.cruise) for (const c of o.cruise) if (!P.places[c]) prob('error', o.cruiseWhere, `"Cruise" names "${c}", which is not on the chart.`);
+  }
+}
 function hasHub(P, place){ return !!place && P.order.some(id => P.events[id].hub && P.events[id].place === place); }
 function normTerm(t){ return String(t).toLowerCase().replace(/[’‘]/g, "'").replace(/\s+/g, ' ').trim(); }
 
@@ -3408,7 +4101,7 @@ function getVar(name){
   if (name === 'voyage_left') return state.voyage ? (state.voyage.left || 0) : 0;
   if (name === 'force') return state.weather ? state.weather.force : 0;
   if (name === 'knots') return Math.round(state.lastSpeed || 0);
-  if (name === 'miles_to_run') return state.voyage && state.voyage.dist != null ? Math.max(0, Math.round(state.voyage.dist)) : 0;
+  if (name === 'miles_to_run'){ if (!state.nav) return 0; const t = navTarget(); return t && t !== 'standoff' ? Math.round(hyp({ x: state.nav.rx, y: state.nav.ry }, t)) : 0; }
   return 0;
 }
 function setVar(name, v){ if (name === 'money') state.money = v; else state.vars[name] = v; }
@@ -3418,6 +4111,7 @@ function condMet(c){
     case 'flag': return !!state.flags[c.name] !== c.neg;
     case 'place': return state.place === c.name;
     case 'voyage': return (!!state.voyage && state.voyage.name === c.name) !== !!c.neg;
+    case 'night': return isNight(state.minutes) !== !!c.neg;
     case 'weather': return (!!state.weather && state.weather.sys === c.name) !== !!c.neg;
     case 'wind': return (!!state.weather && state.weather.force >= 1 && pointsApart(state.weather.dir, c.point) <= 2) !== !!c.neg;
     case 'tod': { const now = minuteOfDay(state.minutes); return c.op === 'before' ? now < c.at : now >= c.at; }
@@ -3472,8 +4166,14 @@ function subst(s){
     if (k === 'sea') return state.weather ? SEA_WORDS[state.weather.force] : '';
     if (k === 'weather') return state.weather ? content.weather[state.weather.sys].called : '';
     if (k === 'forecast') return state.forecastText || '';
-    if (k === 'destination') return state.voyage && state.voyage.to ? state.voyage.to : 'your station';
-    if (k === 'distance'){ const d = getVar('miles_to_run'); return d < 6 ? 'a few miles' : `some ${Math.max(2, Math.round(d / 3))} leagues`; }
+    if (k === 'destination'){ const v = state.voyage; const id = v && (v.cruise ? v.cruise[v.leg || 0] : v.dest); return id && content.places[id] ? content.places[id].name : 'your station'; }
+    if (k === 'distance') return leaguesWord(getVar('miles_to_run'));
+    if (k === 'reckoning') return reckoningWords();
+    if (k === 'soundings') return state.soundingText || '';
+    if (k === 'lee_distance') return leaguesWord(state.leeDist || 0);
+    if (k === 'circle') return state.nav ? leaguesWord(Math.max(state.nav.ex, state.nav.ey) * 2) : '';
+    if (k === 'current'){ if (!state.nav) return 'nowhere'; const c = currentAt({ x: state.nav.rx, y: state.nav.ry }); const pt = Math.round(brgDeg({ x: 0, y: 0 }, c) / 11.25) % 32; return `to the ${pointWords(pt)}`; }
+    if (k === 'position') return state.nav ? `${fmtLat(xy2ll(state.nav.rx, state.nav.ry).lat)}, ${fmtLon(xy2ll(state.nav.rx, state.nav.ry).lon)}` : '';
     if ((k in state.vars) || content.stores[k] || /_days$/.test(k)) return String(Math.max(0, Math.floor(getVar(k))));
     return all;
   });
@@ -3497,6 +4197,10 @@ function applyEffects(list, label){
       case 'condemn': condemn(); break;
       case 'survey': survey(); break;
       case 'forecast': forecast(); break;
+      case 'puttosea': state.flags.at_sea = true; navInit(); break;
+      case 'sound': if (state.nav) sound(); break;
+      case 'standoff': if (state.nav) state.nav.standoff = 2; break;
+      case 'refloat': if (state.nav){ const N = state.nav, n = landDist({ x: N.tx, y: N.ty }, false); let a = brgDeg(n, { x: N.tx, y: N.ty }); if (n.d === 0) a = (state.weather.dir * 11.25) % 360; for (let k = 0; k < 20 && landDist({ x: N.tx, y: N.ty }, false).d <= 0.3; k++){ N.tx += Math.sin(a * Math.PI / 180) * 0.3; N.ty += Math.cos(a * Math.PI / 180) * 0.3; } } delete state.flags.aground; break;
       case 'allowance': if (e.short) state.flags.short_allowance = true; else delete state.flags.short_allowance; break;
       case 'voyage': startVoyage(e.name, e.watches); break;
       case 'roll': if (rand(state.rng) * 100 < e.chance) state.flags[e.name] = true; else delete state.flags[e.name]; break;
@@ -3515,14 +4219,15 @@ function applyEffects(list, label){
 
 function newGame(name, seed){
   state = {
-    game: GAME_ID, v: 4, build: BUILD,
+    game: GAME_ID, v: 6, build: BUILD,
     name: (name || content.settings['default name'] || 'John Hartley').trim(),
     seed: (seed || makeSeed()).trim().toUpperCase(),
     rng: null, minutes: 0, money: parseMoney(content.settings['start money'] || '£20') || 0,
     vars: {}, flags: {}, seen: {}, timers: {}, orders: null, ordersAt: null, place: null, eventId: null,
     log: [], accounts: [], history: [], pending: null, ended: false, tested: false, startedAt: Date.now(),
     stores: null, storeLog: null, storeBad: null, lastBad: null, voyage: null, surveyText: '',
-    weather: null, spellSeen: {}, forecastText: '', lastSpeed: 0, dayRun: 0, dayMissed: 0
+    weather: null, spellSeen: {}, forecastText: '', lastSpeed: 0, dayRun: 0, dayMissed: 0,
+    nav: null, soundingText: '', leeDist: 0
   };
   state.rng = seedRng(state.seed);
   state.minutes = startMinutes();
@@ -3624,6 +4329,7 @@ function advance(mins){
   while (t <= end){
     state.minutes = t;
     if (state.weather) weatherStep();
+    if (((t % 1440) + 1440) % 1440 === 360) dawn();
     if (((t % 1440) + 1440) % 1440 === 720 && state.flags.at_sea && state.stores){ dailyIssue(); noonLog(); }
     t += 240;
   }
@@ -3693,6 +4399,7 @@ function noonLog(){
   let text = w.force === 0 ? 'Calm' : `${FORCE_LOG[w.force]} ${POINTS[w.dir]}`;
   if (d.log) text += `, ${d.log}`;
   text += '.';
+  if (state.nav) text += noonSight();
   if (state.flags.hove_to) text += ' Lying to.';
   if (state.dayRun >= 1) text += ` Made ${Math.round(state.dayRun)} miles.`;
   if (state.dayMissed) text += ` Missed stays ${state.dayMissed === 1 ? 'once' : state.dayMissed === 2 ? 'twice' : state.dayMissed + ' times'}.`;
@@ -3729,36 +4436,6 @@ function missChance(){
   if (state.flags.press_of_sail) p *= 0.85;
   return Math.max(0, Math.min(90, p));
 }
-/* one watch's sailing: returns nothing, moves the ship along her leg */
-function sailOneWatch(){
-  const v = state.voyage, w = state.weather;
-  delete state.flags.beating; delete state.flags.lying_course;
-  state.lastSpeed = 0;
-  if (!w) return;
-  if (state.flags.hove_to) return;
-  if (!v || v.dist == null){ state.lastSpeed = w.force <= 1 ? 0 : speedAt(10) * 0.6; return; }
-  let speed, made;
-  if (w.force <= 1 && state.flags.sweeps){ speed = sailNum('sweeps', 1.5); made = speed * 4; }
-  else {
-    const a = pointsApart(v.bearing, w.dir);
-    if (a >= closest()){ state.flags.lying_course = true; speed = speedAt(a); made = speed * 4; }
-    else {
-      state.flags.beating = true;
-      speed = speedAt(closest());
-      made = speed * Math.cos((closest() - a) * Math.PI / 16) * 4;
-      if (state.flags.wear_ship) made *= 0.85;
-      else if (rand(state.rng) * 100 < missChance()){
-        made *= 0.55; state.dayMissed = (state.dayMissed || 0) + 1;
-        if (w.force >= 6) state.flags.missed_stays = true;
-      }
-    }
-  }
-  if (v.cap){ speed = Math.min(speed, v.cap); made = Math.min(made, v.cap * 4); }
-  state.lastSpeed = speed;
-  v.dist -= made; state.dayRun = (state.dayRun || 0) + made;
-  if (v.dist <= 0){ state.flags[v.name + '_done'] = true; state.voyage = null; delete state.flags.beating; delete state.flags.lying_course; }
-}
-
 function initShip(){
   for (const [k, raw] of Object.entries(content.ship)){
     const v = parseValue(k, raw);
@@ -3919,19 +4596,297 @@ function survey(){
   if (!found.length) state.flags.survey_right = true;
   state.surveyText = found.length ? `The survey finds ${listJoin(found)}, against the purser’s books.` : 'The survey finds the purser’s books right, to within what a slate and a lantern can tell.';
 }
+/* ============================================================
+   THE CHART AND NAVIGATION
+   Positions are sea miles east and north of the chart's south-west
+   corner. The ship has a true position, which only the sea knows, and
+   a reckoned one, which is the master's. The player sees the second.
+   ============================================================ */
+function navK(){ return 60 * Math.cos(content.chart.midLat * Math.PI / 180); }
+function ll2xy(lat, lon){ const b = content.chart; return { x: (lon - b.lon0) * navK(), y: (lat - b.lat0) * 60 }; }
+function xy2ll(x, y){ const b = content.chart; return { lat: b.lat0 + y / 60, lon: b.lon0 + x / navK() }; }
+function fmtLat(lat){ const d = Math.floor(Math.abs(lat)), m = Math.round((Math.abs(lat) - d) * 60); return m === 60 ? `${d + 1}°00′ ${lat < 0 ? 'S' : 'N'}` : `${d}°${String(m).padStart(2, '0')}′ ${lat < 0 ? 'S' : 'N'}`; }
+function fmtLon(lon){ const d = Math.floor(Math.abs(lon)), m = Math.round((Math.abs(lon) - d) * 60); return m === 60 ? `${d + 1}°00′ ${lon < 0 ? 'W' : 'E'}` : `${d}°${String(m).padStart(2, '0')}′ ${lon < 0 ? 'W' : 'E'}`; }
+function brgDeg(a, b){ return ((Math.atan2(b.x - a.x, b.y - a.y) * 180 / Math.PI) + 360) % 360; }
+function hyp(a, b){ return Math.hypot(b.x - a.x, b.y - a.y); }
+function gauss(){ let u = 0; for (let i = 0; i < 6; i++) u += rand(state.rng); return (u - 3) / Math.sqrt(0.5); }
+function leaguesWord(nm){ return nm < 2 ? 'a mile or less' : nm < 6 ? 'a few miles' : `some ${Math.max(2, Math.round(nm / 3))} leagues`; }
+
+/* ---------- geometry against the land ---------- */
+function inPoly(p, pts){
+  let c = false;
+  for (let i = 0, j = pts.length - 1; i < pts.length; j = i++){
+    const a = pts[i], b = pts[j];
+    if (((a.y > p.y) !== (b.y > p.y)) && (p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x)) c = !c;
+  }
+  return c;
+}
+function segDist(p, a, b){
+  const dx = b.x - a.x, dy = b.y - a.y, l = dx * dx + dy * dy;
+  let t = l ? ((p.x - a.x) * dx + (p.y - a.y) * dy) / l : 0; t = Math.max(0, Math.min(1, t));
+  const qx = a.x + t * dx, qy = a.y + t * dy;
+  return { d: Math.hypot(p.x - qx, p.y - qy), x: qx, y: qy };
+}
+/* distance to the nearest land or danger: 0 if aground. chartedOnly: what the master's chart shows */
+function landDist(p, chartedOnly){
+  let best = { d: Infinity, x: p.x, y: p.y };
+  for (const L of content.lands){
+    if (p.x < L.minX - best.d || p.x > L.maxX + best.d || p.y < L.minY - best.d || p.y > L.maxY + best.d) continue;
+    if (inPoly(p, L.pts)) return { d: 0, x: p.x, y: p.y };
+    for (let i = 0, j = L.pts.length - 1; i < L.pts.length; j = i++){
+      const s = segDist(p, L.pts[j], L.pts[i]); if (s.d < best.d) best = s;
+    }
+  }
+  for (const D of content.dangers){
+    if (chartedOnly && !D.charted) continue;
+    const d = Math.hypot(p.x - D.x, p.y - D.y) - D.r;
+    if (d <= 0) return { d: 0, x: p.x, y: p.y };
+    if (d < best.d) best = { d, x: D.x, y: D.y };
+  }
+  return best;
+}
+function rayHit(p, deg, maxD, margin, chartedOnly){
+  const sx = Math.sin(deg * Math.PI / 180), sy = Math.cos(deg * Math.PI / 180);
+  const d0 = landDist(p, chartedOnly).d, lim = d0 < margin ? Math.max(0.3, d0 - 0.3) : margin;
+  for (let s = 1; s <= maxD; s += 1){
+    if (landDist({ x: p.x + sx * s, y: p.y + sy * s }, chartedOnly).d < lim) return s;
+  }
+  return null;
+}
+function depthAt(p){
+  const d = landDist(p, false).d;
+  if (d <= 0) return 0;
+  const shelf = (content.chart.shelf || []).some(z => p.y >= z.y0 && p.y <= z.y1 && p.x >= z.x0 && p.x <= z.x1);
+  return Math.round(Math.min(400, 2 + d * (shelf ? 3 : 14)));
+}
+function currentAt(p){
+  const ll = xy2ll(p.x, p.y);
+  for (const c of content.currents){
+    const ok = c.cond === 'elsewhere' || (c.cond === 'north' && ll.lat >= c.v) || (c.cond === 'south' && ll.lat < c.v) || (c.cond === 'east' && ll.lon >= c.v) || (c.cond === 'west' && ll.lon < c.v);
+    if (ok){ const a = c.toward * Math.PI / 180; return { x: Math.sin(a) * c.knots, y: Math.cos(a) * c.knots }; }
+  }
+  return { x: 0, y: 0 };
+}
+function isNight(min){ const h = clockOf(min).h; return h < 6 || h >= 19; }
+function seeing(){ const w = state.weather; return w ? (content.weather[w.sys].seeing || 100) / 100 : 1; }
+
+/* ---------- the master's reckoning ---------- */
+function navInit(){
+  const home = content.places[content.chart.home];
+  const p = home ? placeOff(home.id) : { x: 0, y: 0 };
+  state.nav = { tx: p.x, ty: p.y, rx: p.x, ry: p.y, ex: 0.5, ey: 0.5, course: 180, track: [[p.x, p.y]], sighted: {}, fix: { t: state.minutes, how: 'the land' }, standoff: 0 };
+}
+function placeOff(id){ const P = content.places[id]; return P ? (P.off || P.at) : null; }
+function navTarget(){
+  const v = state.voyage, N = state.nav;
+  if (N.standoff > 0) return 'standoff';
+  if (!v) return null;
+  if (state.flags.run_west || state.flags.run_east){
+    const d = v.cruise ? placeOff(v.cruise[v.leg || 0]) : placeOff(v.dest);
+    return { x: N.rx + (state.flags.run_west ? -80 : 80), y: d ? d.y : N.ry, lat: true };
+  }
+  if (v.name === 'station' && v.cruise) return placeOff(v.cruise[v.leg || 0]);
+  if (v.dest) return placeOff(v.dest);
+  return null;
+}
+function fixAt(err, how){
+  const N = state.nav;
+  N.rx = N.tx + gauss() * err; N.ry = N.ty + gauss() * err;
+  N.ex = N.ey = Math.max(0.8, err * 2);
+  N.fix = { t: state.minutes, how };
+  delete state.flags.lying_off; delete state.flags.nothing_in_sight;
+  if (how !== 'the lead'){ delete state.flags.run_west; delete state.flags.run_east; }
+}
+function drift(nm){
+  const N = state.nav, w = state.weather, a = (w.dir * 11.25 + 180) * Math.PI / 180;
+  N.tx += Math.sin(a) * nm; N.ty += Math.cos(a) * nm;
+  N.rx += Math.sin(a) * nm * 0.7; N.ry += Math.cos(a) * nm * 0.7;
+  N.ex += nm * 0.4; N.ey += nm * 0.4;
+  const c = currentAt({ x: N.tx, y: N.ty }); N.tx += c.x * 4; N.ty += c.y * 4; N.rx += c.x * 4 * 0.65; N.ry += c.y * 4 * 0.65;
+  N.ex += 0.6; N.ey += 0.6;
+  checkGround();
+}
+function checkGround(){
+  const N = state.nav;
+  if (landDist({ x: N.tx, y: N.ty }, false).d <= 0){
+    state.flags.aground = true; delete state.flags.anchored; delete state.flags.hove_to; delete state.flags.lying_off;
+    setVar('hull', getVar('hull') - 10); setVar('leak', getVar('leak') + 6);
+    return true;
+  }
+  return false;
+}
+/* the master steers clear of the land as his chart and his reckoning show it */
+function clearCourse(from, deg, dist){
+  const N = state.nav;
+  const margin = state.flags.good_offing ? Math.min(10, 4 + Math.max(N.ex, N.ey) * 0.5) : 2.5;
+  const look = Math.max(2, Math.min(24, dist - 3));
+  for (const k of [0, 10, -10, 20, -20, 30, -30, 45, -45, 60, -60, 80, -80, 100, -100]){
+    const d = (deg + k + 360) % 360;
+    if (!rayHit(from, d, look, margin, true)) return d;
+  }
+  return deg;
+}
+function sightings(){
+  const N = state.nav, night = isNight(state.minutes), see = seeing(), t = { x: N.tx, y: N.ty };
+  let any = false;
+  for (const P of Object.values(content.places)){
+    if (!P.visible && !P.light) continue;
+    const V = night ? (P.light || P.visible * 0.15) : P.visible * see;
+    const d = hyp(t, P.at);
+    if (d <= V){
+      any = true;
+      if (!N.sighted[P.id]){
+        N.sighted[P.id] = true;
+        const b = brgDeg(t, P.at);
+        state.log.push({ t: state.minutes, text: `${P.name} in sight${night && P.light ? ' (the light)' : ''}, bearing ${POINTS[Math.round(b / 11.25) % 32]}, distant ${leaguesWord(d)}.` });
+        state.flags.landfall = true;
+      }
+      fixAt(0.5 + d * 0.04, P.name);
+    } else if (d > V * 1.2) delete N.sighted[P.id];
+  }
+  const near = landDist(t, false).d;
+  if (any || near <= (night ? 1 : 10 * see)) state.flags.land_in_sight = true; else delete state.flags.land_in_sight;
+}
+function noonSight(){
+  const N = state.nav; if (!N || !state.flags.at_sea) return '';
+  const w = state.weather, chance = w ? (content.weather[w.sys].sight == null ? 80 : content.weather[w.sys].sight) : 0;
+  if (rand(state.rng) * 100 >= chance) return ' No observation.';
+  const err = 0.6 + Math.max(0, 5 - getVar('master_skill')) * 0.4;
+  N.ry = N.ty + gauss() * err; N.ey = Math.max(0.8, err * 2);
+  N.fix = { t: state.minutes, how: 'a meridian altitude of the sun' };
+  delete state.flags.nothing_in_sight; if (state.flags.lying_off && !isNight(state.minutes)) delete state.flags.lying_off;
+  return ` Observed latitude ${fmtLat(xy2ll(N.rx, N.ry).lat)}.`;
+}
+function leeShore(){
+  const N = state.nav, w = state.weather;
+  delete state.flags.lee_shore;
+  if (!w || w.force < 7) return;
+  const d = rayHit({ x: N.tx, y: N.ty }, (w.dir * 11.25 + 180) % 360, 15, 0.5, false);
+  if (d != null){ state.flags.lee_shore = true; state.leeDist = d; }
+}
+function sound(){
+  const N = state.nav, t = { x: N.tx, y: N.ty }, d = depthAt(t);
+  const bottoms = content.chart.bottoms || ['sand'];
+  const bottom = bottoms[Math.floor(rand(state.rng) * bottoms.length)];
+  if (d > 110){ state.soundingText = 'The deep-sea lead goes down with a hundred and twenty fathoms of line, and finds no bottom.'; state.flags.no_bottom = true; return; }
+  delete state.flags.no_bottom;
+  state.soundingText = d <= 20 ? `The leadsman sings out: ${d <= 10 ? `by the mark ${numWord(d)}` : `${numWord(Math.min(d, 20))} fathoms`}, ${bottom}.` : `The deep-sea lead finds bottom in ${d} fathoms, ${bottom}.`;
+  N.rx += (N.tx - N.rx) * 0.3; N.ry += (N.ty - N.ry) * 0.3; N.ex *= 0.75; N.ey *= 0.75;
+  if (d <= 12) state.flags.shoal_water = true; else delete state.flags.shoal_water;
+}
+function arrive(v){
+  if (v.name === 'station' && v.cruise){ v.leg = (v.leg || 0) ? 0 : 1; return; }
+  if (v.name === 'homeward' && isNight(state.minutes)){ state.flags.off_port_night = true; return; }
+  state.flags[v.name + '_done'] = true; state.voyage = null;
+}
+/* one watch's sailing */
+function sailOneWatch(){
+  const w = state.weather;
+  delete state.flags.beating; delete state.flags.lying_course; delete state.flags.closing_land;
+  state.lastSpeed = 0;
+  if (!w) return;
+  if (!state.nav) navInit();
+  const N = state.nav, v = state.voyage;
+  if (state.flags.aground) return;
+  if (state.flags.anchored){
+    if (w.force >= 8 && state.flags.lee_shore && rand(state.rng) < 0.25){ delete state.flags.anchored; state.log.push({ t: state.minutes, text: 'The anchors came home; she is driving.' }); drift(2); }
+    return finishWatch(0);
+  }
+  if (state.flags.hove_to || state.flags.lying_off){ drift(state.flags.hove_to ? (w.force >= 8 ? 2.5 : 1.5) : 0.6); return finishWatch(0); }
+  let tgt = navTarget();
+  if (!tgt) return finishWatch(0);
+  const R = { x: N.rx, y: N.ry };
+  let deg;
+  if (tgt === 'standoff'){ const n = landDist({ x: N.tx, y: N.ty }, false); deg = brgDeg(n, { x: N.tx, y: N.ty }); N.standoff--; }
+  else {
+    const dist = hyp(R, tgt);
+    if (dist < 2 && !tgt.lat && v){
+      if (v.cruise){ v.leg = (v.leg || 0) ? 0 : 1; return sailOneWatch(); }
+      if (isNight(state.minutes)){ state.flags.lying_off = true; state.log.push({ t: state.minutes, text: 'By the reckoning up with the land; lay off and on till daylight.' }); }
+      else state.flags.nothing_in_sight = true;
+      return finishWatch(0);
+    }
+    deg = clearCourse(R, brgDeg(R, tgt), dist);
+  }
+  N.course = deg;
+  /* closing the land in the dark: ask before going on */
+  if (isNight(state.minutes) && !state.flags.standing_on && tgt !== 'standoff'){
+    const doubt = Math.max(N.ex, N.ey) + 4, here = landDist(R, true).d;
+    const next = landDist({ x: R.x + Math.sin(deg * Math.PI / 180) * 4, y: R.y + Math.cos(deg * Math.PI / 180) * 4 }, true).d;
+    if (here < doubt && next < here){ state.flags.closing_land = true; return finishWatch(0); }
+  }
+  /* speed, from the polar table, as before */
+  const pts = deg / 11.25;
+  let speed, made;
+  if (w.force <= 1 && state.flags.sweeps){ speed = sailNum('sweeps', 1.5); made = speed * 4; }
+  else {
+    const a = pointsApart(pts, w.dir);
+    if (a >= closest()){ state.flags.lying_course = true; speed = speedAt(a); made = speed * 4; }
+    else {
+      state.flags.beating = true;
+      speed = speedAt(closest());
+      made = speed * Math.cos((closest() - a) * Math.PI / 16) * 4;
+      if (state.flags.wear_ship) made *= 0.85;
+      else if (rand(state.rng) * 100 < missChance()){
+        made *= 0.55; state.dayMissed = (state.dayMissed || 0) + 1;
+        if (w.force >= 6) state.flags.missed_stays = true;
+      }
+    }
+  }
+  if (v && v.cap){ speed = Math.min(speed, v.cap); made = Math.min(made, v.cap * 4); }
+  if (state.flags.lead_going){ speed *= 0.6; made *= 0.6; }
+  state.lastSpeed = speed;
+  /* eight half-hours, watching for the land */
+  const sx = Math.sin(deg * Math.PI / 180), sy = Math.cos(deg * Math.PI / 180);
+  const down = (w.dir * 11.25 + 180) * Math.PI / 180;
+  const leeway = state.flags.beating ? (w.force >= 8 ? 0.15 : w.force >= 6 ? 0.08 : 0.05) : 0.02;
+  const night = isNight(state.minutes), see = seeing();
+  let run = 0;
+  for (let i = 0; i < 8; i++){
+    const step = made / 8, cur = currentAt({ x: N.tx, y: N.ty });
+    const before = landDist({ x: N.tx, y: N.ty }, false).d;
+    N.tx += sx * step + Math.sin(down) * step * leeway + cur.x * 0.5 + gauss() * step * 0.04;
+    N.ty += sy * step + Math.cos(down) * step * leeway + cur.y * 0.5 + gauss() * step * 0.04;
+    N.rx += sx * step + Math.sin(down) * step * leeway * 0.6 + cur.x * 0.5 * 0.65;
+    N.ry += sy * step + Math.cos(down) * step * leeway * 0.6 + cur.y * 0.5 * 0.65;
+    run += step;
+    if (checkGround()){ state.log.push({ t: state.minutes, text: 'The ship took the ground.' }); break; }
+    const now = landDist({ x: N.tx, y: N.ty }, false).d;
+    const warn = state.flags.lead_going ? 1.5 : (!night && see >= 0.5) ? 1 : night ? (rand(state.rng) < 0.35 ? 0.7 : 0) : 0.8;
+    if (now < warn && now < before){ state.flags.breakers = true; break; }
+    const t2 = navTarget();
+    if (t2 && t2 !== 'standoff' && v && hyp({ x: N.tx, y: N.ty }, t2) < (content.chart.arrive || 6)){ arrive(v); break; }
+  }
+  N.ex += 0.4 + run * 0.06 * (1.3 - 0.1 * getVar('master_skill'));
+  N.ey += 0.4 + run * 0.06 * (1.3 - 0.1 * getVar('master_skill'));
+  state.dayRun = (state.dayRun || 0) + run;
+  finishWatch(run);
+}
+function finishWatch(){
+  const N = state.nav;
+  if (!N) return;
+  /* run off the chart, and she raises land that is not on it, and takes a fresh departure */
+  const C = content.chart, spanX = (C.lon1 - C.lon0) * navK(), spanY = (C.lat1 - C.lat0) * 60;
+  const out = N.tx > spanX + 8 ? 'the coast of Sardinia, to the eastward' : N.ty < -8 ? 'the coast of Barbary, to the southward' : N.tx < -8 ? 'the coast of Spain, to the westward' : null;
+  if (out){
+    state.log.push({ t: state.minutes, text: `Raised the land, which the master makes out to be ${out}; took a fresh departure from it.` });
+    N.tx = Math.max(-2, Math.min(spanX + 2, N.tx)); N.ty = Math.max(-2, N.ty);
+    fixAt(3, out.replace(/,.*$/, ''));
+  }
+  N.track.push([N.rx, N.ry]); if (N.track.length > 400) N.track.shift();
+  sightings();
+  leeShore();
+  if (N.ex > 40) N.ex = 40; if (N.ey > 40) N.ey = 40;
+}
 function startVoyage(name, watches){
   const o = (state.orders && content.orders[state.orders]) || {};
-  delete state.flags[name + '_done'];
-  const prev = state.voyage;
-  if (name === 'outward' || name === 'homeward'){
-    let leg = name === 'outward' ? o.passage : o.return;
-    if (name === 'homeward' && !leg && o.passage) leg = { dist: o.passage.dist, bearing: (o.passage.bearing + 16) % 32, to: 'Mahon' };
-    if (name === 'homeward' && prev && prev.name === 'outward' && o.passage) leg = { dist: Math.max(5, o.passage.dist - prev.dist), bearing: (o.passage.bearing + 16) % 32, to: (o.return && o.return.to) || 'Mahon' };
-    if (leg){ state.voyage = { name, dist: leg.dist, bearing: leg.bearing, to: leg.to, cap: name === 'outward' ? (o.cap || 0) : 0 }; return; }
-  }
+  delete state.flags[name + '_done']; delete state.flags.nothing_in_sight; delete state.flags.off_port_night;
+  if (!state.nav) navInit();
+  if (name === 'outward' && o.goTo){ state.voyage = { name, dest: o.goTo, cap: o.cap || 0 }; return; }
+  if (name === 'homeward'){ state.voyage = { name, dest: content.chart.home }; return; }
   const w = watches != null ? watches : (o[name] != null ? o[name] : 0);
   if (w <= 0){ state.voyage = null; state.flags[name + '_done'] = true; return; }
-  state.voyage = { name, left: Math.round(w) };
+  state.voyage = { name, left: Math.round(w), cruise: name === 'station' ? (o.cruise || null) : null, leg: 0 };
 }
 /* sail watch by watch; stop when something happens */
 function sailWatches(n){
@@ -3952,6 +4907,185 @@ function sailWatches(n){
     if (rand(state.rng) * 100 < chance){ const ev = pickFrom('sea', 'ordinary'); if (ev) return ev; }
   }
   return hubFor('sea') || hubFor(state.place) || '__nowhere__';
+}
+/* at the change of the watch: daylight clears the night's precautions */
+function dawn(){
+  for (const k of ['lying_off', 'standing_on', 'lead_going', 'nothing_in_sight']) delete state.flags[k];
+  if (state.flags.anchored && !state.flags.lee_shore){ delete state.flags.anchored; state.log.push({ t: state.minutes, text: 'Weighed at daylight.' }); }
+}
+
+/* ---------- the engraved sea chart ---------- */
+let chartZoom = 'ship';
+let chartStaticCache = null;
+const CH = { INK: '#3a2d1f', RED: '#8f2f22', OWN: '#26303f', PAPER: '#e9dbb4', LAND: '#dcc79a', FONT: `font-family="'IM Fell English',Georgia,serif"` };
+function chartDefs(px){
+  return `<defs>
+    <filter id="${px}grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="11"/><feColorMatrix type="matrix" values="0 0 0 0 0.36  0 0 0 0 0.26  0 0 0 0 0.12  0 0 0 0.22 -0.02"/></filter>
+    <filter id="${px}mottle" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.011" numOctaves="3" seed="4"/><feColorMatrix type="matrix" values="0 0 0 0 0.45  0 0 0 0 0.32  0 0 0 0 0.12  0 0 0 0.5 -0.18"/></filter>
+    <radialGradient id="${px}age" cx="50%" cy="48%" r="72%"><stop offset="55%" stop-color="#7a5528" stop-opacity="0"/><stop offset="100%" stop-color="#7a5528" stop-opacity="0.42"/></radialGradient>
+    <radialGradient id="${px}fox"><stop offset="0" stop-color="#8a5a24" stop-opacity="0.32"/><stop offset="1" stop-color="#8a5a24" stop-opacity="0"/></radialGradient>
+    <pattern id="${px}landhatch" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><line x1="0" y1="0" x2="0" y2="4" stroke="${CH.INK}" stroke-opacity="0.18" stroke-width="0.6"/></pattern>
+  </defs>`;
+}
+function chartView(mode){
+  const C = content.chart, spanX = (C.lon1 - C.lon0) * navK(), spanY = (C.lat1 - C.lat0) * 60;
+  if (mode !== 'ship' || !state || !state.nav) return { x0: 0, y0: 0, w: spanX, h: spanY, full: true };
+  const size = 120, N = state.nav;
+  const x0 = Math.max(0, Math.min(spanX - size, N.rx - size / 2)), y0 = Math.max(0, Math.min(spanY - size, N.ry - size / 2));
+  return { x0, y0, w: size, h: size, full: false };
+}
+function chartSvg(mode){
+  const C = content.chart, V = chartView(mode), M = 34;
+  const W = V.full ? 640 : 420, S = (W - 2 * M) / V.w, H = Math.round(V.h * S + 2 * M);
+  const X = x => M + (x - V.x0) * S, Y = y => M + (V.y0 + V.h - y) * S, f = v => v.toFixed(1);
+  const px = V.full ? 'ncf' : 'ncs';
+  const inView = p => p.x >= V.x0 - 2 && p.x <= V.x0 + V.w + 2 && p.y >= V.y0 - 2 && p.y <= V.y0 + V.h + 2;
+  let stat;
+  if (V.full && chartStaticCache) stat = chartStaticCache;
+  else {
+    /* graticule */
+    let grat = '';
+    const step = V.full ? 1 : 1 / 3;
+    const ll0 = xy2ll(V.x0, V.y0), ll1 = xy2ll(V.x0 + V.w, V.y0 + V.h);
+    for (let lat = Math.ceil(ll0.lat / step) * step; lat <= ll1.lat; lat += step){ const y = Y(ll2xy(lat, 0).y); grat += `<line x1="${M}" y1="${f(y)}" x2="${W - M}" y2="${f(y)}"/>`; }
+    for (let lon = Math.ceil(ll0.lon / step) * step; lon <= ll1.lon; lon += step){ const x = X(ll2xy(0, lon).x); grat += `<line x1="${f(x)}" y1="${M}" x2="${f(x)}" y2="${H - M}"/>`; }
+    /* rhumb lines from the rose */
+    let rhumbs = '', rose = '';
+    const R = C.rose ? ll2xy(C.rose[0], C.rose[1]) : null;
+    if (R && inView(R)){
+      const rx = X(R.x), ry = Y(R.y), rr = V.full ? 34 : 30;
+      for (let i = 0; i < 32; i++){
+        const a = i * Math.PI / 16, o = i % 4 === 0 ? 0.36 : 0.2, w = i % 8 === 0 ? 0.7 : 0.4;
+        rhumbs += `<line x1="${f(rx)}" y1="${f(ry)}" x2="${f(rx + Math.sin(a) * 900)}" y2="${f(ry - Math.cos(a) * 900)}" stroke-opacity="${o}" stroke-width="${w}"/>`;
+      }
+      rose = `<circle cx="${f(rx)}" cy="${f(ry)}" r="${rr}" fill="${CH.PAPER}" stroke="${CH.INK}" stroke-width="0.8"/><circle cx="${f(rx)}" cy="${f(ry)}" r="${rr * 0.84}" fill="none" stroke="${CH.INK}" stroke-width="0.4"/>`;
+      for (let i = 0; i < 8; i++){
+        const a = i * Math.PI / 4, len = rr * (i % 2 ? 0.62 : 0.98), wd = rr * (i % 2 ? 0.1 : 0.14);
+        const tip = [rx + Math.sin(a) * len, ry - Math.cos(a) * len];
+        const l = [rx + Math.sin(a - Math.PI / 2) * wd, ry - Math.cos(a - Math.PI / 2) * wd], r = [rx + Math.sin(a + Math.PI / 2) * wd, ry - Math.cos(a + Math.PI / 2) * wd];
+        rose += `<path d="M${f(rx)},${f(ry)} L${f(l[0])},${f(l[1])} L${f(tip[0])},${f(tip[1])} Z" fill="${CH.INK}"/><path d="M${f(rx)},${f(ry)} L${f(r[0])},${f(r[1])} L${f(tip[0])},${f(tip[1])} Z" fill="${CH.PAPER}" stroke="${CH.INK}" stroke-width="0.5"/>`;
+      }
+      rose += `<circle cx="${f(rx)}" cy="${f(ry)}" r="2" fill="${CH.INK}"/><text x="${f(rx)}" y="${f(ry - rr - 5)}" text-anchor="middle" font-size="12" fill="${CH.INK}" ${CH.FONT}>N</text>`;
+    }
+    /* soundings, as the surveyors left them */
+    let snd = '';
+    const sp = V.full ? 13 : 5.5;
+    for (let gx = Math.floor(V.x0 / sp) * sp; gx < V.x0 + V.w; gx += sp){
+      for (let gy = Math.floor(V.y0 / sp) * sp; gy < V.y0 + V.h; gy += sp){
+        const jx = gx + ((Math.sin(gx * 12.9 + gy * 78.2) * 43758.5) % 1) * sp * 0.6, jy = gy + ((Math.sin(gx * 39.3 + gy * 11.1) * 24634.6) % 1) * sp * 0.6;
+        const p = { x: jx, y: jy }; if (!inView(p)) continue;
+        const d = depthAt(p);
+        if (d < 3 || d > 120) continue;
+        snd += `<text x="${f(X(jx))}" y="${f(Y(jy))}" text-anchor="middle">${d}</text>`;
+      }
+    }
+    /* the land, water-lined as the engravers did it */
+    let wl = '', fill = '', outline = '';
+    for (const L of content.lands){
+      if (L.maxX < V.x0 || L.minX > V.x0 + V.w || L.maxY < V.y0 || L.minY > V.y0 + V.h) continue;
+      const d = 'M' + L.pts.map(p => `${f(X(p.x))},${f(Y(p.y))}`).join(' L') + ' Z';
+      wl += `<path d="${d}" stroke-width="13" stroke-opacity="0.05"/><path d="${d}" stroke-width="8" stroke-opacity="0.07"/><path d="${d}" stroke-width="4" stroke-opacity="0.1"/>`;
+      fill += `<path d="${d}"/>`;
+      outline += `<path d="${d}"/>`;
+    }
+    /* dangers, where the chart shows them */
+    let dang = '';
+    for (const D of content.dangers){
+      if (!D.charted || !inView(D)) continue;
+      const cx = X(D.x), cy = Y(D.y), r = Math.max(1.6, D.r * S);
+      if (D.kind === 'island') dang += `<circle cx="${f(cx)}" cy="${f(cy)}" r="${f(r)}" fill="${CH.LAND}" stroke="${CH.INK}" stroke-width="0.9"/>`;
+      else if (D.kind === 'bank') dang += `<circle cx="${f(cx)}" cy="${f(cy)}" r="${f(r)}" fill="none" stroke="${CH.INK}" stroke-width="0.8" stroke-dasharray="1 2"/>`;
+      else dang += `<g stroke="${CH.INK}" stroke-width="0.9"><line x1="${f(cx - 3)}" y1="${f(cy)}" x2="${f(cx + 3)}" y2="${f(cy)}"/><line x1="${f(cx)}" y1="${f(cy - 3)}" x2="${f(cx)}" y2="${f(cy + 3)}"/></g><circle cx="${f(cx + 2)}" cy="${f(cy + 2)}" r="0.7" fill="${CH.INK}"/><circle cx="${f(cx - 2)}" cy="${f(cy - 2)}" r="0.7" fill="${CH.INK}"/>`;
+      if (D.name && !V.full) dang += `<text x="${f(cx)}" y="${f(cy + r + 9)}" text-anchor="middle" font-size="8.5" font-style="italic" fill="${CH.INK}" ${CH.FONT}>${esc(D.name)}</text>`;
+    }
+    /* names */
+    let names = '';
+    const off = { N: [0, -7, 'middle'], S: [0, 12, 'middle'], E: [6, 3.5, 'start'], W: [-6, 3.5, 'end'], NE: [5, -5, 'start'], NW: [-5, -5, 'end'], SE: [5, 10, 'start'], SW: [-5, 10, 'end'] };
+    for (const P of Object.values(content.places)){
+      if (!inView(P.at) || (V.full && P.minor)) continue;
+      const cx = X(P.at.x), cy = Y(P.at.y), o = off[P.label] || off.E;
+      const big = P.kind === 'island' || P.kind === 'region';
+      const mark = P.kind === 'port' ? `<circle cx="${f(cx)}" cy="${f(cy)}" r="2" fill="${CH.PAPER}" stroke="${CH.INK}" stroke-width="0.9"/>`
+        : P.light ? `<path d="M${f(cx)},${f(cy - 4)} L${f(cx + 1.2)},${f(cy - 1.2)} L${f(cx + 4)},${f(cy)} L${f(cx + 1.2)},${f(cy + 1.2)} L${f(cx)},${f(cy + 4)} L${f(cx - 1.2)},${f(cy + 1.2)} L${f(cx - 4)},${f(cy)} L${f(cx - 1.2)},${f(cy - 1.2)} Z" fill="${CH.RED}"/>` : '';
+      if (P.kind === 'region' && !V.full) continue;
+      names += `${big ? '' : mark}<text x="${f(cx + (big ? 0 : o[0]))}" y="${f(cy + (big ? 4 : o[1]))}" text-anchor="${big ? 'middle' : o[2]}" font-size="${big ? (V.full ? 13 : 15) : (V.full ? 9 : 10.5)}" ${big ? 'letter-spacing="1.5"' : 'font-style="italic"'} fill="${CH.INK}" ${CH.FONT}>${esc(big ? P.name.toUpperCase() : P.name)}</text>`;
+    }
+    /* the border, graduated in degrees and minutes */
+    let border = '';
+    const tick = V.full ? 1 / 6 : 1 / 12;
+    for (let lat = Math.ceil(ll0.lat / tick) * tick; lat <= ll1.lat; lat += tick){
+      const y = Y(ll2xy(lat, 0).y), major = Math.abs(lat - Math.round(lat)) < 1e-6;
+      border += `<line x1="${M - (major ? 7 : 4)}" y1="${f(y)}" x2="${M}" y2="${f(y)}"/><line x1="${W - M}" y1="${f(y)}" x2="${W - M + (major ? 7 : 4)}" y2="${f(y)}"/>`;
+      if (major || (!V.full && Math.abs(lat * 3 - Math.round(lat * 3)) < 1e-6)) border += `<text x="${M - 9}" y="${f(y + 3)}" text-anchor="end" font-size="8.5" stroke="none" fill="${CH.INK}" ${CH.FONT}>${fmtLat(lat).replace(' N', '').replace('°00′', '°')}</text>`;
+    }
+    for (let lon = Math.ceil(ll0.lon / tick) * tick; lon <= ll1.lon; lon += tick){
+      const x = X(ll2xy(0, lon).x), major = Math.abs(lon - Math.round(lon)) < 1e-6;
+      border += `<line x1="${f(x)}" y1="${M - (major ? 7 : 4)}" x2="${f(x)}" y2="${M}"/><line x1="${f(x)}" y1="${H - M}" x2="${f(x)}" y2="${H - M + (major ? 7 : 4)}"/>`;
+      if (major || (!V.full && Math.abs(lon * 3 - Math.round(lon * 3)) < 1e-6)) border += `<text x="${f(x)}" y="${H - M + 17}" text-anchor="middle" font-size="8.5" stroke="none" fill="${CH.INK}" ${CH.FONT}>${fmtLon(lon).replace(/ [EW]$/, '').replace('°00′', '°')}</text>`;
+    }
+    /* scale of leagues and the cartouche */
+    const lg = V.full ? 10 : 3, segs = 4, seg = lg * 3 * S;
+    let scale = '';
+    const sx0 = W - M - 14 - seg * segs, sy0 = H - M - 16;
+    scale += `<rect x="${f(sx0 - 10)}" y="${sy0 - 16}" width="${f(seg * segs + 20)}" height="34" fill="${CH.PAPER}" fill-opacity="0.92" stroke="${CH.INK}" stroke-width="0.5"/>`;
+    for (let i = 0; i < segs; i++) scale += `<rect x="${f(sx0 + seg * i)}" y="${sy0}" width="${f(seg)}" height="4" fill="${i % 2 ? CH.PAPER : CH.INK}" stroke="${CH.INK}" stroke-width="0.6"/>`;
+    for (let i = 0; i <= segs; i++) scale += `<text x="${f(sx0 + seg * i)}" y="${sy0 + 13}" text-anchor="middle" font-size="8.5" fill="${CH.INK}" ${CH.FONT}>${i * lg}</text>`;
+    scale += `<text x="${f(sx0 + seg * segs / 2)}" y="${sy0 - 5}" text-anchor="middle" font-size="9.5" font-style="italic" fill="${CH.INK}" ${CH.FONT}>Sea Leagues, of three miles</text>`;
+    let cart = '';
+    if (V.full && C.cartouche){
+      const c = ll2xy(C.cartouche[0], C.cartouche[1]), cx = X(c.x), cy = Y(c.y);
+      const lines = (C.title || '').split('|').map(s => s.trim());
+      cart = `<g transform="translate(${f(cx)} ${f(cy)})"><rect x="-128" y="-30" width="256" height="${24 + lines.length * 14}" fill="${CH.PAPER}" stroke="${CH.INK}" stroke-width="0.9"/><rect x="-124" y="-26" width="248" height="${16 + lines.length * 14}" fill="none" stroke="${CH.INK}" stroke-width="0.4"/>
+        ${lines.map((l, i) => `<text y="${-10 + i * 14}" text-anchor="middle" font-size="${i === 0 ? 13 : 10}" ${i === 0 ? '' : 'font-style="italic"'} fill="${CH.INK}" ${CH.FONT}>${esc(l)}</text>`).join('')}</g>`;
+    }
+    stat = { W, H, M, body: `
+      <rect width="${W}" height="${H}" fill="${CH.PAPER}"/><rect width="${W}" height="${H}" filter="url(#${px}mottle)"/><rect width="${W}" height="${H}" filter="url(#${px}grain)"/>
+      <circle cx="${f(W * 0.78)}" cy="${f(H * 0.7)}" r="24" fill="url(#${px}fox)"/><circle cx="${f(W * 0.15)}" cy="${f(H * 0.86)}" r="14" fill="url(#${px}fox)"/>
+      <rect width="${W}" height="${H}" fill="url(#${px}age)"/>
+      <g clip-path="url(#${px}clip)">
+        <g stroke="${CH.INK}" stroke-opacity="0.3" stroke-width="0.5">${grat}</g>
+        <g stroke="${CH.INK}">${rhumbs}</g>
+        <g font-size="${V.full ? 6.5 : 7.5}" font-style="italic" fill="${CH.INK}" fill-opacity="0.7" ${CH.FONT}>${snd}</g>
+        <g fill="none" stroke="${CH.INK}" stroke-linejoin="round">${wl}</g>
+        <g fill="${CH.LAND}">${fill}</g><g fill="url(#${px}landhatch)">${fill}</g>
+        <g fill="none" stroke="${CH.INK}" stroke-width="1" stroke-linejoin="round">${outline}</g>
+        ${dang}${names}${rose}${cart}
+      </g>
+      ${scale}
+      <rect x="${M - 0.5}" y="${M - 0.5}" width="${W - 2 * M + 1}" height="${H - 2 * M + 1}" fill="none" stroke="${CH.INK}" stroke-width="0.8"/>
+      <rect x="5" y="5" width="${W - 10}" height="${H - 10}" fill="none" stroke="${CH.INK}" stroke-width="1.3"/>
+      <g stroke="${CH.INK}" stroke-width="0.7">${border}</g>` };
+    if (V.full) chartStaticCache = stat;
+  }
+  /* the ship, as the master reckons her */
+  let dyn = '';
+  if (state && state.nav){
+    const N = state.nav, v = state.voyage;
+    if (v && v.name === 'station' && v.cruise){
+      const a = placeOff(v.cruise[0]), b = placeOff(v.cruise[1]);
+      if (a && b) dyn += `<line x1="${f(X(a.x))}" y1="${f(Y(a.y))}" x2="${f(X(b.x))}" y2="${f(Y(b.y))}" stroke="${CH.RED}" stroke-width="1.2" stroke-dasharray="5 3" stroke-opacity="0.7"/>`;
+    }
+    const tr = N.track.filter((p, i) => i % 1 === 0);
+    if (tr.length > 1) dyn += `<polyline points="${tr.map(p => `${f(X(p[0]))},${f(Y(p[1]))}`).join(' ')}" fill="none" stroke="${CH.OWN}" stroke-width="1.1" stroke-dasharray="0.1 3.5" stroke-linecap="round"/>`;
+    const tgt = navTarget();
+    if (tgt && tgt !== 'standoff') dyn += `<line x1="${f(X(N.rx))}" y1="${f(Y(N.ry))}" x2="${f(X(tgt.x))}" y2="${f(Y(tgt.y))}" stroke="${CH.OWN}" stroke-width="0.8" stroke-dasharray="6 4" stroke-opacity="0.6"/>
+      <circle cx="${f(X(tgt.x))}" cy="${f(Y(tgt.y))}" r="4" fill="none" stroke="${CH.OWN}" stroke-width="0.9"/><circle cx="${f(X(tgt.x))}" cy="${f(Y(tgt.y))}" r="1.2" fill="${CH.OWN}"/>`;
+    dyn += `<ellipse cx="${f(X(N.rx))}" cy="${f(Y(N.ry))}" rx="${f(Math.max(3, N.ex * S))}" ry="${f(Math.max(3, N.ey * S))}" fill="${CH.OWN}" fill-opacity="0.06" stroke="${CH.OWN}" stroke-width="0.9" stroke-dasharray="3 2"/>`;
+    dyn += `<g transform="translate(${f(X(N.rx))} ${f(Y(N.ry))}) rotate(${(N.course || 0).toFixed(1)})"><path d="M0,-8 C3,-4 3,2.6 2.3,6.6 L-2.3,6.6 C-3,2.6 -3,-4 0,-8 Z" fill="${CH.OWN}"/><g stroke="${CH.INK}" stroke-width="0.8"><line x1="-5" y1="-3.5" x2="5" y2="-3.5"/><line x1="-5.8" y1="0.5" x2="5.8" y2="0.5"/><line x1="-4" y1="4" x2="4" y2="4"/></g></g>`;
+    if (prefs.showTruth) dyn += `<g stroke="${CH.RED}" stroke-width="1.4"><line x1="${f(X(N.tx) - 5)}" y1="${f(Y(N.ty) - 5)}" x2="${f(X(N.tx) + 5)}" y2="${f(Y(N.ty) + 5)}"/><line x1="${f(X(N.tx) - 5)}" y1="${f(Y(N.ty) + 5)}" x2="${f(X(N.tx) + 5)}" y2="${f(Y(N.ty) - 5)}"/></g>`;
+  }
+  return `<svg class="seachart" viewBox="0 0 ${stat.W} ${stat.H}" role="img" aria-label="Chart of the station, with the ship where the master reckons her.">
+    ${chartDefs(px)}<defs><clipPath id="${px}clip"><rect x="${stat.M}" y="${stat.M}" width="${stat.W - 2 * stat.M}" height="${stat.H - 2 * stat.M}"/></clipPath></defs>
+    ${stat.body}<g clip-path="url(#${px}clip)">${dyn}</g></svg>`;
+}
+function reckoningWords(){
+  const N = state.nav; if (!N) return '';
+  const ll = xy2ll(N.rx, N.ry);
+  const ew = Math.round(N.ex), ns = Math.round(N.ey);
+  const span = n => n <= 2 ? 'a mile or two' : n < 6 ? `${numWord(n)} miles` : `${numWord(Math.round(n / 3))} leagues`;
+  const hours = Math.round((state.minutes - N.fix.t) / 60);
+  const since = hours < 1 ? 'within the hour' : hours === 1 ? 'an hour since' : hours < 48 ? `${numWord(hours)} hours since` : `${numWord(Math.round(hours / 24))} days since`;
+  return `By the master’s reckoning she is in ${fmtLat(ll.lat)}, ${fmtLon(ll.lon)}. He will answer for it within ${span(ns)} north and south, and ${span(ew)} east and west. Last fixed by ${N.fix.how}, ${since}.`;
 }
 
 /* ---------- quantities, as a purser would write them ---------- */
@@ -3980,7 +5114,7 @@ function normalise(s){
   if (!s.weather) s.needWeather = true;
   s.spellSeen = s.spellSeen || {};
   /* passages in builds before 4 were counted in watches; turn the watches left into miles */
-  if (s.voyage && s.voyage.dist == null && (s.voyage.name === 'outward' || s.voyage.name === 'homeward')){
+  if (s.voyage && s.voyage.dist == null && s.voyage.left != null && !s.voyage.dest && (s.voyage.name === 'outward' || s.voyage.name === 'homeward')){
     const o = (s.orders && content.orders[s.orders]) || {};
     const leg = s.voyage.name === 'outward' ? o.passage : (o.return || (o.passage && { dist: o.passage.dist, bearing: (o.passage.bearing + 16) % 32, to: 'Mahon' }));
     s.voyage = { name: s.voyage.name, dist: s.voyage.left * 20, bearing: leg ? leg.bearing : 0, to: leg ? leg.to : 'Mahon', cap: s.voyage.name === 'outward' ? (o.cap || 0) : 0 };
@@ -3999,6 +5133,22 @@ function adopt(s){
   state = normalise(s);
   if (state.needShip){ delete state.needShip; initShip(); }
   if (state.needWeather){ delete state.needWeather; initWeather(); }
+  if (state.flags.at_sea && !state.nav){
+    navInit();
+    const v = state.voyage, o = content.orders[state.orders] || {};
+    if (v && v.dist != null && (v.name === 'outward' || v.name === 'homeward')){
+      const orig = { cruise_catalan: 130, convoy_toulon: 205, despatches_hebe: 130 }[state.orders] || 150, fr = Math.max(0, Math.min(1, 1 - v.dist / orig));
+      startVoyage(v.name);
+      const home = placeOff(content.chart.home), far = placeOff(o.goTo || content.chart.home);
+      const a = v.name === 'outward' ? home : far, b2 = v.name === 'outward' ? far : home, N = state.nav;
+      if (a && b2){ N.tx = N.rx = a.x + (b2.x - a.x) * fr; N.ty = N.ry = a.y + (b2.y - a.y) * fr; N.ex = N.ey = 4; N.track = [[N.rx, N.ry]]; }
+      if (landDist({ x: N.tx, y: N.ty }, false).d < 2){ N.tx = N.rx = home.x; N.ty = N.ry = home.y; }
+    } else if (v && v.name === 'station'){
+      const at = placeOff(o.goTo || content.chart.home), N = state.nav;
+      N.tx = N.rx = at.x; N.ty = N.ry = at.y; N.track = [[at.x, at.y]];
+      v.cruise = o.cruise || null; v.leg = 0;
+    }
+  }
   if (state.continueAt){ const id = state.continueAt; delete state.continueAt; enterEvent(id); }
   persist();
 }
@@ -4069,6 +5219,7 @@ function headerHtml(){
     <nav class="nav" aria-label="Ship’s papers">
       <button type="button" data-act="log">Log</button>
       ${state && state.orders ? '<button type="button" data-act="orders">Orders</button>' : ''}
+      ${state && state.nav && state.flags.at_sea ? '<button type="button" data-act="chart">Chart</button>' : ''}
       <button type="button" data-act="books">Books</button>
       <button type="button" data-act="accounts">Purse</button>
       <button type="button" data-act="glossary">Glossary</button>
@@ -4122,7 +5273,7 @@ function render(){
       return `<li><button type="button" class="choice" data-choice="${i}" ${ok ? '' : 'disabled'}>
         <span class="n" aria-hidden="true">${n}</span><span>${inline(ch.text)}${why}</span></button></li>`;
     }).join('');
-    body = `<div class="prose">${paras}</div><ol class="choices">${choices}</ol>`;
+    body = `${ev.chart && state.nav ? `<div class="scenechart">${chartSvg('ship')}</div>` : ''}<div class="prose">${paras}</div><ol class="choices">${choices}</ol>`;
   }
   app.innerHTML = `${headerHtml()}${stripHtml()}
     <section class="scene"><h2 tabindex="-1" id="scene-title">${inline(ev.title || '')}</h2>${body}</section>`;
@@ -4345,6 +5496,12 @@ function openPanel(kind){
   else if (kind === 'orders'){ title = 'Orders'; html = ordersHtml(); }
   else if (kind === 'accounts'){ title = 'Your Purse'; html = accountsHtml(); }
   else if (kind === 'books'){ title = 'The Ship’s Books'; html = booksHtml(); }
+  else if (kind === 'chart'){
+    title = 'The Chart';
+    html = state && state.nav ? `${chips('chartzoom', chartZoom, [['ship', 'About the ship'], ['full', 'The whole station']])}
+      <div class="panelchart">${chartSvg(chartZoom)}</div><p>${inline(reckoningWords())}</p>
+      <p class="note">The ship is drawn where the master reckons her, with the dotted ellipse he would answer for. A noon sight of the sun gives the latitude, and narrows the ellipse north and south only; a headland, a light, or the lead narrows it all round.</p>` : '<p class="note">No commission is at sea.</p>';
+  }
   else if (kind === 'glossary'){
     title = 'Glossary';
     const items = content.glossary.slice().sort((a, b) => a.terms[0].localeCompare(b.terms[0]));
@@ -4414,7 +5571,9 @@ function writerHtml(){
     <h3>Flags</h3><p>${flags.length ? flags.map(esc).join(', ') : '<span class="note">None set yet.</span>'}</p>
     <h3>Timers</h3>${timers.length ? `<dl class="kv num">${timers.map(k => `<dt>${esc(k)}</dt><dd>started ${esc(fmtSpan(state.minutes - state.timers[k]))} ago</dd>`).join('')}</dl>` : '<p class="note">None running.</p>'}
     ${state.stores ? `<h3>Stores: books and hold</h3><div class="scroll-x"><table class="log"><thead><tr><th>Store</th><th class="amt">Books</th><th class="amt">In the hold</th></tr></thead><tbody>${content.storeOrder.filter(id => state.stores[id]).map(id => `<tr><td>${esc(id)}</td><td class="amt">${esc(fmtBal(content.stores[id], state.stores[id].book))}</td><td class="amt">${esc(fmtBal(content.stores[id], realQty(id)))}</td></tr>`).join('')}</tbody></table></div>` : ''}
-    <h3>Voyage</h3><p>${state.voyage ? esc(state.voyage.name + ', ' + (state.voyage.dist != null ? Math.round(state.voyage.dist) + ' miles to ' + state.voyage.to + ' bearing ' + POINTS[state.voyage.bearing] : state.voyage.left + ' watches to run')) : 'none'}</p>
+    ${state.nav ? `<h3>The true position</h3><p class="num">${esc(fmtLat(xy2ll(state.nav.tx, state.nav.ty).lat))}, ${esc(fmtLon(xy2ll(state.nav.tx, state.nav.ty).lon))}: ${hyp({ x: state.nav.tx, y: state.nav.ty }, { x: state.nav.rx, y: state.nav.ry }).toFixed(1)} miles from the reckoning, which allows ${state.nav.ex.toFixed(1)} east and west and ${state.nav.ey.toFixed(1)} north and south.</p>
+      <div class="row"><button type="button" class="btn quiet" data-act="truth">${prefs.showTruth ? 'Hide' : 'Show'} the true position on the chart</button></div>` : ''}
+    <h3>Voyage</h3><p>${state.voyage ? esc(state.voyage.name + (state.voyage.dest ? ' for ' + state.voyage.dest : '') + (state.voyage.left != null ? ', ' + state.voyage.left + ' watches to run' : '') + (state.voyage.cruise ? ', cruising ' + state.voyage.cruise.join(' to ') : '')) : 'none'}</p>
     ${state.weather ? `<h3>Weather</h3><dl class="kv num"><dt>System</dt><dd>${esc(state.weather.sys)}, ${state.weather.left} watches more, then ${esc(state.weather.next)}</dd><dt>Wind</dt><dd>${esc(POINTS[state.weather.dir])}, force ${state.weather.force}</dd><dt>Speed</dt><dd>${(state.lastSpeed || 0).toFixed(1)} knots</dd></dl>` : ''}
     <h3>Events seen</h3><p>${seen.map(esc).join(', ')}</p>
     <h3>Jump to an event</h3>
@@ -4479,7 +5638,7 @@ function importText(text, statusId){
 }
 
 /* ---------- prefs ---------- */
-function loadPrefs(){ try { const p = JSON.parse(lsGet(PREF_KEY) || '{}'); if (p.scale) prefs.scale = p.scale; } catch(e){} applyPrefs(); }
+function loadPrefs(){ try { const p = JSON.parse(lsGet(PREF_KEY) || '{}'); if (p.scale) prefs.scale = p.scale; if (p.showTruth) prefs.showTruth = true; } catch(e){} applyPrefs(); }
 function applyPrefs(){ document.documentElement.style.setProperty('--scale', prefs.scale); }
 function savePrefs(){ lsSet(PREF_KEY, JSON.stringify(prefs)); }
 
@@ -5301,6 +6460,9 @@ document.addEventListener('click', e => {
     case 'log': openPanel('log'); break;
     case 'orders': openPanel('orders'); break;
     case 'accounts': openPanel('accounts'); break;
+    case 'chart': openPanel('chart'); break;
+    case 'chartzoom': chartZoom = a.dataset.v; openPanel('chart'); break;
+    case 'truth': prefs.showTruth = !prefs.showTruth; savePrefs(); openPanel('writer'); break;
     case 'books': booksTab = a.dataset.tab || booksTab; openPanel('books'); break;
     case 'glossary': openPanel('glossary'); break;
     case 'papers': openPanel('papers'); break;
@@ -5387,6 +6549,9 @@ window.SloopTest = {
   real: id => realQty(id),
   speedAt: a => speedAt(a),
   sandboxRun: cfg => sandboxRun(cfg),
+  chartSvg: m => chartSvg(m),
+  stepWatch: () => { const b = { x: state.nav.tx, y: state.nav.ty }; sailOneWatch(); advance(240); return { tgt: navTarget(), course: state.nav.course, speed: state.lastSpeed, moved: hyp(b, { x: state.nav.tx, y: state.nav.ty }), flags: Object.keys(state.flags) }; },
+  landDist: (x, y) => landDist({ x, y }, false),
   get sb(){ return sb; },
   parseMoney, fmtMoney, watchOf: m => watchOf(m)
 };
