@@ -120,6 +120,16 @@ textarea{min-height:7rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-
 .strip .wind{display:inline-flex;align-items:center;gap:.3rem}
 .strip .wind svg{flex:none}
 
+/* the muster */
+.officers{display:grid;gap:.8rem}
+.officer{border:1px solid var(--rule);padding:.6rem .8rem;background:var(--paper-2)}
+.officer p{margin:.25rem 0}
+.ohead{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;flex-wrap:wrap}
+.ohead .post{color:var(--ink-2);font-size:.9rem}
+.officer .about{font-style:italic;color:var(--ink-2)}
+.trait{display:inline-block;border:1px solid var(--rule);border-radius:2px;padding:0 .4rem;margin-right:.3rem;font-family:var(--display-sc);font-size:.85rem;letter-spacing:.03em;color:var(--accent)}
+@media (min-width: 640px){ .officers{grid-template-columns:1fr 1fr} }
+
 /* the sea chart */
 .seachart{width:100%;height:auto;display:block;box-shadow:0 1px 6px rgba(60,40,15,.28)}
 .scenechart{width:min(100%, 36vh);margin:.2rem auto .9rem}
@@ -227,7 +237,10 @@ running_rigging: 72
 sails: 64
 guns: 16
 seamanship: 2
-master_skill: 3
+gunnery: 2
+health: 4
+sick: 2
+morale: 0
 cash: £11 4s 6d
 
 STORE: biscuit
@@ -535,6 +548,255 @@ Signs: an oily swell and not a breath stirring
 Seeing: 80
 Noon sight: 85
 Follows: settled 3, sirocco 1, levanter 1
+</script>
+
+<script type="text/plain" class="content" data-name="The officers and the people">
+# ------------------------------------------------------------
+# The gunroom and the people. Each post is filled at the start
+# of a commission from the candidates written for it, so every
+# commission has a different set of officers. Qualities run
+# from 1 to 5 and are never shown as numbers. A trait with a
+# number after it ("drunkard 55") has that chance in 100.
+# ------------------------------------------------------------
+
+CREW
+Scurvy: 35
+Idle: Nothing to the purpose: the talk is all of prize money, and of the Admiral's cook.
+Men: Abel Price, John Tozer, Michael Doyle, Patrick Hagan, William Penrose, Thomas Rowe, James Kemp, Daniel Shea
+Men: George Lugg, Samuel Pascoe, Henry Bilbie, Owen Kelly, Peter Nance, Robert Gribble, Edward Toms, Joseph Mallet
+Men: Francis Burke, Matthew Quick, Isaac Trudgeon, John Organ, William Snell, Timothy Foley, Charles Rundle, Benjamin Hext
+Men: Hugh Malone, Nicholas Treloar, Walter Spry, Edward Hocking, Mark Gilbart, Luke Dennehy, Simon Vosper, Thomas Ivey
+
+GAUGE: seamanship
+Name: Seamanship
+Words: 1 landsmen and boys, 1.8 a green crew, 2.6 a fair crew, 3.4 smart, 4.3 prime seamen
+
+GAUGE: gunnery
+Name: Gunnery
+Words: 1 slack, 1.8 slow, 2.6 ordinary, 3.4 quick, 4.3 crack
+
+GAUGE: morale
+Name: Temper
+Words: -4 mutinous, -2.5 sullen, -1 discontented, -0.3 indifferent, 0.5 willing, 1.5 cheerful, 3 devoted
+
+GAUGE: health
+Name: Health
+Words: 1 sickly, 2 poorly, 2.8 tolerable, 3.6 healthy, 4.6 hale
+
+FLAG: sea_lawyer
+Chance: 50
+Gossip: There is a sea-lawyer in the larboard watch, a man called {man}, who knows the Articles of War better than the officers do.
+Known: There is a sea-lawyer among the people.
+
+FLAG: irish_gang
+Chance: 45
+Gossip: The Irishmen from the Plymouth press and the Cornishmen will not mess together, and have not since Gibraltar.
+Known: The Irish and the Cornish hands are at daggers drawn.
+
+FLAG: jonah
+Chance: 15
+Gossip: The forecastle has decided there is a Jonah aboard, and is only waiting for something to go wrong to say who.
+Known: The people believe there is a Jonah aboard.
+
+FLAG: old_faction
+Chance: 60
+Gossip: Half the forecastle were the late captain's own followers, and they do not think much of the new one, or of anyone.
+Known: The late captain's followers keep together, and keep their distance.
+
+FLAG: feud_lt_master
+Chance: 35
+Gossip: Mr Treharne and {master} have not exchanged a civil word since a dispute over the reckoning off Cape Spartel.
+Known: Mr Treharne and the master are not on speaking terms.
+
+TRAIT: tarpaulin
+Name: Tarpaulin
+Seamanship: +1
+About: Came up from the lower deck. A fine seaman, and never quite easy in a wardroom.
+
+TRAIT: old_navy
+Name: Old Navy
+Seamanship: +1
+About: Has been at sea since before you were born, and will not be told anything.
+
+TRAIT: mathematical
+Name: Mathematical
+About: Works his sights to the second, with tables of his own; his latitudes are the best in the squadron.
+
+TRAIT: drunkard
+Name: Drinks
+Hidden
+Sobriety: -2
+Gossip: {name} has been seen going below with a bottle under his coat more than once, and coming up without it.
+
+TRAIT: sawbones
+Name: Sawbones
+Skill: +1
+About: Excellent with a saw and a tourniquet; less patient with fevers.
+
+TRAIT: natural_philosopher
+Name: Natural Philosopher
+About: Keeps a barometer, a journal of the weather, and a cabinet of specimens in the bread-room.
+
+TRAIT: light_fingered
+Name: Light-fingered
+Hidden
+Sets: purser_skims
+Gossip: {name}'s steward has been selling the ship's cheese to the bumboats at Mahon, and nobody believes he does it on his own account.
+
+TRAIT: methodist
+Name: Methodist
+About: Will not swear, will not drink, and holds a meeting for the people on the forecastle on Sundays.
+
+TRAIT: hard_horse
+Name: Hard Horse
+Leadership: +1
+About: Drives the people hard, with a rattan, and gets the work out of them.
+
+TRAIT: gun_crank
+Name: Gun-mad
+About: Lives for the guns, and drills the crews whenever he is let.
+
+OFFICER: treharne
+Post: lieutenant
+Name: Mr Treharne
+Seamanship: 4
+Gunnery: 3
+Leadership: 3
+Sobriety: 4
+Loyalty: 0
+Traits: tarpaulin, drunkard 10
+About: Forty years old, twenty-six of them at sea, and still a lieutenant.
+
+OFFICER: ebbrell
+Post: master
+Name: Mr Ebbrell
+Seamanship: 4
+Leadership: 2
+Sobriety: 3
+Traits: old_navy, drunkard 55
+About: Sixty if a day, master of nine ships before this one, and says so.
+
+OFFICER: quiney
+Post: master
+Name: Mr Quiney
+Seamanship: 3
+Leadership: 2
+Sobriety: 4
+Traits: mathematical, drunkard 10
+About: Young, earnest, and lately passed for master at the Trinity House, with a new quadrant and great faith in it.
+
+OFFICER: pask
+Post: master
+Name: Mr Pask
+Seamanship: 5
+Leadership: 3
+Sobriety: 3
+Traits: drunkard 70
+About: The best pilot on the coast of Spain, by his own account and by most other people's.
+
+OFFICER: nuttall
+Post: surgeon
+Name: Mr Nuttall
+Skill: 3
+Sobriety: 4
+Traits: sawbones
+About: Walked the wards at Haslar; cuts quickly and talks little.
+
+OFFICER: ferrier
+Post: surgeon
+Name: Mr Ferrier
+Skill: 3
+Sobriety: 5
+Traits: natural_philosopher
+About: A physician of the Edinburgh school, come to sea for reasons he does not explain.
+
+OFFICER: jago
+Post: surgeon
+Name: Mr Jago
+Skill: 2
+Sobriety: 3
+Traits: drunkard 40
+About: A surgeon's mate made up to surgeon for want of anyone better.
+
+OFFICER: hosken
+Post: purser
+Name: Mr Hosken
+Skill: 4
+Sobriety: 4
+Traits: light_fingered 50
+About: A Cornishman, neat in black, with a careful eye and a pencil behind his ear.
+
+OFFICER: coad
+Post: boatswain
+Name: Mr Coad
+Seamanship: 4
+Leadership: 3
+Sobriety: 5
+Traits: methodist
+About: A great hand with a splice and a hymn.
+
+OFFICER: brassey
+Post: boatswain
+Name: Mr Brassey
+Seamanship: 4
+Leadership: 3
+Sobriety: 3
+Traits: hard_horse
+About: Carries a rattan, and uses it.
+
+OFFICER: penhale
+Post: boatswain
+Name: Mr Penhale
+Seamanship: 3
+Leadership: 3
+Sobriety: 3
+Traits: drunkard 25
+About: Quiet, slow and well liked; knows every rope in the ship by its first name.
+
+OFFICER: tuffin
+Post: gunner
+Name: Mr Tuffin
+Gunnery: 5
+Sobriety: 4
+Traits: gun_crank
+About: Talks of nothing but powder, and of powder with love.
+
+OFFICER: orme
+Post: gunner
+Name: Mr Orme
+Gunnery: 3
+Sobriety: 4
+About: A gunner's mate in a seventy-four for ten years, who keeps his magazine like a chapel.
+
+OFFICER: dacre
+Post: gunner
+Name: Mr Dacre
+Gunnery: 2
+Sobriety: 3
+Traits: drunkard 40
+About: Old, deaf from the guns, and fond of his allowance.
+
+OFFICER: slee
+Post: carpenter
+Name: Mr Slee
+Skill: 4
+Sobriety: 4
+About: A Deptford shipwright who came to sea for his health, and has complained of it ever since.
+
+OFFICER: venning
+Post: carpenter
+Name: Mr Venning
+Skill: 4
+Sobriety: 3
+Traits: drunkard 35
+About: Can make anything out of anything, and sometimes does.
+
+OFFICER: hobday
+Post: carpenter
+Name: Mr Hobday
+Skill: 2
+Sobriety: 4
+About: Young, willing, and not yet sure which end of an adze is which.
 </script>
 
 <script type="text/plain" class="content" data-name="The chart">
@@ -1403,6 +1665,21 @@ CHOICE: Acknowledge them
 Log: Received orders from the Commander-in-Chief, by hand, to see three victuallers safe to the squadron off Toulon.
 
 
+EVENT: orders_unpresented
+Title: Orders, Unasked For
+Place: ship
+Tags: ship
+Urgent
+Once
+Requires: not presented, day 7 or more
+Effects: set presented; set summoned; set admiral_seen; set pardoe_grudge; orders convoy_toulon; start sail_by; standing -3
+
+A packet comes off from the flagship, addressed in Mr Pardoe's hand. It contains your orders, which are to take three victuallers to the squadron off Toulon, and a covering note. The Commander-in-Chief, Mr Pardoe writes, has been given to understand that Captain {surname} is in Mahon, and has thought it convenient to send his orders to him, since Captain {surname} has not found it convenient to come for them.
+
+CHOICE: Acknowledge them
+Log: Received orders from the Commander-in-Chief, by hand, to see three victuallers safe to the squadron off Toulon.
+
+
 EVENT: sail_at_once
 Title: An Order to Sail
 Place: ship
@@ -1503,6 +1780,11 @@ Effects: cabin_stores -1; set dined_dawe; set friend_dawe; clear dawe_rival; unt
 Text: Dawe comes, and talks, and drinks your health in your own wine a great many times. By the end of it he has decided that you are a capital fellow, and says so, loudly, to his boat's crew.
 Log: Commander Dawe of the Petrel dined with me.
 Next: ship_hub
+
+CHOICE: Invite the gunroom
+Needs: cabin_stores 1 or more
+Why not: The cabin stores will not run to the whole gunroom.
+Next: gunroom_dinner
 
 CHOICE: Dine alone
 Effects: until 18:00
@@ -2171,6 +2453,23 @@ Next: master_forecast
 CHOICE: Cast the lead
 Next: sounding
 
+CHOICE: Exercise the people aloft
+Needs: day, force 6 or less
+Why not: Not by night, nor in a seaway like this.
+Effects: drill seamanship 1; pass 2 hours
+Text: The people are sent aloft to loose and furl, reef and shake out, send down the topgallant yards and sway them up again, with {boatswain} timing every evolution and saying what he thinks of it.
+Log: Exercised the people at making and shortening sail.
+
+CHOICE: Invite the gunroom to dinner
+Needs: after 12:00, before 17:00, cabin_stores 1 or more
+Why not: Dinner is at three, and the cabin stores must run to it.
+Next: gunroom_dinner
+
+CHOICE: Release the master from arrest
+Requires: master_arrested
+Effects: clear master_arrested; master_loyalty +0.5
+Text: {master} returns to his duty, sober, silent and correct.
+
 CHOICE: Keep a good offing from the land
 Requires: not good_offing
 Effects: set good_offing
@@ -2222,26 +2521,28 @@ Place: sea
 
 The drum beats to quarters. The guns are cast loose, the gun captains take their stations, and Mr Treharne stands by you with his watch in his hand.
 
-[if gunnery 2 or less] It is not a quick business. Half the crews are landmen who have never seen a gun fired, and the other half remember the late captain, who never fired one.
+[if gunnery 2.2 or less] It is not a quick business. Half the crews are landmen who have never seen a gun fired, and the other half remember the late captain, who never fired one.
 
 [if gunnery 3 or more] They are quicker than they were, and they know it.
 
+[if gunner is gun_crank] {gunner} is everywhere at once, happier than you have seen him.
+
 CHOICE: Go through the motions without powder
-Effects: gunnery +1; pass 2 hours
+Effects: drill gunnery 1; pass 2 hours
 Text: The guns are run in, sponged, loaded with nothing, run out and pointed at nothing, over and over, until the men can do it in the dark. It is dull, and it answers, up to a point.
 Log: Exercised the great guns.
 
 CHOICE: Fire three broadsides at a cask
 Requires: not carronades
 Needs: powder 1 or more
-Effects: store powder -0.48 "Expended in exercising the great guns"; store shot6 -24 "Expended in exercising the great guns"; gunnery +2; pass 2 hours
+Effects: store powder -0.48 "Expended in exercising the great guns"; store shot6 -24 "Expended in exercising the great guns"; drill gunnery 2; pass 2 hours
 Text: A cask with a flag on it is dropped astern. The first broadside is ragged and wide, the second less so, and the third knocks the flag away, though nobody will swear which gun did it.
 Log: Exercised the great guns. Fired three broadsides at a mark.
 
 CHOICE: Fire three broadsides at a cask
 Requires: carronades
 Needs: powder 1 or more
-Effects: store powder -0.36 "Expended in exercising the great guns"; store shot18 -24 "Expended in exercising the great guns"; gunnery +2; pass 2 hours
+Effects: store powder -0.36 "Expended in exercising the great guns"; store shot18 -24 "Expended in exercising the great guns"; drill gunnery 2; pass 2 hours
 Text: A cask with a flag on it is dropped astern. The carronades go off with a short, flat bang and a great deal of recoil. At three cables they throw wide; at one cable they would have smashed it to staves, as the gunner observes.
 Log: Exercised the great guns. Fired three broadsides at a mark.
 
@@ -2440,7 +2741,9 @@ Title: The Master's Opinion
 Place: sea
 Effects: forecast
 
-The master comes up and looks at the sky, the sea, the set of the clouds and the dog-vane, in that order, and sucks his teeth.
+{master} comes up and looks at the sky, the sea, the set of the clouds and the dog-vane, in that order, and sucks his teeth.
+
+[if surgeon is natural_philosopher] {surgeon}, who has followed him up with his barometer, adds a remark about the mercury, which the master ignores.
 
 {forecast}
 
@@ -2940,11 +3243,11 @@ Once
 Requires: day 4 or more
 Effects: leak +3
 
-The carpenter comes aft at the change of the watch to report that she is making more water than she did: {leak} inches an hour, and the pumps going for half of every watch to keep her free.
+{carpenter} comes aft at the change of the watch to report that she is making more water than she did: {leak} inches an hour, and the pumps going for half of every watch to keep her free.
 
 CHOICE: Have him search for it
 Effects: pass 1 watch
-Chance 55:
+Chance 30, +8 per carpenter_skill:
 Effects: leak -3
 Text: He finds it at last in the fore peak: a treenail started under the bows, and the sea coming in round it in a thin, steady stream. He plugs it, and she is easier at once.
 Log: The carpenter found and stopped a leak in the bows.
@@ -3008,6 +3311,376 @@ The *{ship}* comes up the long harbour of Mahon and moors off the hospital on {d
 [if water_ran_out] She came in with her water out, and the people know whose fault that is.
 
 The wind, the chart and the enemy are still to be built. Your log stands below, and the ship's books are under Books.
+</script>
+
+<script type="text/plain" class="content" data-name="Events: The gunroom and the people">
+# ------------------------------------------------------------
+# Events of the gunroom and the lower deck. The offences are in
+# both the "ship" and "sea" pools, and come oftener in a slack
+# ship than a taut one.
+# ------------------------------------------------------------
+
+EVENT: gunroom_intro
+Title: The Gunroom
+Place: ship
+Tags: ship
+Urgent
+Once
+Requires: day 2 or more, after 09:00, before 17:00
+
+Mr Treharne brings the warrant officers aft to make their bows, in order of precedence and of their own opinion of themselves.
+
+{master}, the master: {master_about}
+
+{surgeon}, the surgeon: {surgeon_about}
+
+{boatswain}, the boatswain: {boatswain_about}
+
+{gunner}, the gunner: {gunner_about}
+
+{carpenter}, the carpenter: {carpenter_about}
+
+CHOICE: Say a civil word to each of them
+Effects: gunroom +0.5; pass 30 minutes
+
+CHOICE: Ask them to dine with you on Sunday
+Needs: cabin_stores 1 or more
+Why not: The cabin stores will not run to the whole gunroom.
+Effects: cabin_stores -1; gunroom +1; gossip
+Text: They come, in their best coats, and eat a great deal, and drink your health, and by the third bottle are talking freely, as you meant they should. {gossip}
+Log: The gunroom dined with me.
+
+CHOICE: Nod to them, and get on with the day's business
+
+
+EVENT: gunroom_dinner
+Title: The Gunroom Dines Aft
+Effects: cabin_stores -1; gunroom +0.5; gossip; pass 3 hours
+
+The gunroom dines with you in the great cabin: the lieutenant, the master, the surgeon and the purser, with Kinvig behind your chair and the decanter going round with the sun.
+
+[if feud_lt_master] Mr Treharne and {master} address each other only through you, and only when they must.
+
+Over the port the talk loosens, as you meant it should. {gossip}
+
+CHOICE: Give them the King, and the ship
+Log: The gunroom dined with me.
+
+
+EVENT: master_drunk
+Title: The Master
+Place: sea
+Tags: sea
+Watch chance: 25
+Requires: master_drunk, at_sea, not master_relieved, not master_arrested
+
+{master} comes on deck at the change of the watch smelling strongly of rum. When he lays off the course on the slate his hand is not steady, and the reckoning he gives you is a bold one.
+
+[if master is old_navy] He tells you, unasked, that he was navigating ships before you were breeched.
+
+CHOICE: Send him below, and have Mr Treharne keep the reckoning
+Effects: set master_relieved; clear master_drunk; reveal master drunkard; master_loyalty -1
+Text: He goes, with the dignity of a man who knows exactly how drunk he is. Mr Treharne takes the slate without a word.
+Log: The master being unfit for duty, ordered him below.
+
+CHOICE: Overlook it
+Effects: clear master_drunk; reveal master drunkard
+Text: You say nothing. The master goes on working his reckoning, and you go on wondering about it.
+
+CHOICE: Put him under arrest
+Effects: set master_arrested; clear master_drunk; reveal master drunkard; master_loyalty -2
+Text: He is sent below under arrest, and Mr Treharne keeps the reckoning until you choose to release him. The gunroom is very quiet at dinner.
+Log: Put the master under arrest for drunkenness.
+
+
+EVENT: reckoning_out
+Title: The Reckoning
+Place: sea
+Tags: sea
+Urgent
+Requires: reckoning_out
+Effects: clear reckoning_out
+
+The land has come up a long way from where the master's reckoning put it. {master} looks at the chart, and at the land, and at the chart again, and says that the current hereabouts is very deceptive.
+
+CHOICE: Accept it
+
+CHOICE: Ask Mr Treharne quietly what he thinks
+Effects: reveal master drunkard
+Text: Mr Treharne considers. [His answer depends on what he knows, and he says only what he knows.] 'The current is what it always was, sir,' he says at last, which is as much as one officer will say of another.
+
+CHOICE: Tell {master} you expect a better reckoning
+Effects: master_loyalty -0.5
+Text: 'Aye aye, sir,' says the master, stiffly.
+
+
+EVENT: surgeon_drunk
+Title: The Sick-Bay
+Tags: sea, ship
+Watch chance: 15
+Requires: surgeon_drunk, sick 3 or more
+
+The surgeon's mate comes aft to say that {surgeon} is indisposed, and that there are men in the sick-bay he does not know what to do for.
+
+CHOICE: Send Kinvig to him with a pot of strong coffee
+Effects: clear surgeon_drunk; reveal surgeon drunkard; surgeon_loyalty -0.5
+Text: Kinvig goes, and comes back, and says only, 'He's up, sir.'
+
+CHOICE: Go down to the sick-bay yourself
+Effects: clear surgeon_drunk; reveal surgeon drunkard; morale +0.2; pass 1 hour
+Text: You go down, and the sick men see you go down. It does them more good, very likely, than anything the surgeon would have done.
+
+CHOICE: Let it be
+Effects: clear surgeon_drunk; sick +2
+
+
+EVENT: offence_drunk
+Title: Drunk on Duty
+Tags: sea, ship
+Weight: 1, +0.4 per leniency, -0.15 per severity, -0.6 if boatswain is methodist
+Requires: day 2 or more
+Effects: pick man
+
+The boatswain's mate brings {man}, seaman, to the mast: found drunk in his watch, with a bottle of wine stowed in the cable-tier, and a great deal to say about it.
+
+CHOICE: Let him off with a warning
+Effects: punish pass; morale +0.1
+Text: He goes forward grinning. So, a little later, does the story.
+
+CHOICE: Stop his grog for a week
+Effects: punish grog
+Log: Stopped {man}'s grog for a week, for drunkenness.
+
+CHOICE: Have him started
+Effects: punish start; morale -0.1
+Text: The boatswain's mate starts him forward with a rope's end, as he has started a great many men before.
+Log: Started {man}, seaman, for drunkenness.
+
+CHOICE: Seize him up, and give him a dozen
+Effects: punish flog; morale -0.3
+Text: All hands are turned up to witness punishment. The grating is rigged, the Articles of War are read, and he takes his dozen without a sound. The people go back to their work in silence.
+Log: Punished {man}, seaman, with twelve lashes for drunkenness.
+
+
+EVENT: offence_theft
+Title: A Thief
+Tags: sea, ship
+Weight: 0.7, +0.3 per leniency, -0.1 per severity
+Requires: day 3 or more
+Effects: pick man
+
+{man}'s messmates bring him aft themselves: a silver watch belonging to one of them has been found in his bag. They stand round him in a ring, and there is no doubt at all what they expect.
+
+CHOICE: Let him off with a warning
+Effects: punish pass; morale -0.4
+Text: The messmates go forward without a word. That night {man} is found at the foot of the fore-hatch with two black eyes, and nobody saw anything.
+
+CHOICE: Stop his grog, and turn him out of the mess
+Effects: punish grog; morale -0.1
+Log: Stopped {man}'s grog, for theft.
+
+CHOICE: Seize him up, and give him a dozen
+Effects: punish flog; morale +0.1
+Text: He is flogged at the gangway before the ship's company. Theft from a messmate is the one crime the lower deck will not forgive, and nobody pities him.
+Log: Punished {man}, seaman, with twelve lashes for theft.
+
+
+EVENT: offence_insolence
+Title: Insolence
+Tags: sea, ship
+Weight: 0.8, +0.3 per leniency, +0.8 if old_faction, -0.1 per severity
+Requires: day 3 or more
+Effects: pick man
+
+{boatswain} comes aft, very red in the face. {man}, one of the late captain's men, has told him in the hearing of the whole watch what he may do with his orders.
+
+CHOICE: Let it pass
+Effects: punish pass; boatswain_loyalty -0.5
+Text: {boatswain} hears your decision, says 'Aye aye, sir,' in a voice like a closing door, and goes forward.
+
+CHOICE: Have him started
+Effects: punish start; morale -0.1
+Log: Started {man}, seaman, for insolence to the boatswain.
+
+CHOICE: Seize him up, and give him a dozen
+Effects: punish flog; morale -0.3; boatswain_loyalty +0.5
+Log: Punished {man}, seaman, with twelve lashes for insolence to his superior officer.
+
+
+EVENT: sea_lawyer_petition
+Title: A Petition
+Tags: sea, ship
+Once
+Weight: 2
+Requires: sea_lawyer, day 4 or more
+Effects: pick man; reveal sea_lawyer
+
+{man}, an able seaman of the larboard watch, comes aft with his hat in one hand and a paper in the other: a petition from the people, written out fair, setting forth that the beef is short of weight, and quoting the purser's instructions chapter and verse.
+
+CHOICE: Hear him out, and look into it
+Effects: morale +0.5; reveal purser light_fingered
+Text: You read it through. It is well written, very well written, and some of it is true.
+
+CHOICE: Tell him the proper course is through his officers
+Effects: morale -0.3
+
+CHOICE: Disrate him, and stop his grog
+Effects: punish grog; morale -0.5; clear sea_lawyer
+Text: He hears it without a change of face, and goes forward, and the forecastle hears it too.
+Log: Disrated {man}, able seaman, and stopped his grog, for presenting a petition contrary to the Articles of War.
+
+
+EVENT: irish_cornish
+Title: A Fight Below
+Tags: sea, ship
+Once
+Weight: 2
+Requires: irish_gang, day 3 or more
+Effects: reveal irish_gang
+
+There is a roar from the berth-deck, and the officer of the watch comes aft to report a fight: the Irishmen from the Plymouth press against the Cornishmen of the starboard watch, with mess kids and a capstan bar, and three men already in the sick-bay.
+
+CHOICE: Flog the ringleaders of both parties
+Effects: punish flog; morale -0.3; sick +2
+Log: Punished the ringleaders of a riot on the berth-deck, twelve lashes each.
+
+CHOICE: Mess them apart, and keep them apart
+Effects: sick +2
+Text: The purser's steward redraws the messes. It answers, after a fashion.
+
+CHOICE: Put them to work together under {boatswain}
+Effects: sick +2
+Chance 40, +12 per boatswain_leadership:
+Effects: clear irish_gang; morale +0.4
+Text: {boatswain} works them together for a week at the dirtiest jobs in the ship, until they hate him a great deal more than they hate each other. It is a kind of peace.
+Otherwise:
+Effects: morale -0.3
+Text: It ends in another fight, in the hold this time.
+
+
+EVENT: jonah
+Title: A Jonah
+Tags: sea
+Once
+Weight: 2
+Requires: jonah, day 6 or more
+Effects: pick man; reveal jonah
+
+The people have decided who the Jonah is: {man}, a landsman with a squint and a habit of whistling in the dog watches. Nobody will mess with him, and the cook will not serve him.
+
+CHOICE: Take him aft as your own servant, where they cannot get at him
+Effects: clear jonah; morale +0.2
+Text: Kinvig receives him with silent contempt, and teaches him to clean silver.
+
+CHOICE: Tell them it is a heathen superstition
+Effects: morale -0.3
+Text: They hear you respectfully, and go on believing it.
+
+CHOICE: Promise to put him ashore at the first opportunity
+Effects: set jonah_to_land; clear jonah; morale +0.3
+
+
+EVENT: old_faction
+Title: The Late Captain's Men
+Tags: sea, ship
+Once
+Requires: old_faction, day 3 or more
+Effects: reveal old_faction
+
+The late captain's followers have kept together since you came aboard: the same mess, the same watch, the same way of looking at a new officer as though he were weather. Their leader is the captain of the foretop, a big quiet man named Hext, whom the others mind before they mind anyone.
+
+CHOICE: Break them up among the watches
+Effects: clear old_faction; morale -0.3
+Text: The watch bill is redrawn. They take it as it is meant.
+
+CHOICE: Rate Hext boatswain's mate
+Effects: clear old_faction; morale +0.3; boatswain_loyalty -0.5
+Text: Hext touches his hat and says nothing. The late captain's men are your men now, more or less, and {boatswain} has a mate he did not choose.
+
+CHOICE: Leave them be
+
+
+EVENT: gunroom_feud
+Title: A Quarrel at Dinner
+Tags: sea, ship
+Once
+Requires: feud_lt_master, day 3 or more
+Effects: reveal feud_lt_master
+
+Mr Treharne and {master} fall out at dinner in the gunroom, over a point of the reckoning, in voices that carry through the bulkhead to the cabin. By the time the steward brings the cheese they have reached the subject of each other's characters.
+
+CHOICE: Send for them both, and make them shake hands
+Chance 45, +10 per lieutenant_leadership:
+Effects: clear feud_lt_master; lieutenant_loyalty +0.5; master_loyalty +0.5
+Text: They shake hands, stiffly, in your presence. Whether it holds is another matter, but it is a beginning.
+Otherwise:
+Effects: lieutenant_loyalty -0.5; master_loyalty -0.5
+Text: They shake hands, because you tell them to, and do not speak again for a week.
+
+CHOICE: Take Mr Treharne's part
+Effects: lieutenant_loyalty +1; master_loyalty -1
+
+CHOICE: Take the master's part
+Effects: lieutenant_loyalty -1; master_loyalty +1
+
+
+EVENT: scurvy
+Title: The Scurvy
+Tags: sea
+Urgent
+Once
+Requires: scurvy, at_sea
+
+{surgeon} comes aft with a grave face. There is scurvy in the ship: spongy gums, old wounds opening again, men too weak to go aloft who were well a fortnight since. Lemon juice would stop it, or fresh greens; he has neither.
+
+CHOICE: Bear up for Mahon, and fresh provisions
+Requires: not voyage homeward
+Effects: voyage homeward; set returned_for_scurvy
+Log: The scurvy being in the ship, bore up for Mahon.
+
+CHOICE: Stand on, and trust to the end of the cruise
+Effects: morale -0.3
+
+
+EVENT: burial
+Title: Burial at Sea
+Tags: sea
+Urgent
+Requires: death, at_sea
+Effects: clear death
+
+{dead} is sewn into his hammock by the sailmaker, with two round shot at his feet and the last stitch through his nose, as the custom is. The ship's company is turned up, the colours half-masted, and the body laid on a grating at the gangway under the flag.
+
+CHOICE: Read the service yourself
+Effects: morale +0.2
+Text: You read it from the prayer book, as steadily as you can. At "we therefore commit his body to the deep" the grating is tilted, and he is gone.
+Log: Committed the body of {dead} to the deep.
+
+CHOICE: Have Mr Treharne read it
+Log: Committed the body of {dead} to the deep.
+
+
+EVENT: round_robin
+Title: A Round Robin
+Tags: sea, ship
+Urgent
+Once
+Requires: morale -3 or less, day 5 or more
+
+A paper is found nailed to the capstan at dawn: a round robin, its signatures written in a circle so that no man's name stands first. It sets out the people's grievances in plain words, and says that they will not bear them much longer.
+
+CHOICE: Read it aloud to the ship's company, and answer it
+Effects: morale +1.2; severity -1
+Text: You read it out, every word, and answer every point of it, and promise what you can promise. They hear you in a silence that is not hostile, quite.
+Log: A paper of grievances being found, read it to the ship's company and answered it.
+
+CHOICE: Find the man who wrote it, and flog him
+Effects: punish flog; morale -1; severity +2
+Text: Nobody will say who wrote it, and in the end it is the sea-lawyer who is seized up, because it might as well be him.
+Log: Punished a seaman with twelve lashes for mutinous assembly.
+
+CHOICE: Have it taken down, and say nothing
+Effects: morale -0.5
 </script>
 
 <script type="text/plain" class="content" data-name="Orders">
@@ -3206,6 +3879,30 @@ two bells | four bells | eight bells: Time aboard is struck on the ship's bell e
 first watch: The watch from eight in the evening until midnight.
 watch: One of the divisions of the ship's day, mostly of four hours: the first watch (8 p.m. to midnight), middle, morning, forenoon, afternoon, and the two short dog watches between 4 and 8 p.m.
 fortnight: Two weeks.
+start | started: To beat a man with a rope's end or a rattan, on the spot, without ceremony. Officially frowned on; universal.
+grog: The daily ration of spirits or wine. Stopping a man's grog was the mildest punishment, and keenly felt.
+a dozen | twelve lashes | flogged | flog | seize him up: A captain could award up to twelve lashes with the cat-o'-nine-tails without a court-martial. The man was seized up (tied) to a grating at the gangway, before the whole ship's company.
+grating: A wooden lattice hatch cover, rigged upright at the gangway for a flogging.
+Articles of War: The thirty-six articles, read aloud regularly, setting out the crimes of the service and their punishments. Most ended "shall suffer death, or such other punishment as a court-martial shall think fit".
+to the mast: Brought before the captain at the mainmast, to answer a charge.
+sea-lawyer: A seaman who knows the regulations and his rights, and says so. Officers loathed them.
+round robin: A petition with the names signed in a circle, so that no man could be singled out as the ringleader.
+Jonah: A man believed to bring bad luck to a ship.
+tarpaulin: An officer who came up from the lower deck, rather than as a young gentleman.
+disrate | disrated: To reduce a man from a higher rating, such as able seaman, to a lower.
+captain of the foretop: The leading seaman of the men who work the foremast aloft.
+boatswain's mate: A petty officer under the boatswain, who drives the people to their work and administers punishment.
+sick-bay | sick list: The space set apart for the sick, and the surgeon's daily list of men unfit for duty.
+surgeon's mate: The surgeon's assistant; often not much less qualified than the surgeon.
+Haslar: The great naval hospital at Gosport, near Portsmouth.
+Trinity House: The corporation that licensed pilots and, in this period, examined masters for the Navy.
+quadrant: The instrument for measuring the sun's altitude; the sextant was replacing it.
+mess kids: Small wooden tubs in which each mess drew its food from the galley.
+messes | mess | messmates: The people ate in messes of six or eight men at a table between the guns, and messmates were a man's family at sea.
+hammock: The people slept in canvas hammocks slung from the beams; a man who died at sea was buried in his.
+round shot at his feet: To sink the body. The sailmaker's last stitch through the nose was, by tradition, to make sure the man was dead.
+Methodist: A follower of John Wesley's evangelical movement; in the Navy, a man who would not drink or swear, and was a trial to his messmates.
+rattan: A cane carried by boatswains and their mates for starting the men.
 run down the latitude | parallel: Sailing due east or west along a known latitude until the land comes up. A navigator who could find his latitude by the sun but not his longitude would aim deliberately to one side of his landfall, so as to know which way to turn.
 fresh departure: A new starting point for the reckoning, taken from a known landmark.
 dead reckoning | reckoning: Working out the ship's position from her courses and the distances run by the log, without sight of land or sun. Errors from current, leeway and bad steering accumulate with every watch.
@@ -3224,7 +3921,7 @@ lying off and on | lay off and on: Keeping a safe distance from the land, standi
 breakers: The surf of waves breaking on rocks or shoals: at night, the sound is often the only warning.
 aground | took the ground | hard and fast: Touching or stuck on the bottom.
 kedge: A small anchor, carried out by the boats, by which a ship can heave herself off the ground or along a channel.
-start the water | started: To empty the water casks, to lighten the ship.
+start the water: To empty the water casks, to lighten the ship.
 best bower | bowers: The two great anchors carried at the bows.
 loom of the land: The dark shape of land seen at night against the sky.
 Columbretes: A cluster of small volcanic islets off the coast of Valencia, a danger in the dark.
@@ -3358,7 +4055,7 @@ sprung: Of a mast or yard: cracked, but still standing.
 (function(){
 'use strict';
 
-const BUILD = 'Build 6: chart and navigation';
+const BUILD = 'Build 7: crew and officers';
 const SAVE_KEY = 'sloop.autosave.v1';
 const PREF_KEY = 'sloop.prefs.v1';
 const GAME_ID = 'sloop-of-war';
@@ -3553,7 +4250,8 @@ function parseConds(str, where, prob){
   const out = [];
   for (const part0 of splitOutsideQuotes(str.replace(/\band\b/gi, ','), /,/)){
     const part = part0.trim(); let m;
-    if ((m = part.match(/^(not\s+)?(night|day)$/i))) out.push({ type: 'night', neg: (!!m[1]) !== (m[2].toLowerCase() === 'day') });
+    if ((m = part.match(/^(not\s+)?(lieutenant|master|surgeon|purser|boatswain|gunner|carpenter)\s+is\s+([a-z_]+)$/i))) out.push({ type: 'trait', post: m[2].toLowerCase(), trait: m[3].toLowerCase(), neg: !!m[1] });
+    else if ((m = part.match(/^(not\s+)?(night|day)$/i))) out.push({ type: 'night', neg: (!!m[1]) !== (m[2].toLowerCase() === 'day') });
     else if ((m = part.match(/^(not\s+|no\s+)?weather\s+([a-z0-9_]+)$/i))) out.push({ type: 'weather', name: m[2].toLowerCase(), neg: !!m[1] });
     else if ((m = part.match(/^(not\s+)?wind\s+from\s+(\S+)$/i))){
       const pt = parsePoint(m[2]);
@@ -3612,6 +4310,13 @@ function parseEffects(str, where, prob){
     else if (/^survey$/i.test(part)) out.push({ op: 'survey' });
     else if (/^forecast$/i.test(part)) out.push({ op: 'forecast' });
     else if (/^put to sea$/i.test(part)) out.push({ op: 'puttosea' });
+    else if ((m = part.match(/^drill\s+(gunnery|seamanship)\s+(\d+(?:\.\d+)?)$/i))) out.push({ op: 'drill', what: m[1].toLowerCase(), n: +m[2] });
+    else if ((m = part.match(/^reveal\s+(lieutenant|master|surgeon|purser|boatswain|gunner|carpenter)\s+([a-z_]+)$/i))) out.push({ op: 'reveal', post: m[1].toLowerCase(), trait: m[2].toLowerCase() });
+    else if ((m = part.match(/^reveal\s+([a-z_]+)$/i))) out.push({ op: 'revealflag', name: m[1].toLowerCase() });
+    else if ((m = part.match(/^gunroom\s*([+-])\s*(\d+(?:\.\d+)?)$/i))) out.push({ op: 'gunroom', n: (m[1] === '-' ? -1 : 1) * +m[2] });
+    else if (/^pick man$/i.test(part)) out.push({ op: 'pickman' });
+    else if (/^gossip$/i.test(part)) out.push({ op: 'gossip' });
+    else if ((m = part.match(/^punish\s+(flog|start|grog|pass)$/i))) out.push({ op: 'punish', how: m[1].toLowerCase() });
     else if (/^sound$/i.test(part)) out.push({ op: 'sound' });
     else if (/^stand off$/i.test(part)) out.push({ op: 'standoff' });
     else if (/^refloat$/i.test(part)) out.push({ op: 'refloat' });
@@ -3647,7 +4352,7 @@ function parseNext(v, where, prob){
 }
 
 function parseContent(blocks){
-  const P = { settings: {}, events: {}, order: [], orders: {}, ship: {}, stores: {}, storeOrder: [], weather: {}, sailing: {}, vessels: {}, actions: {}, gunnery: {}, chartRaw: {}, landRaw: [], placeRaw: [], dangerRaw: [], currentRaw: [], glossary: [], problems: [], stats: { words: 0 } };
+  const P = { settings: {}, events: {}, order: [], orders: {}, ship: {}, stores: {}, storeOrder: [], weather: {}, sailing: {}, vessels: {}, actions: {}, gunnery: {}, chartRaw: {}, landRaw: [], placeRaw: [], dangerRaw: [], currentRaw: [], officers: {}, officerOrder: [], traits: {}, crewFlags: {}, gauges: {}, crew: {}, glossary: [], problems: [], stats: { words: 0 } };
   const prob = (sev, where, msg) => P.problems.push({ sev, where, msg });
 
   /* money values must be known before anything is parsed */
@@ -3682,6 +4387,27 @@ function parseContent(blocks){
       if (/^SHIP$/.test(t)){ flushPara(); section = 'ship'; ev = ch = ord = kv = null; return; }
       if (/^SAILING$/.test(t)){ flushPara(); section = 'sailing'; ev = ch = ord = kv = null; return; }
       if (/^GUNNERY$/.test(t)){ flushPara(); section = 'gunnery'; ev = ch = ord = kv = null; return; }
+      if (/^CREW$/.test(t)){ flushPara(); section = 'crew'; ev = ch = ord = kv = null; return; }
+      if ((m = t.match(/^(OFFICER|TRAIT|FLAG|GAUGE)\s*:\s*(.*)$/))){
+        flushPara(); section = m[1].toLowerCase(); ev = ch = ord = kv = null;
+        const id = m[2].trim().toLowerCase();
+        const store = { officer: P.officers, trait: P.traits, flag: P.crewFlags, gauge: P.gauges }[section];
+        if (store[id]) prob('error', where(i), `There are two ${section}s called "${id}".`);
+        geo = store[id] = { id, f: {}, flags: {}, where: where(i) };
+        if (section === 'officer') P.officerOrder.push(id);
+        return;
+      }
+      if (section === 'crew'){
+        if ((m = t.match(/^([a-z ]+?)\s*:\s*(.*)$/i))){ const k = m[1].toLowerCase(); P.crew[k] = (k === 'men' && P.crew.men ? P.crew.men + ', ' : '') + m[2].trim(); }
+        else if (P.crew.men) P.crew.men += ', ' + t;
+        return;
+      }
+      if (section === 'officer' || section === 'trait' || section === 'flag' || section === 'gauge'){
+        if (/^(hidden)$/i.test(t)){ geo.flags.hidden = true; return; }
+        if ((m = t.match(/^([a-z ]+?)\s*:\s*(.*)$/i))){ geo.f[m[1].toLowerCase()] = m[2].trim(); return; }
+        prob('warn', where(i), `"${short(t)}" is not something a ${section} has.`);
+        return;
+      }
       if (/^(CHART|CURRENTS)$/.test(t)){ flushPara(); section = t.toLowerCase(); ev = ch = ord = kv = null; return; }
       if ((m = t.match(/^(LAND|PLACE|DANGER)\s*:\s*(.*)$/))){
         flushPara(); section = m[1].toLowerCase(); ev = ch = ord = kv = null;
@@ -3948,6 +4674,7 @@ function parseContent(blocks){
     if (d.instead && !P.stores[d.instead]) prob('error', d.where, `"Instead of: ${d.instead}" names a store that does not exist.`);
   }
   compileChart(P, prob);
+  compileCrew(P, prob);
   for (const v of Object.values(P.vessels)){
     v.arm = parseArmament(v.f.armament || '');
     if (!v.f.armament || v.arm.some(a => !a)){ prob('error', v.where, `I could not read the armament "${v.f.armament || ''}". Write it like "14 long six-pounders" or "16 eighteen-pounder carronades", with "or" between choices.`); v.arm = [{ n: 10, w: 6, carr: false, label: '10 long six-pounders' }]; }
@@ -4013,7 +4740,7 @@ function validate(P, prob){
         if (b.next.type === 'watches') anyTags.add('sea');
       }
       const goesSomewhere = ch.base.next || (ch.chance != null && ch.success.next && ch.failure.next);
-      if (!goesSomewhere && !hasHub(P, ev.place))
+      if (!goesSomewhere && ev.place && !hasHub(P, ev.place))
         prob('error', ch.where, `"${short(ch.text)}" does not say where to go on every outcome, and there is no Hub for this place to fall back on.`);
     }
   }
@@ -4042,6 +4769,28 @@ function validate(P, prob){
     if (seen[k]) prob('warn', g.where, `The glossary term "${t}" appears twice.`);
     seen[k] = true;
   }
+}
+function compileCrew(P, prob){
+  const posts = ['lieutenant', 'master', 'surgeon', 'purser', 'boatswain', 'gunner', 'carpenter'];
+  for (const T of Object.values(P.traits)){
+    T.name = T.f.name || T.id; T.hidden = !!T.flags.hidden; T.sets = (T.f.sets || '').toLowerCase() || null; T.gossip = T.f.gossip || ''; T.about = T.f.about || '';
+    T.mods = {};
+    for (const q of ['seamanship', 'gunnery', 'leadership', 'sobriety', 'skill']) if (T.f[q] != null){ const v = parseFloat(T.f[q]); if (isNaN(v)) prob('error', T.where, `"${T.f[q]}" should be a number like +1 or -2.`); else T.mods[q] = v; }
+  }
+  for (const O of Object.values(P.officers)){
+    O.post = (O.f.post || '').toLowerCase(); O.name = O.f.name || O.id; O.about = O.f.about || '';
+    if (!posts.includes(O.post)) prob('error', O.where, `"Post: ${O.f.post || ''}" should be one of ${posts.join(', ')}.`);
+    for (const q of ['seamanship', 'gunnery', 'leadership', 'sobriety', 'skill']) if (O.f[q] != null){ const v = parseInt(O.f[q], 10); if (!(v >= 1 && v <= 5)) prob('error', O.where, `${q} should be from 1 to 5.`); else O[q] = v; }
+    O.loyalty = parseFloat(O.f.loyalty) || 0;
+    O.traits = String(O.f.traits || '').split(',').map(x => x.trim()).filter(Boolean).map(x => { const m = x.match(/^([a-z_]+)(?:\s+(\d+))?$/i); if (!m){ prob('error', O.where, `I could not read the trait "${x}".`); return null; } const id = m[1].toLowerCase(); if (!P.traits[id]) prob('error', O.where, `The trait "${id}" is not described.`); return { id, chance: m[2] ? +m[2] : 100 }; }).filter(Boolean);
+  }
+  if (P.officerOrder.length) for (const post of posts) if (!Object.values(P.officers).some(o => o.post === post)) prob('warn', 'Officers', `No one is written for the post of ${post}.`);
+  for (const F of Object.values(P.crewFlags)){ F.chance = parseFloat(F.f.chance) || 0; F.gossip = F.f.gossip || ''; F.known = F.f.known || ''; }
+  for (const G of Object.values(P.gauges)){
+    G.name = G.f.name || G.id;
+    G.words = String(G.f.words || '').split(',').map(x => x.trim()).filter(Boolean).map(x => { const m = x.match(/^(-?\d+(?:\.\d+)?)\s+(.+)$/); if (!m){ prob('error', G.where, `I could not read "${x}". Write it like "3 smart".`); return null; } return [+m[1], m[2]]; }).filter(Boolean).sort((a, b) => a[0] - b[0]);
+  }
+  P.crew.men = String(P.crew.men || '').split(',').map(x => x.trim()).filter(Boolean);
 }
 function compileChart(P, prob){
   const C = P.chartRaw, b = String(C.bounds || '').match(/^(-?[\d.]+)\s+(-?[\d.]+)\s+to\s+(-?[\d.]+)\s+(-?[\d.]+)$/);
@@ -4094,6 +4843,10 @@ function getVar(name){
   if (name === 'money') return state.money;
   if (name === 'day') return Math.floor(state.minutes / 1440) + 1;
   if (name === 'hour') return clockOf(state.minutes).h;
+  if (name === 'master_skill') return masterSkill();
+  if (name === 'hands') return handsSeamanship();
+  const om = name.match(/^(lieutenant|master|surgeon|purser|boatswain|gunner|carpenter)_(seamanship|gunnery|leadership|sobriety|skill|loyalty)$/);
+  if (om && state.officers) return offAttr(om[1], om[2]);
   if (name in state.vars) return state.vars[name];
   if (content.stores[name]) return state.stores && state.stores[name] ? state.stores[name].book / content.stores[name].size : 0;
   const m = name.match(/^([a-z0-9_]+)_days$/);
@@ -4104,13 +4857,19 @@ function getVar(name){
   if (name === 'miles_to_run'){ if (!state.nav) return 0; const t = navTarget(); return t && t !== 'standoff' ? Math.round(hyp({ x: state.nav.rx, y: state.nav.ry }, t)) : 0; }
   return 0;
 }
-function setVar(name, v){ if (name === 'money') state.money = v; else state.vars[name] = v; }
+function setVar(name, v){
+  if (name === 'money'){ state.money = v; return; }
+  const om = name.match(/^(lieutenant|master|surgeon|purser|boatswain|gunner|carpenter)_loyalty$/);
+  if (om && state.officers && state.officers[om[1]]){ state.officers[om[1]].loyalty = Math.max(-3, Math.min(3, v)); return; }
+  state.vars[name] = v;
+}
 
 function condMet(c){
   switch (c.type){
     case 'flag': return !!state.flags[c.name] !== c.neg;
     case 'place': return state.place === c.name;
     case 'voyage': return (!!state.voyage && state.voyage.name === c.name) !== !!c.neg;
+    case 'trait': return hasTrait(c.post, c.trait) !== !!c.neg;
     case 'night': return isNight(state.minutes) !== !!c.neg;
     case 'weather': return (!!state.weather && state.weather.sys === c.name) !== !!c.neg;
     case 'wind': return (!!state.weather && state.weather.force >= 1 && pointsApart(state.weather.dir, c.point) <= 2) !== !!c.neg;
@@ -4155,6 +4914,11 @@ function subst(s){
       case 'day': return String(getVar('day'));
     }
     if (MONEY.has(k)) return fmtMoney(getVar(k));
+    if (POSTS.includes(k)) return offName(k);
+    const pa = k.match(/^(lieutenant|master|surgeon|purser|boatswain|gunner|carpenter)_about$/); if (pa){ const x = officer(pa[1]); return x ? x.d.about : ''; }
+    if (k === 'man') return state.man || pickMan();
+    if (k === 'dead') return state.dead || 'a seaman';
+    if (k === 'gossip') return state.gossipText || '';
     const bad = state.lastBad && content.stores[state.lastBad.id];
     if (k === 'bad_item') return bad ? bad.name.toLowerCase() : 'stores';
     if (k === 'bad_no') return state.lastBad ? String(state.lastBad.no) : '';
@@ -4197,7 +4961,14 @@ function applyEffects(list, label){
       case 'condemn': condemn(); break;
       case 'survey': survey(); break;
       case 'forecast': forecast(); break;
-      case 'puttosea': state.flags.at_sea = true; navInit(); break;
+      case 'puttosea': state.flags.at_sea = true; navInit(); state.timers.put_to_sea = state.minutes; break;
+      case 'drill': drill(e.what, e.n); break;
+      case 'reveal': { const x = officer(e.post); if (x && x.o.traits.includes(e.trait)) x.o.known[e.trait] = true; break; }
+      case 'revealflag': state.flags['known_' + e.name] = true; break;
+      case 'gunroom': if (state.officers) for (const post of POSTS) if (state.officers[post]) state.officers[post].loyalty = Math.max(-3, Math.min(3, state.officers[post].loyalty + e.n)); break;
+      case 'pickman': pickMan(); break;
+      case 'gossip': gossip(); break;
+      case 'punish': { state.punish = state.punish || {}; state.punish[e.how] = (state.punish[e.how] || 0) + 1; const sev = { flog: 1, start: 0.5, grog: 0.3, pass: 0 }[e.how]; setVar('severity', getVar('severity') + sev); if (e.how === 'pass') setVar('leniency', getVar('leniency') + 1); break; }
       case 'sound': if (state.nav) sound(); break;
       case 'standoff': if (state.nav) state.nav.standoff = 2; break;
       case 'refloat': if (state.nav){ const N = state.nav, n = landDist({ x: N.tx, y: N.ty }, false); let a = brgDeg(n, { x: N.tx, y: N.ty }); if (n.d === 0) a = (state.weather.dir * 11.25) % 360; for (let k = 0; k < 20 && landDist({ x: N.tx, y: N.ty }, false).d <= 0.3; k++){ N.tx += Math.sin(a * Math.PI / 180) * 0.3; N.ty += Math.cos(a * Math.PI / 180) * 0.3; } } delete state.flags.aground; break;
@@ -4219,7 +4990,7 @@ function applyEffects(list, label){
 
 function newGame(name, seed){
   state = {
-    game: GAME_ID, v: 6, build: BUILD,
+    game: GAME_ID, v: 7, build: BUILD,
     name: (name || content.settings['default name'] || 'John Hartley').trim(),
     seed: (seed || makeSeed()).trim().toUpperCase(),
     rng: null, minutes: 0, money: parseMoney(content.settings['start money'] || '£20') || 0,
@@ -4227,12 +4998,13 @@ function newGame(name, seed){
     log: [], accounts: [], history: [], pending: null, ended: false, tested: false, startedAt: Date.now(),
     stores: null, storeLog: null, storeBad: null, lastBad: null, voyage: null, surveyText: '',
     weather: null, spellSeen: {}, forecastText: '', lastSpeed: 0, dayRun: 0, dayMissed: 0,
-    nav: null, soundingText: '', leeDist: 0
+    nav: null, soundingText: '', leeDist: 0, officers: null, punish: null, man: '', dead: '', gossipText: ''
   };
   state.rng = seedRng(state.seed);
   state.minutes = startMinutes();
   state.accounts.push({ t: state.minutes, acct: 'money', amt: state.money, what: 'In hand on coming ashore', open: true });
   initShip();
+  initCrew();
   initWeather();
   enterEvent(content.startId);
   persist();
@@ -4277,7 +5049,9 @@ function resolveNext(next){
   if (next.type === 'end') return '__end__';
   if (next.type === 'go') return next.id;
   if (next.type === 'watches') return sailWatches(next.n);
-  return pickFrom(next.tag) || hubFor(next.tag) || hubFor(state.place) || '__nowhere__';
+  const id = pickFrom(next.tag);
+  if (id && !content.events[id].place && hubFor(next.tag)) state.place = next.tag;
+  return id || hubFor(next.tag) || hubFor(state.place) || '__nowhere__';
 }
 function goTo(id){
   if (id === '__end__'){ state.ended = true; state.eventId = '__end__'; return; }
@@ -4331,6 +5105,7 @@ function advance(mins){
     if (state.weather) weatherStep();
     if (((t % 1440) + 1440) % 1440 === 360) dawn();
     if (((t % 1440) + 1440) % 1440 === 720 && state.flags.at_sea && state.stores){ dailyIssue(); noonLog(); }
+    if (((t % 1440) + 1440) % 1440 === 720) dailyPeople();
     t += 240;
   }
   state.minutes = end;
@@ -4380,7 +5155,7 @@ function windProse(){
 }
 function forecast(){
   const w = state.weather, cur = content.weather[w.sys], nxt = content.weather[w.next] || cur;
-  const right = rand(state.rng) * 100 < 45 + 10 * getVar('master_skill');
+  const right = rand(state.rng) * 100 < 45 + 10 * getVar('master_skill') + (hasTrait('surgeon', 'natural_philosopher') ? 8 : 0);
   const changing = w.left <= 3 && w.next !== w.sys;
   const saysChange = right ? changing : !changing;
   if (!saysChange){ state.forecastText = `He looks for ${cur.called} to hold for the next three watches at the least.`; return; }
@@ -4431,7 +5206,7 @@ function speedAt(a){
 }
 function missChance(){
   const base = sailList('missing stays')[state.weather.force] || 0;
-  let p = base * (1.3 - 0.1 * getVar('seamanship'));
+  let p = base * (1.3 - 0.1 * handsSeamanship());
   if (getVar('running_rigging') < 60) p *= 1.3;
   if (state.flags.press_of_sail) p *= 0.85;
   return Math.max(0, Math.min(90, p));
@@ -4460,8 +5235,6 @@ function initShip(){
     }
     if (total) book(id, total, 'Remaining on board on taking command');
   }
-  const chance = parseFloat(content.settings['purser dishonest'] || '0');
-  if (rand(state.rng) * 100 < chance) state.flags.purser_skims = true;
 }
 
 function book(id, d, what){
@@ -4737,8 +5510,9 @@ function sightings(){
       any = true;
       if (!N.sighted[P.id]){
         N.sighted[P.id] = true;
-        const b = brgDeg(t, P.at);
-        state.log.push({ t: state.minutes, text: `${P.name} in sight${night && P.light ? ' (the light)' : ''}, bearing ${POINTS[Math.round(b / 11.25) % 32]}, distant ${leaguesWord(d)}.` });
+        const b = brgDeg(t, P.at), out = hyp(t, { x: N.rx, y: N.ry });
+        state.log.push({ t: state.minutes, text: `${P.name} in sight${night && P.light ? ' (the light)' : ''}, bearing ${POINTS[Math.round(b / 11.25) % 32]}, distant ${leaguesWord(d)}.${out >= 3 ? ` By it the reckoning is found out by ${leaguesWord(out)}.` : ''}` });
+        if (out >= Math.max(N.ex, N.ey) * 1.2 && out >= 5) state.flags.reckoning_out = true;
         state.flags.landfall = true;
       }
       fixAt(0.5 + d * 0.04, P.name);
@@ -4751,7 +5525,7 @@ function noonSight(){
   const N = state.nav; if (!N || !state.flags.at_sea) return '';
   const w = state.weather, chance = w ? (content.weather[w.sys].sight == null ? 80 : content.weather[w.sys].sight) : 0;
   if (rand(state.rng) * 100 >= chance) return ' No observation.';
-  const err = 0.6 + Math.max(0, 5 - getVar('master_skill')) * 0.4;
+  const err = (0.6 + Math.max(0, 5 - getVar('master_skill')) * 0.4) * (hasTrait('master', 'mathematical') ? 0.6 : 1);
   N.ry = N.ty + gauss() * err; N.ey = Math.max(0.8, err * 2);
   N.fix = { t: state.minutes, how: 'a meridian altitude of the sun' };
   delete state.flags.nothing_in_sight; if (state.flags.lying_off && !isNight(state.minutes)) delete state.flags.lying_off;
@@ -4857,6 +5631,11 @@ function sailOneWatch(){
     const t2 = navTarget();
     if (t2 && t2 !== 'standoff' && v && hyp({ x: N.tx, y: N.ty }, t2) < (content.chart.arrive || 6)){ arrive(v); break; }
   }
+  /* a drunk master keeps the reckoning carelessly: one steady mistake for the day (the log misread, the leeway forgotten), and slips besides */
+  if (isDrunk('master') && !state.flags.master_relieved && !state.flags.master_arrested){
+    if (N.slip == null) N.slip = rand(state.rng) * Math.PI * 2;
+    N.rx += Math.sin(N.slip) * run * 0.12 + gauss() * run * 0.05; N.ry += Math.cos(N.slip) * run * 0.12 + gauss() * run * 0.05;
+  } else delete N.slip;
   N.ex += 0.4 + run * 0.06 * (1.3 - 0.1 * getVar('master_skill'));
   N.ey += 0.4 + run * 0.06 * (1.3 - 0.1 * getVar('master_skill'));
   state.dayRun = (state.dayRun || 0) + run;
@@ -4912,6 +5691,179 @@ function sailWatches(n){
 function dawn(){
   for (const k of ['lying_off', 'standing_on', 'lead_going', 'nothing_in_sight']) delete state.flags[k];
   if (state.flags.anchored && !state.flags.lee_shore){ delete state.flags.anchored; state.log.push({ t: state.minutes, text: 'Weighed at daylight.' }); }
+}
+
+/* ============================================================
+   THE PEOPLE AND THE OFFICERS
+   Each post is filled at the start of a commission from the
+   candidates written for it. Officers' qualities run from 1 to 5,
+   and are never shown as numbers: the captain forms impressions.
+   ============================================================ */
+const POSTS = ['lieutenant', 'master', 'surgeon', 'purser', 'boatswain', 'gunner', 'carpenter'];
+const QUALITIES = ['seamanship', 'gunnery', 'leadership', 'sobriety', 'skill'];
+function initCrew(){
+  state.officers = {};
+  for (const post of POSTS){
+    const pool = content.officerOrder.filter(id => content.officers[id].post === post);
+    if (!pool.length) continue;
+    const id = pool[Math.floor(rand(state.rng) * pool.length)], d = content.officers[id];
+    const traits = d.traits.filter(t => rand(state.rng) * 100 < t.chance).map(t => t.id);
+    const o = state.officers[post] = { id, traits, loyalty: d.loyalty, known: {}, drunk: false };
+    for (const t of traits){
+      const T = content.traits[t]; if (!T) continue;
+      if (!T.hidden) o.known[t] = true;
+      if (T.sets) state.flags[T.sets] = true;
+    }
+  }
+  for (const F of Object.values(content.crewFlags)) if (rand(state.rng) * 100 < F.chance) state.flags[F.id] = true;
+  state.punish = { flog: 0, start: 0, grog: 0, pass: 0 };
+  for (const [k, v] of Object.entries({ health: 4, sick: 2, gunnery: 2, morale: 0, leniency: 0, severity: 0, scurvy_days: 0 })) if (!(k in state.vars)) state.vars[k] = v;
+}
+function officer(post){ const o = state.officers && state.officers[post]; return o && content.officers[o.id] ? { o, d: content.officers[o.id] } : null; }
+function offAttr(post, attr){
+  const x = officer(post); if (!x) return 3;
+  if (attr === 'loyalty') return x.o.loyalty;
+  let v = x.d[attr] != null ? x.d[attr] : (attr === 'skill' ? (x.d.seamanship || 3) : 3);
+  for (const t of x.o.traits){ const T = content.traits[t]; if (T && T.mods[attr]) v += T.mods[attr]; }
+  return Math.max(1, Math.min(5, v));
+}
+function hasTrait(post, t){ const x = officer(post); return !!x && x.o.traits.includes(t); }
+function offName(post){ const x = officer(post); return x ? x.d.name : `the ${post}`; }
+function isDrunk(post){ const x = officer(post); return !!x && x.o.drunk; }
+function masterSkill(){
+  if (!state.officers) return state.vars.master_skill || 3;
+  if (state.flags.master_relieved || state.flags.master_arrested) return Math.max(1, offAttr('lieutenant', 'seamanship') - 1);
+  return Math.max(1, offAttr('master', 'seamanship') - (isDrunk('master') ? 2 : 0));
+}
+function handsSeamanship(){
+  return getVar('seamanship') + 0.4 * (offAttr('boatswain', 'seamanship') - 3) + 0.4 * (offAttr('lieutenant', 'seamanship') - 3)
+    - (getVar('sick') > getVar('victualled') * 0.12 ? 0.5 : 0);
+}
+function pickMan(){
+  const men = content.crew.men || ['John Smith'];
+  state.man = men[Math.floor(rand(state.rng) * men.length)];
+  return state.man;
+}
+function drill(what, n){
+  const g = getVar(what);
+  const teacher = what === 'gunnery' ? 0.6 + 0.2 * offAttr('gunner', 'gunnery') * (hasTrait('gunner', 'gun_crank') ? 1.4 : 1)
+                                     : 0.6 + 0.2 * offAttr('boatswain', 'seamanship') * (hasTrait('boatswain', 'hard_horse') ? 1.3 : 1);
+  setVar(what, Math.min(5, g + n * 0.12 * teacher * Math.max(0.15, (5 - g) / 3)));
+}
+function gossip(){
+  const cands = [];
+  for (const post of POSTS){
+    const x = officer(post); if (!x) continue;
+    for (const t of x.o.traits){ const T = content.traits[t]; if (T && T.hidden && !x.o.known[t] && T.gossip) cands.push({ text: T.gossip.replace(/\{name\}/g, x.d.name), reveal: () => { x.o.known[t] = true; } }); }
+  }
+  for (const F of Object.values(content.crewFlags)){
+    if (state.flags[F.id] && !state.flags['known_' + F.id] && F.gossip) cands.push({ text: F.gossip, reveal: () => { state.flags['known_' + F.id] = true; } });
+  }
+  if (!cands.length){ state.gossipText = content.crew.idle || 'The talk is all of prize money.'; return; }
+  const c = cands[Math.floor(rand(state.rng) * cands.length)];
+  pickMan(); c.reveal();
+  state.gossipText = subst(c.text);
+}
+/* once a day, at noon: drink, sickness, the scurvy, deaths, the people's temper, and the warrant officers' work */
+function dailyPeople(){
+  if (!state.officers) return;
+  const atSea = !!state.flags.at_sea, n = getVar('victualled'), r = () => rand(state.rng);
+  for (const post of POSTS){
+    const x = officer(post); if (!x) continue;
+    const p = [45, 22, 9, 3, 0][offAttr(post, 'sobriety') - 1] * (atSea ? 1 : 1.5);
+    x.o.drunk = r() * 100 < p;
+    if (x.o.drunk) state.flags[post + '_drunk'] = true; else delete state.flags[post + '_drunk'];
+  }
+  delete state.flags.master_relieved;
+  /* the scurvy clock: lemon juice or fresh food stops it */
+  const lemons = atSea && realQty('lemon_juice') > 0;
+  const fresh = state.timers.fresh_food != null && state.minutes - state.timers.fresh_food < 10 * 1440;
+  let sd = getVar('scurvy_days');
+  sd = (lemons || fresh || !atSea) ? Math.max(0, sd - (atSea ? 1 : 4)) : sd + 1;
+  setVar('scurvy_days', sd);
+  let sick = getVar('sick'), health = getVar('health'), mor = getVar('morale');
+  const after = parseFloat(content.crew.scurvy) || 35;
+  if (sd > after){ state.flags.scurvy = true; sick += Math.floor(r() * 3); health -= 0.08; }
+  else if (sd < after * 0.6) delete state.flags.scurvy;
+  if (atSea && state.weather && state.weather.force >= 8 && r() < 0.4) sick += 1;
+  if (state.flags.out_water){ health -= 0.3; sick += 1; }
+  if (state.flags.issued_bad){ sick += Math.floor(r() * 3); delete state.flags.issued_bad; }
+  if (r() < 0.06) sick += 1;
+  /* the surgeon's work */
+  let cure = 0.3 + 0.3 * offAttr('surgeon', 'skill');
+  if (isDrunk('surgeon')) cure *= 0.4;
+  if (state.flags.scurvy && !lemons && !fresh) cure *= 0.3;
+  if (hasTrait('surgeon', 'sawbones')) cure *= 0.8;
+  sick -= Math.min(sick, Math.floor(cure + r()));
+  sick = Math.max(0, Math.min(n, sick));
+  health += sick <= n * 0.05 ? 0.05 : -0.25 * sick / Math.max(1, n) * 4;
+  health = Math.max(1, Math.min(5, health));
+  if (sick > 0 && health < 2.2 && r() < (2.4 - health) * 0.12){
+    sick--; setVar('victualled', n - 1);
+    state.dead = pickMan(); state.flags.death = true;
+    state.log.push({ t: state.minutes, text: `Departed this life, ${state.dead}, seaman.` });
+  }
+  /* the people's temper */
+  if (state.flags.short_allowance) mor -= 0.08;
+  if (state.flags.scurvy) mor -= 0.05;
+  if (atSea && state.timers.put_to_sea != null && state.minutes - state.timers.put_to_sea > 28 * 1440) mor -= 0.04;
+  mor -= Math.max(0, getVar('severity') - 3) * 0.015;
+  if (hasTrait('boatswain', 'hard_horse')) mor -= 0.02;
+  if (fresh) mor += 0.03;
+  mor = Math.max(-4, Math.min(5, mor));
+  /* time at sea makes seamen */
+  if (atSea) setVar('seamanship', Math.min(4.5, getVar('seamanship') + 0.02 * (0.5 + 0.25 * offAttr('boatswain', 'seamanship'))));
+  /* the boatswain and the carpenter at their trades */
+  if (atSea){
+    const b = offAttr('boatswain', 'skill') * (isDrunk('boatswain') ? 0.5 : 1);
+    let used = false;
+    for (const k of ['standing_rigging', 'running_rigging']) if (getVar(k) < 92 && realQty('cordage') > 0.5){ setVar(k, Math.min(92, getVar(k) + 0.35 * b)); used = true; }
+    if (getVar('sails') < 85 && realQty('canvas') > 0.5){ setVar('sails', Math.min(85, getVar('sails') + 0.3 * b)); used = true; }
+    if (used && r() < 0.12) takeOut(r() < 0.5 ? 'cordage' : 'canvas', 1, 'Expended by the boatswain in repairs');
+    const c = offAttr('carpenter', 'skill') * (isDrunk('carpenter') ? 0.5 : 1);
+    if (getVar('leak') > 2 && r() < 0.04 * c) setVar('leak', getVar('leak') - 1);
+    if (getVar('hull') < 85 && realQty('oakum') > 0) setVar('hull', Math.min(85, getVar('hull') + 0.1 * c));
+  }
+  setVar('sick', sick); setVar('health', health); setVar('morale', mor);
+}
+function gaugeWord(id, v){
+  const G = content.gauges[id]; if (!G) return String(v);
+  let w = G.words[0] ? G.words[0][1] : '';
+  for (const [t, word] of G.words) if (v >= t) w = word;
+  return w;
+}
+const IMPRESSIONS = {
+  seamanship: ['no seaman', 'an indifferent seaman', 'a fair seaman', 'a good seaman', 'a prime seaman'],
+  gunnery: ['knows nothing of guns', 'knows little of guns', 'knows his guns', 'knows his guns thoroughly', 'a master of his guns'],
+  leadership: ['the men laugh at him behind his back', 'the men do not mind him', 'the men do as he says', 'the men follow him', 'the men would follow him anywhere'],
+  skill: ['clumsy at his trade', 'indifferent at his trade', 'competent at his trade', 'skilful at his trade', 'uncommonly able at his trade']
+};
+const SHOWN = { lieutenant: ['seamanship', 'leadership'], master: ['seamanship'], surgeon: ['skill'], purser: [], boatswain: ['seamanship', 'leadership'], gunner: ['gunnery'], carpenter: ['skill'] };
+const MANNER = [[-3, 'hostile'], [-2, 'resentful'], [-1, 'cool'], [0, 'correct'], [1, 'friendly'], [2, 'attached to you'], [3, 'devoted to you']];
+function mannerWord(l){ let w = MANNER[0][1]; for (const [t, m] of MANNER) if (l >= t) w = m; return w; }
+function musterHtml(){
+  if (!state || !state.officers) return '<p class="note">No commission is in hand.</p>';
+  const v = k => getVar(k), n = v('victualled'), sick = Math.round(v('sick'));
+  const flags = Object.values(content.crewFlags).filter(F => state.flags[F.id] && state.flags['known_' + F.id] && F.known).map(F => `<p>${inline(F.known)}</p>`).join('');
+  const people = `<dl class="kv"><dt>Numbers</dt><dd>${n} victualled, of a complement of ${v('complement')}${sick ? `; ${numWord(sick)} on the sick list` : ''}</dd>
+    <dt>Seamanship</dt><dd>${esc(gaugeWord('seamanship', v('seamanship')))}</dd><dt>Gunnery</dt><dd>${esc(gaugeWord('gunnery', v('gunnery')))}</dd>
+    <dt>Temper</dt><dd>${esc(gaugeWord('morale', v('morale')))}</dd><dt>Health</dt><dd>${esc(gaugeWord('health', v('health')))}${state.flags.scurvy ? ', with the scurvy among them' : ''}</dd></dl>${flags}`;
+  const cards = POSTS.map(post => {
+    const x = officer(post); if (!x) return '';
+    const imp = SHOWN[post].map(q => IMPRESSIONS[q][offAttr(post, q) - 1]);
+    const known = x.o.traits.filter(t => x.o.known[t] && content.traits[t]).map(t => `<span class="trait">${esc(content.traits[t].name)}</span>`);
+    const drink = x.o.known.drunkard ? ' He drinks.' : '';
+    return `<div class="officer"><div class="ohead"><b>${esc(x.d.name)}</b><span class="sc post">${esc(post)}</span></div>
+      <p class="about">${inline(x.d.about || '')}</p>
+      ${imp.length ? `<p>${esc(capFirst(imp.join('; ')))}.${drink}</p>` : (drink ? `<p>${drink.trim()}</p>` : '')}
+      ${known.length ? `<p class="traits">${known.join(' ')}</p>` : ''}
+      <p class="note">His manner to you: ${esc(mannerWord(x.o.loyalty))}.</p></div>`;
+  }).join('');
+  const P = state.punish || {};
+  const total = (P.flog || 0) + (P.start || 0) + (P.grog || 0);
+  const rep = v('severity') > 6 ? 'a hard ship' : v('severity') > 3 ? 'a taut ship' : v('leniency') > v('severity') + 3 ? 'a slack ship' : 'a fair ship';
+  return `<h3>The people</h3>${people}<h3>The officers</h3><div class="officers">${cards}</div>
+    <h3>Discipline</h3><p>${total ? `${numWord(P.flog || 0)} ${P.flog === 1 ? 'man flogged' : 'men flogged'}, ${numWord(P.start || 0)} started, ${numWord(P.grog || 0)} with their grog stopped; ${numWord(P.pass || 0)} let off.` : 'No man has yet been punished this commission.'} The forecastle calls her ${esc(rep)}.</p>`;
 }
 
 /* ---------- the engraved sea chart ---------- */
@@ -5106,6 +6058,7 @@ function fmtBal(d, base){
 /* ---------- saving ---------- */
 function persist(){ if (state) lsSet(SAVE_KEY, JSON.stringify({ game: GAME_ID, build: BUILD, state })); }
 function normalise(s){
+  s.v = 7;
   s.vars = s.vars || {}; s.flags = s.flags || {}; s.seen = s.seen || {}; s.timers = s.timers || {};
   if (!('orders' in s)) { s.orders = null; s.ordersAt = null; }
   if (!Array.isArray(s.accounts)) s.accounts = [{ t: s.minutes, acct: 'money', amt: s.money, what: 'Balance brought forward', open: true }];
@@ -5133,6 +6086,10 @@ function adopt(s){
   state = normalise(s);
   if (state.needShip){ delete state.needShip; initShip(); }
   if (state.needWeather){ delete state.needWeather; initWeather(); }
+  if (!state.officers){
+    const g = state.vars.gunnery || 0; delete state.vars.gunnery; delete state.vars.master_skill;
+    initCrew(); state.vars.gunnery = Math.min(5, 2 + g * 0.25);
+  }
   if (state.flags.at_sea && !state.nav){
     navInit();
     const v = state.voyage, o = content.orders[state.orders] || {};
@@ -5220,6 +6177,7 @@ function headerHtml(){
       <button type="button" data-act="log">Log</button>
       ${state && state.orders ? '<button type="button" data-act="orders">Orders</button>' : ''}
       ${state && state.nav && state.flags.at_sea ? '<button type="button" data-act="chart">Chart</button>' : ''}
+      ${state && state.officers ? '<button type="button" data-act="muster">Muster</button>' : ''}
       <button type="button" data-act="books">Books</button>
       <button type="button" data-act="accounts">Purse</button>
       <button type="button" data-act="glossary">Glossary</button>
@@ -5496,6 +6454,7 @@ function openPanel(kind){
   else if (kind === 'orders'){ title = 'Orders'; html = ordersHtml(); }
   else if (kind === 'accounts'){ title = 'Your Purse'; html = accountsHtml(); }
   else if (kind === 'books'){ title = 'The Ship’s Books'; html = booksHtml(); }
+  else if (kind === 'muster'){ title = 'The Muster'; html = musterHtml(); }
   else if (kind === 'chart'){
     title = 'The Chart';
     html = state && state.nav ? `${chips('chartzoom', chartZoom, [['ship', 'About the ship'], ['full', 'The whole station']])}
@@ -5573,6 +6532,8 @@ function writerHtml(){
     ${state.stores ? `<h3>Stores: books and hold</h3><div class="scroll-x"><table class="log"><thead><tr><th>Store</th><th class="amt">Books</th><th class="amt">In the hold</th></tr></thead><tbody>${content.storeOrder.filter(id => state.stores[id]).map(id => `<tr><td>${esc(id)}</td><td class="amt">${esc(fmtBal(content.stores[id], state.stores[id].book))}</td><td class="amt">${esc(fmtBal(content.stores[id], realQty(id)))}</td></tr>`).join('')}</tbody></table></div>` : ''}
     ${state.nav ? `<h3>The true position</h3><p class="num">${esc(fmtLat(xy2ll(state.nav.tx, state.nav.ty).lat))}, ${esc(fmtLon(xy2ll(state.nav.tx, state.nav.ty).lon))}: ${hyp({ x: state.nav.tx, y: state.nav.ty }, { x: state.nav.rx, y: state.nav.ry }).toFixed(1)} miles from the reckoning, which allows ${state.nav.ex.toFixed(1)} east and west and ${state.nav.ey.toFixed(1)} north and south.</p>
       <div class="row"><button type="button" class="btn quiet" data-act="truth">${prefs.showTruth ? 'Hide' : 'Show'} the true position on the chart</button></div>` : ''}
+    ${state.officers ? `<h3>Officers</h3><div class="scroll-x"><table class="log"><thead><tr><th>Post</th><th>Name</th><th class="amt">Sea</th><th class="amt">Guns</th><th class="amt">Lead</th><th class="amt">Sober</th><th class="amt">Skill</th><th class="amt">Loyal</th><th>Traits</th></tr></thead><tbody>${POSTS.filter(p => officer(p)).map(p => `<tr><td>${p}</td><td>${esc(offName(p))}</td>${['seamanship', 'gunnery', 'leadership', 'sobriety', 'skill', 'loyalty'].map(q => `<td class="amt">${offAttr(p, q)}</td>`).join('')}<td>${esc(state.officers[p].traits.map(t => t + (state.officers[p].known[t] ? '' : ' (hidden)')).join(', '))}${state.officers[p].drunk ? ', drunk today' : ''}</td></tr>`).join('')}</tbody></table></div>
+      <p class="num">Master's skill for navigation today: ${masterSkill()}. Hands' seamanship: ${handsSeamanship().toFixed(2)}.</p>` : ''}
     <h3>Voyage</h3><p>${state.voyage ? esc(state.voyage.name + (state.voyage.dest ? ' for ' + state.voyage.dest : '') + (state.voyage.left != null ? ', ' + state.voyage.left + ' watches to run' : '') + (state.voyage.cruise ? ', cruising ' + state.voyage.cruise.join(' to ') : '')) : 'none'}</p>
     ${state.weather ? `<h3>Weather</h3><dl class="kv num"><dt>System</dt><dd>${esc(state.weather.sys)}, ${state.weather.left} watches more, then ${esc(state.weather.next)}</dd><dt>Wind</dt><dd>${esc(POINTS[state.weather.dir])}, force ${state.weather.force}</dd><dt>Speed</dt><dd>${(state.lastSpeed || 0).toFixed(1)} knots</dd></dl>` : ''}
     <h3>Events seen</h3><p>${seen.map(esc).join(', ')}</p>
@@ -6461,6 +7422,7 @@ document.addEventListener('click', e => {
     case 'orders': openPanel('orders'); break;
     case 'accounts': openPanel('accounts'); break;
     case 'chart': openPanel('chart'); break;
+    case 'muster': openPanel('muster'); break;
     case 'chartzoom': chartZoom = a.dataset.v; openPanel('chart'); break;
     case 'truth': prefs.showTruth = !prefs.showTruth; savePrefs(); openPanel('writer'); break;
     case 'books': booksTab = a.dataset.tab || booksTab; openPanel('books'); break;

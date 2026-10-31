@@ -74,7 +74,7 @@ The player never sees the numbers.
 
 ## Random events
 
-`Next: any mahon` picks one event tagged `mahon` that can currently come up, weighing each by its `Weight`. An `Urgent` event is always picked first. If nothing fits, the player goes to the Mahon hub. Events without `Tags:` are never picked at random; you reach them only by name.
+`Next: any mahon` picks one event tagged `mahon` that can currently come up, weighing each by its `Weight`. An event with no `Place:` happens wherever the pool is, so one event tagged `sea, ship` can come up at sea or in harbour. An `Urgent` event is always picked first. If nothing fits, the player goes to the Mahon hub. Events without `Tags:` are never picked at random; you reach them only by name.
 
 ## Conditions
 
@@ -338,6 +338,112 @@ In events:
 - `survey`: counts the hold and corrects the books, setting `survey_over`, `survey_short` or `survey_right`. `{survey}` gives the result in words.
 - When a cask is found bad, the flag `bad_cask` is set. `{bad_item}`, `{bad_no}` and `{bad_word}` describe it, and `condemn` throws it out and enters it in the books.
 - `roll purser_skims 50` sets a flag with that chance in 100.
+
+## The officers and the people
+
+The crew is written in five kinds of block. None of them needs code.
+
+**CREW** sets the people as a body:
+
+```
+CREW
+Scurvy: 35
+Idle: Nothing to the purpose: the talk is all of prize money, and of the Admiral's cook.
+Men: Abel Price, John Tozer, Michael Doyle, Patrick Hagan
+```
+
+- `Scurvy:` days at sea without lemon juice or fresh food before the scurvy appears.
+- `Idle:` what `{gossip}` gives when there is nothing to tell.
+- `Men:` names for `{man}` and `{dead}`. Use as many `Men:` lines as you like.
+
+**GAUGE** turns a hidden number into the words the player sees on the Muster:
+
+```
+GAUGE: morale
+Name: Temper
+Words: -4 mutinous, -2.5 sullen, -1 discontented, -0.3 indifferent, 0.5 willing, 1.5 cheerful, 3 devoted
+```
+
+Each word applies from its number upwards. The four gauges are `seamanship`, `gunnery`, `morale` and `health` (1 to 5, except morale, which runs from -4 to 5).
+
+**FLAG** is something that may be true of the people at the start of a commission:
+
+```
+FLAG: sea_lawyer
+Chance: 50
+Gossip: There is a sea-lawyer in the larboard watch, a man called {man}, who knows the Articles of War better than the officers do.
+Known: There is a sea-lawyer among the people.
+```
+
+`Chance` is out of 100. The player does not know about it until someone tells him: `Gossip` is what a dinner or an event lets slip, and once it has been told, the flag `known_sea_lawyer` is set and the `Known` line appears on the Muster.
+
+**TRAIT** is a quality an officer may have:
+
+```
+TRAIT: light_fingered
+Name: Light-fingered
+Hidden
+Sets: purser_skims
+Gossip: {name}'s steward has been selling the ship's cheese to the bumboats at Mahon.
+```
+
+- `Hidden` means the player does not see it until it is revealed, by gossip or by `reveal purser light_fingered`. Without `Hidden`, it shows on the Muster from the start.
+- `Seamanship: +1`, `Gunnery:`, `Leadership:`, `Sobriety: -2`, `Skill:` change the officer's qualities.
+- `Sets:` sets a flag if he has the trait.
+- `About:` is shown on the Muster once the trait is known. `{name}` in `Gossip` is the officer's name.
+
+**OFFICER** is a man who may hold a post:
+
+```
+OFFICER: ebbrell
+Post: master
+Name: Mr Ebbrell
+Seamanship: 4
+Leadership: 2
+Sobriety: 3
+Traits: old_navy, drunkard 55
+About: Sixty if a day, master of nine ships before this one, and says so.
+```
+
+- `Post:` is one of lieutenant, master, surgeon, purser, boatswain, gunner, carpenter. Each commission draws one man at random for each post, from all the officers written for it. Write only one to fix the post (Mr Treharne and Mr Hosken are fixed).
+- Qualities run from 1 to 5; any left out are 3. `Skill` is a surgeon's or carpenter's skill at his trade. `Loyalty` starts at 0.
+- `Traits:` a trait with a number after it is a chance out of 100; without one he always has it.
+
+### What the officers do
+
+- The **master**'s seamanship sets how fast the reckoning grows doubtful. A master in drink keeps it carelessly, with a steady error the player cannot see until a headland or a light finds it out ("By it the reckoning is found out by some 4 leagues"). If the error is larger than the circle of doubt, `reckoning_out` comes up. A *Mathematical* master's noon sights are better.
+- The **surgeon**'s skill cures the sick; less in drink, much less in the scurvy without lemon juice.
+- The **purser**, if light-fingered, skims the stores (as in Build 3).
+- The **boatswain**'s seamanship trains the people at sea; a *Methodist* means fewer drunks, a *Hard horse* a sourer temper.
+- The **gunner**'s gunnery adds to great-gun exercise; a *Gun crank* more so.
+- The **carpenter**'s skill decides whether a leak is found.
+- Each day at noon every officer may be drunk, by his sobriety (more in harbour). It sets `master_drunk`, `surgeon_drunk` and so on until the next noon.
+
+### Conditions, effects and words for the crew
+
+Conditions:
+- `master is drunkard` (he has the trait, known or not), `not boatswain is methodist`
+- `master_seamanship 3 or more`, `surgeon_skill 4 or more`, `lieutenant_loyalty 1 or more`: any post and quality
+- `master_skill`: the seamanship of whoever keeps the reckoning (the lieutenant, one less, if the master is relieved or under arrest)
+- `hands`: the people's seamanship
+- `known_sea_lawyer`: the player has learnt of it
+
+Effects:
+- `drill gunnery 1`, `drill seamanship 1`: exercise, helped by the gunner or the boatswain
+- `reveal master drunkard`, `reveal sea_lawyer`
+- `gunroom +0.5`: every officer's loyalty together; `master_loyalty -1` for one man
+- `pick man`: choose a seaman for `{man}`
+- `gossip`: choose something not yet known for `{gossip}`, and reveal it
+- `punish flog`, `punish start`, `punish grog`, `punish pass`: counts the punishment and moves `severity` or `leniency`. The game uses these to weigh how often offences come up and how the people take them.
+
+In the text:
+- `{lieutenant}`, `{master}`, `{surgeon}`, `{purser}`, `{boatswain}`, `{gunner}`, `{carpenter}`: the man's name
+- `{master_about}` and so on: his one-line description
+- `{man}`, `{dead}`, `{gossip}`
+
+Flags the game sets: `master_drunk` (and for each post), `master_relieved` (until noon), `master_arrested`, `scurvy`, `death` (a man has died; `{dead}` is his name), `reckoning_out`.
+
+The numbers `health`, `sick`, `morale`, `gunnery`, `seamanship`, `severity`, `leniency` and `scurvy_days` can be used in conditions and changed by effects like any other.
 
 ## Glossary
 

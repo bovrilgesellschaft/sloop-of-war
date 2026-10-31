@@ -23,7 +23,7 @@ Built in thirteen playable steps (see "Build sequence" in the design document).
 - [x] 4. Wind and weather
 - [x] 5. Combat sandbox
 - [x] 6. Chart and navigation
-- [ ] 7. Crew and officers
+- [x] 7. Crew and officers
 - [ ] 8. Encounters and chases
 - [ ] 9. Full combat
 - [ ] 10. Aftermath and prizes
